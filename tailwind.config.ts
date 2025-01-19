@@ -14,6 +14,7 @@ export default {
   			foreground: 'hsl(var(--foreground))',
   			customBg: '#101739',
   			customBg2: '#6C74FC',
+			cusstomBg3:"#0C1121",
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
