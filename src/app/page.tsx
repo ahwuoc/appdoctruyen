@@ -1,14 +1,16 @@
 import Image from "next/image";
-import { DropdownMenuCheckboxes } from "./Components/DropdownComponents";
+import DropdownComponents from "./Components/DropdownComponents";
+import ListTagComponents from "./Components/ListTagComponents";
+import ListProductComponents from "./Components/ListProductComponents";
 export default function Home() {
   return (
-    <div className="main_content container bg-cusstomBg3">
-      <div className="container pt-5 justify-center gap-5 flex text-white w-[80%] mx-auto">
-        <div className="flex-1 flex flex-col gap-y-10">
+    <div className="main_content min-w-full container bg-cusstomBg3">
+      <div className="container pt-5 gap-x-5 justify-evenly flex text-white w-[80%] mx-auto">
+        <div className="flex-[8] flex flex-col gap-y-10">
           <Image src="https://cmangag.com/assets/img/pr/tuyennhomdich.jpg" width={500}
             height={500}
             alt="logo"
-            className="flex-1 w-full object-cover"
+            className="flex-1  w-full object-cover"
           />
           <div className="album_suggest flex gap-y-10 flex-col ">
             <h1 className="flex items-center p-2 border-l-4 border-customBg2" >
@@ -18,12 +20,22 @@ export default function Home() {
             <span className="p-4 bg-customBg text-white rounded-xl">Hãy đăng nhập và đọc truyện. Hệ thống sẽ dựa trên sở thích để gợi ý các truyện phù hợp với bạn.
             </span>
           </div>
-           <div className="filter_album  flex w-full bg-red-500">
-            <DropdownMenuCheckboxes />
-          
-           </div>
+          <div className="filter_album bg justify-start g items-center flex w-full">
+            <DropdownComponents/>
+          </div>
+          <div className="tag_album flex items-center justify-between gap-5">
+            <div className="flex-1">
+              <ListTagComponents />
+            </div>
+            <div className="flex-1 flex ">
+            </div>
+          </div>
+          <div className="list-product container w-full">
+            <ListProductComponents />
+            </div>
+           
         </div>
-        <div className="flex-1">
+        <div className="flex-[2]">
           Cot 2
         </div>
       </div>

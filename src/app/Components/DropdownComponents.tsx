@@ -1,106 +1,154 @@
-"use client"
-import * as React from "react"
-import { useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+"use client";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
-type Category = {
-  id: number
-  name: string
+type DropdownProps = {
+  isOpen: boolean;
+  closeDropdown: () => void;
+  children: React.ReactNode;
+}
+const DropdownContent = React.memo(function DropdownContent({ isOpen, closeDropdown, children }: DropdownProps) {
+  if (!isOpen) return null;
+  return (
+    <div
+      onMouseLeave={closeDropdown}
+      className="dropdown-menu z-10 flex flex-wrap p-2 left-0 top-20 rounded-lg absolute w-full min-h-52 bg-customBg"
+    >
+      {children}
+    </div>
+  );
+})
+
+type Categories = {
+  theLoai: string[];
+  sapXep: string[];
+  chapter: string[];
 }
 
-export function DropdownMenuCheckboxes() {
-  const [categories, setCategories] = React.useState<Category[]>([])
-  const [checkedItems, setCheckedItems] = React.useState<Set<number>>(new Set())
-  
-  const FakeData = [
-    { id: 1, name: "Chuyển sinh" },
-  { id: 2, name: "Hành động" },
-  { id: 3, name: "Phiêu lưu" },
-  { id: 4, name: "Khoa học viễn tưởng" },
-  { id: 5, name: "Lãng mạn" },
-  { id: 6, name: "Hài hước" },
-  { id: 7, name: "Kinh dị" },
-  { id: 8, name: "Thần thoại" },
-  { id: 9, name: "Tâm lý" },
-  { id: 10, name: "Học đường" },
-  { id: 11, name: "Trinh thám" },
-  { id: 12, name: "Cuộc sống" },
-  { id: 13, name: "Thể thao" },
-  { id: 14, name: "Âm nhạc" },
-  { id: 15, name: "Phim cổ trang" },
-  { id: 16, name: "Gia đình" },
-  { id: 17, name: "Xã hội" },
-  { id: 18, name: "Lịch sử" },
-  { id: 19, name: "Văn học" },
-  { id: 20, name: "Chiến tranh" },
-  { id: 21, name: "Mạo hiểm" },
-  { id: 22, name: "Tương lai" }
-    
-  ]
+const DropdownComponents = () => {
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [selectItems, setSelectItems] = useState<string[]>([]);
 
-  useEffect(() => {
-    const getListCategories = async () => {
-      try {
-        const response = await fetch('/api/categories')
-        const data: Category[] = await response.json()
-        setCategories(data)
-      } catch (error) { 
-        console.error("Error fetching categories", error)
-        setCategories(FakeData)
-      }
-    }
-    getListCategories()
-  }, [])
-
-  const handleCheckBoxAll = () => {
-    setCheckedItems(new Set())
+  const Categories: Categories = {
+    theLoai: [
+      "Chuyển Sinh",
+      "Action",
+      "Adult",
+      "Adventure",
+      "Anime",
+      "Fantasy",
+      "Horror",
+      "Romance",
+      "Mystery",
+      "Sci-Fi",
+      "Comedy",
+      "Drama",
+      "Thriller",
+      "Slice of Life",
+      "Supernatural",
+      "Historical",
+      "Mecha",
+      "Sports",
+      "Music",
+      "Superhero"
+    ],
+    sapXep: ["Thời gian đăng", "Từ Z đến A", "Lượt theo dõi", ""],
+    chapter: ["20 chapter", "40 chapter", "60 chapter", "80 chapter", "100 chapter"]
   }
 
-  const handleCheckboxChange = (id: number) => {
-    setCheckedItems((prevCheckedItems) => {
-      const newCheckedItems = new Set(prevCheckedItems)
-      if (newCheckedItems.has(id)) {
-        newCheckedItems.delete(id)
+  function toggleSelectItem(item: string) {
+    console.log("Value=>", selectItems);
+    setSelectItems((prev) => {
+      const newItems = [...prev];
+      const index = newItems.indexOf(item);
+      if (index === -1) {
+        newItems.push(item);
       } else {
-        newCheckedItems.add(id)
+        newItems.splice(index, 1);
       }
-      return newCheckedItems
-    })
+      return newItems;
+    });
+    closeDropdown();
+  }
+
+  function toggleDropdown(name: string) {
+    setActiveDropdown((prev) => prev === name ? null : name);
+  }
+
+  function closeDropdown() {
+    setActiveDropdown(null);
   }
 
   return (
-    <DropdownMenu  >
-      <DropdownMenuTrigger  asChild>
-        <Button  variant="outline">Tất cả</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuSeparator />
-        <DropdownMenuCheckboxItem  onClick={handleCheckBoxAll}>
-          Tất cả 
-        </DropdownMenuCheckboxItem>
-        {categories.length > 0 ? (
-          categories.map((category) => (
-            <DropdownMenuCheckboxItem
-              key={category.id}
-              checked={checkedItems.has(category.id)}
-              onCheckedChange={() => handleCheckboxChange(category.id)}
-            >
-              {category.name}
-            </DropdownMenuCheckboxItem>
-          ))
-        ) : (
-          <DropdownMenuCheckboxItem disabled>
-            Không tìm thấy danh mục nào.
-          </DropdownMenuCheckboxItem>
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+    <div className="flex p-5 rounded-lg bg-customBg w-full relative justify-start gap-5 items-center">
+      <Button onClick={() => toggleDropdown("the-loai")}>
+        Thể loại
+      </Button>
+      <Button onClick={() => toggleDropdown("sap-xep")}>
+        Sắp xếp theo
+      </Button>
+      <Button onClick={() => toggleDropdown("chapter")}>
+        Theo Chapter
+      </Button>
+      <DropdownContent
+        isOpen={activeDropdown === "the-loai"}
+        closeDropdown={closeDropdown}
+      >
+        {Categories.theLoai.map(item => (
+          <Button
+            key={item}
+            onClick={() => toggleSelectItem(item)}
+            className=" w-1/4 hover:bg-customBg2 rounded-sm flex-wrap gap-2 py-1 px-2 cursor-pointer"
+          >
+            {selectItems.includes(item) && (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            )}
+            {item}
+          </Button>
+        ))}
+      </DropdownContent>
+      <DropdownContent
+        isOpen={activeDropdown === "sap-xep"}
+        closeDropdown={closeDropdown}
+      >
+        {Categories.sapXep.map(item => (
+          <Button
+            key={item}  
+            onClick={() => toggleSelectItem(item)}
+            className=" w-1/5 hover:bg-customBg2 rounded-sm flex-wrap gap-2 py-1 px-2 cursor-pointer"
+          >
+            {selectItems.includes(item) && (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            )}
+            {item}
+          </Button>
+        ))}
+      </DropdownContent>
+      <DropdownContent
+        isOpen={activeDropdown === "chapter"}
+        closeDropdown={closeDropdown}
+      >
+        {Categories.chapter.map(item => (
+          <Button
+            key={item}
+            onClick={() => toggleSelectItem(item)}
+            className=" w-1/5 hover:bg-customBg2 rounded-sm flex-wrap  cursor-pointer"
+          >
+            {selectItems.includes(item) && (
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            )}
+            {item}
+          </Button>
+        ))}
+      </DropdownContent>
+    </div>
+  );
 }
+
+export default DropdownComponents;

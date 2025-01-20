@@ -5,6 +5,16 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+/* =======Scoll custom============= */
+::-webkit-scrollbar {
+  width: 10px; 
+  height: 10px; 
+  background-color: black;
+}
+::-webkit-scrollbar-thumb {
+  background-color: gray; 
+  border-radius: 10px;
+}
 
 
 

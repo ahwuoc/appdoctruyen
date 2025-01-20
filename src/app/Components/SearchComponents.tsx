@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 const SearchComponent = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     return (
-        <form className="flex items-center max-w-lg">
+        <form className="flex flex-1 items-center max-w-lg">
             <div className="relative w-full">
                 <input
                     type="text"
