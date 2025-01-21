@@ -2,6 +2,8 @@ import Image from "next/image";
 import DropdownComponents from "./Components/DropdownComponents";
 import ListTagComponents from "./Components/ListTagComponents";
 import ListProductComponents from "./Components/ListProductComponents";
+import { Button } from "@/components/ui/button";
+import { CiBoxList } from "react-icons/ci";
 export default function Home() {
   return (
     <div className="main_content min-w-full container bg-cusstomBg3">
@@ -21,19 +23,22 @@ export default function Home() {
             </span>
           </div>
           <div className="filter_album bg justify-start g items-center flex w-full">
-            <DropdownComponents/>
+            <DropdownComponents />
           </div>
-          <div className="tag_album flex items-center justify-between gap-5">
+          <div className="tag_album flex items-center  gap-5">
             <div className="flex-1">
               <ListTagComponents />
             </div>
-            <div className="flex-1 flex ">
+            <div className="flex-1 flex">
+              <Button  className="ml-auto hover:bg-customBg2">
+                <CiBoxList />
+              </Button>
             </div>
           </div>
           <div className="list-product container w-full">
             <ListProductComponents />
-            </div>
-           
+          </div>
+
         </div>
         <div className="flex-[2]">
           Cot 2

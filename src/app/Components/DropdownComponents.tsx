@@ -98,7 +98,7 @@ const DropdownComponents = () => {
           <Button
             key={item}
             onClick={() => toggleSelectItem(item)}
-            className=" w-1/4 hover:bg-customBg2 rounded-sm flex-wrap gap-2 py-1 px-2 cursor-pointer"
+            className=" w-1/4 bg-inherit hover:bg-customBg2 rounded-sm flex-wrap gap-2 py-1 px-2 cursor-pointer"
           >
             {selectItems.includes(item) && (
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -117,7 +117,7 @@ const DropdownComponents = () => {
           <Button
             key={item}  
             onClick={() => toggleSelectItem(item)}
-            className=" w-1/5 hover:bg-customBg2 rounded-sm flex-wrap gap-2 py-1 px-2 cursor-pointer"
+            className="bg-inherit  w-1/5 hover:bg-customBg2 rounded-sm flex-wrap gap-2 py-1 px-2 cursor-pointer"
           >
             {selectItems.includes(item) && (
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -136,7 +136,7 @@ const DropdownComponents = () => {
           <Button
             key={item}
             onClick={() => toggleSelectItem(item)}
-            className=" w-1/5 hover:bg-customBg2 rounded-sm flex-wrap  cursor-pointer"
+            className=" bg-inherit w-1/5 hover:bg-customBg2 rounded-sm flex-wrap  cursor-pointer"
           >
             {selectItems.includes(item) && (
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">

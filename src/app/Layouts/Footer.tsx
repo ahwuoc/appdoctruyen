@@ -4,7 +4,7 @@ import Image from 'next/image';
 const Footer = () => {
     const tags: string[] = ["Truyện tranh","doctruyen3q","Manhua","baotangtruyen","Manhwa","blogTruyen","truyengihot","goctruyentranh" , "Truyện Tranh Online", "Đọc truyện tranh", "Truyện Tranh Hot"];
     return (
-        <div className='w-full text-white  bg-customBg min-h-50'>
+        <div className='w-full h-screen text-white  bg-customBg min-h-50'>
             <div className="container  mx-auto p-4 w-[80%] flex">
                 <div className="flex-1 gap-4 flex flex-col">
                 <Image
