@@ -162,4 +162,12 @@ const productsData = [
   },
 ];
 const productCount:number = 1545;
+const Chapters = [
+  {id:1,name:"Chapter 1",view:120},
+  {id:2,name:"Chapter 2",view:150},
+  {id:3,name:"Chapter 3",view:180},
+  {id:4,name:"Chapter 4",view:210},
+  {id:5,name:"Chapter 5",view:240},
+  {id:6,name:"Chapter 6",view:270},
+]
 export { tags, categories, productsData, productCount };
