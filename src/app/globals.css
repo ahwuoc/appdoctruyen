@@ -4,7 +4,18 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  touch-action: pan-y;
 }
+.glow-text{
+  text-shadow: 0 0 8px rgba(255, 223, 0, 0.8); 
+}
+
+.num-1 { color: gold; text-shadow: 0 0 8px gold; }
+.num-2 { color: orange; text-shadow: 0 0 8px orange; }
+.num-3 { color: red; text-shadow: 0 0 8px red; }
+.num-4 { color: silver; text-shadow: 0 0 8px silver; }
+.num-5 { color: #9B9B9B; text-shadow: 0 0 8px #9B9B9B; }
+
 /* =======Scoll custom============= */
 ::-webkit-scrollbar {
   width: 10px; 
@@ -45,6 +56,14 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
     --background: 224 71.4% 4.1%;
@@ -71,6 +90,14 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
