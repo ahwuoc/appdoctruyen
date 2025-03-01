@@ -21,8 +21,6 @@ function generateRandomAlbum(id: number) {
         "https://cmangax.com/assets/tmp/album/82931.webp?v=1739771847",
         "https://cmangax.com/assets/tmp/album/62141.png?v=1729342811",
         "https://cmangax.com/assets/tmp/album/39155.png?v=1700030183"
-
-
     ];
 
     const categories = [

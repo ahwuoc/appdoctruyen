@@ -43,7 +43,7 @@ const ListProductComponents = () => {
                                     src={product.image_url || "/placeholder-image.png"}
                                     width={150}
                                     height={200}
-                                    onClick={() => handlePageAlbumChange(product.name, product.id)}
+                                    onClick={() => handlePageAlbumChange(product.title, product.id)}
                                     alt="Product"
                                     className="object-cover w-full cursor-pointer h-full rounded-sm"
                                 />
@@ -76,7 +76,7 @@ const ListProductComponents = () => {
                             </div>
                             <div className="lg:mt-auto flex-[2] lg:h-1/5 flex-col product__content flex items-center lg:flex-col">
                                 <div className="mt-10 lg:mt-5 w-full text-center product__title">
-                                    <h1 className="font-bold hover:text-customBg2 lg:text-sm text-xl">{product.name}</h1>
+                                    <h1 className="font-bold hover:text-customBg2 lg:text-sm text-xl">{product.title}</h1>
                                 </div>
                                 <div className="lg:mt-auto mt-auto product_last_chapter flex items-center justify-around">
                                     {product.chapters && product.chapters.length > 0 ? (

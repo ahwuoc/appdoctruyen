@@ -18,7 +18,7 @@ class HttpError extends Error {
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 const request = async <T>(method: Method, url: string, options?: RequestInit): Promise<{ status: number, payload: T }> => {
-  const url_full = url.startsWith('/') ? `$${url}` : `/${url}`;
+  const url_full = url.startsWith('/') ? `${url}` : `/${url}`;
   const finalHeaders = {
     ...(options?.headers ?? {}),
     ...(options?.body ? { 'Content-Type': 'application/json' } : {}),

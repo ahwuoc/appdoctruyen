@@ -57,7 +57,7 @@ export default function AlbumRender({productId}:{productId:number}){
           <div className="mx-auto lg:w-1/3 lg:mx-0">
             <Image
               src={product?.image_url ?? "https://cmangag.com/assets/tmp/album/81644.webp?v=1737041843"}
-              alt={product?.name ?? "Truyen Trnah"}
+              alt={product?.title ?? "Truyen Trnah"}
               width={200}
               height={300}
               className="rounded-sm  w-full h-full"
@@ -65,7 +65,7 @@ export default function AlbumRender({productId}:{productId:number}){
             />
           </div>
           <div className="lg:w-full w-full flex  flex-col  items-center">
-            <h1 className="font-bold lg:text-left text-center w-full text-2xl">{product?.name}</h1>
+            <h1 className="font-bold lg:text-left text-center w-full text-2xl">{product?.title}</h1>
             <div className="tag_list lg:h-1/2 lg:items-center w-full lg:justify-start justify-center gap-x-2 p-2 flex lg:gap-x-5">
               {product?.categories && product?.categories?.map((category) => (
                 <Button className="bg-customBg2" key={category.id}>
@@ -116,7 +116,7 @@ export default function AlbumRender({productId}:{productId:number}){
               <Button
                 onClick={() => {
                   if (product?.chapters && product?.chapters?.length > 0) {
-                    handleChapter(product.name, product.chapters[0].name, product.chapters[0].id);
+                    handleChapter(product.title, product.chapters[0].name, product.chapters[0].id);
                   } else {
                     toast({
                       variant: "destructive",
@@ -139,7 +139,7 @@ export default function AlbumRender({productId}:{productId:number}){
         <div className="product__content gap-5">
           <div>Giới thiệu</div>
           <span>Đang cập nhật</span>
-          <p>{product?.description ?? "Không có mô tả"}</p>
+          <p>{product?.content ?? "Không có mô tả"}</p>
         </div>
         <div className="product_list_chapter">
           <div className="product_header flex justify-between">
@@ -166,7 +166,7 @@ export default function AlbumRender({productId}:{productId:number}){
               <TableBody>
                 {product?.chapters && product?.chapters?.length > 0 ? (
                   product.chapters.map((chapter, index) => (
-                    <TableRow onClick={() => handleChapter(product.name, chapter.name, chapter.id)} key={index}>
+                    <TableRow onClick={() => handleChapter(product.title, chapter.name, chapter.id)} key={index}>
                       <TableCell>{chapter.name}</TableCell>
                       <TableCell>{time(chapter.created_at)}</TableCell>
                       <TableCell>{chapter.view ?? 0}</TableCell>

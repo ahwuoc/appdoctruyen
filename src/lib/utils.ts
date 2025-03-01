@@ -7,11 +7,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function timeAgo(time: string | number |undefined| Date): string {
-  if (time === null || time === undefined) {
-    return "Đang cập nhật";
-  }
-  return formatDistanceToNow(new Date(time), { addSuffix: true, locale: vi });
+export function timeAgo(time: string| Date): string {
+  if(!time) return "Đang cập nhật";
+
+  const parsedTime =  typeof time === "string" ? new Date(time):time;
+
+  if(isNaN(parsedTime.getTime())) return "Thời gian không hợp lệ";
+  return formatDistanceToNow(parsedTime, { addSuffix: true, locale: vi });
 }
 
 export function createSlug(name:string){

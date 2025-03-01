@@ -6,7 +6,28 @@ interface ProductPagenation {
   last_page: number;
   current_page:number,
 }
-const apiProduct = {
+const apiAlbums = {
+
+  getAlbums: async() => http.get<AlbumType[]>('/api/albums'),
+
+  getAlbumsNew: async() => http.get<AlbumType[]>('/api/albums-new') ,
+   
+  getAlbumsHot: async() => http.get<AlbumType[]>('/api/albums-hot'),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   getLimitProduct: async (limit: number = 20, page: number = 1) => {
     return await http.get<PaginatedProducts>(`/api/products?limit=${limit}&page=${page}`);
   },
@@ -32,4 +53,4 @@ const apiProduct = {
   },
 };
 
-export { apiProduct };
+export { apiAlbums as apiProduct };

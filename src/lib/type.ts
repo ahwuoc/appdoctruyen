@@ -1,11 +1,11 @@
 export interface AlbumType {
   id: number;
-  name: string;
+  title: string;
   follow: number;
   image_url: string;
   chapters?: ChapterType[];
-  description: string;
-  categories?: CategoryType[];
+  content: string;
+  categories?: AlbumCategory[];
   is_active: boolean;
   created_at: string,
   updated_at: string,
@@ -15,7 +15,7 @@ export interface  CategoryType {
   id: number;
   name: string;
   value:string;
-  
+    
 }
 export interface ChapterType {
   id: number;
@@ -40,3 +40,14 @@ export interface PaginatedProducts {
   current_page: number,
 }
 
+
+
+// ====
+interface Category {
+  title: string;
+}
+
+interface AlbumCategory {
+  categories: Category;
+  category_id: number;
+}
