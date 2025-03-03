@@ -6,16 +6,9 @@ import { timeAgo } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function ListProductNew({ albums }: { albums: AlbumType[] }) {
+export default function ListProductNew({ albums }: { albums: AlbumType[]; })
+{
   return (
-    <div className="container__listproduct max-w-full overflow-x-hidden">
-      <div className="title_new--update p-4 flex items-center justify-between text-color_white">
-        <div className="flex gap-2 items-center">
-          <Image src="https://cmangax.com/assets/img/icon/top/fire.png" alt="item" width={40} height={20} />
-          <span>Truyện mới cập nhật</span>
-        </div>
-        <Button className="rounded-sm">Xem thêm...</Button>
-      </div>
       <div className="flex p-1 flex-col md:flex-row md:flex-wrap gap-4 max-w-full">
         {albums.map((item, index) => (
           <Card
@@ -45,13 +38,27 @@ export default function ListProductNew({ albums }: { albums: AlbumType[] }) {
                   </span>
                   <span className="flex items-center gap-1">
                     <CiBookmark className="text-color_puppy" />
-                    {item.follow ?? 0}
+                    0
                   </span>
                 </div>
               </div>
 
               {/* Danh mục truyện */}
-  
+              <div className="flex gap-2 items-center">
+                {Array.isArray(item.categories) && item.categories.length > 0 ? (
+                  <>
+                    {item.categories.slice(0, 3).map((category, index) => (
+                      <span key={index} className="text-sm px-2 bg-color_puppy">{category.name}</span>
+                    ))}
+
+                    {item.categories.length > 3 && (
+                      <span className="text-sm px-2 bg-color_puppy">...</span>
+                    )}
+                  </>
+                ) : (
+                  <span className="text-sm text-gray-500">Không có danh mục</span>
+                )}
+              </div>
 
               {/* Chương mới nhất */}
               <div className="flex mt-auto justify-between opacity-70 text-sm">
@@ -64,6 +71,5 @@ export default function ListProductNew({ albums }: { albums: AlbumType[] }) {
           </Card>
         ))}
       </div>
-    </div>
   );
 }

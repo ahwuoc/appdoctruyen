@@ -3,13 +3,15 @@ import * as React from "react";
 
 import CarouselComponents from '@/app/components/Carousel';
 import SlideCard from '@/app/components/SlideCard';
-import { AlbumType } from "@/lib/type"
+import { AlbumType } from "@/lib/type";
 import { apiProduct } from '@/app/apiRequest/apiProduct';
 import ListTopAlbum from '@/app/components/list-album-bxh';
 import ListProductNew from '@/app/components/list-productnew';
 
-
-
+import Image from 'next/image';
+import { Button } from 'antd';
+import { useRouter } from 'next/navigation';
+type slug = "new" | "hot";
 export default function Page()
 {
   const [albums, setAlbums] = React.useState<AlbumType[]>([]);
@@ -26,42 +28,81 @@ export default function Page()
     };
     albumsGet();
   }, []);
+  const router = useRouter();
 
+  const handleClick = (slug: slug) =>
+  {
+    router.push(`/comic/${slug}/${1}`);
+  };
   return (
-    <div className="main__content ">
+    <div className="main__content">
+      {/* Phần Carousel */}
       <CarouselComponents albums={albums} />
+
+      {/* Nội dung chính */}
       <div className="container mx-auto">
-        <div className="container mx-auto flex flex-wrap flex-col md:flex-row md:flex-nowrap gap-4">
+        <div className="flex flex-wrap flex-col md:flex-row md:flex-nowrap gap-4">
+
+          {/* Danh sách truyện mới cập nhật */}
           <div className="md:basis-[70%] flex flex-col list--product new--update max-w-full">
-            <ListProductNew albums={albumsNew} />
-          </div>
-          <div className="list__top--list md:basis-[30%] nav-bar">
-            <div className="flex flex-col h-full">
-              <div className="flex-1">
-                <ListTopAlbum albums={albums} />
+            <div className="container__listproduct max-w-full overflow-x-hidden">
+
+              <div className="title_new--update p-4 flex items-center justify-between text-color_white">
+                <div className="flex gap-2 items-center">
+                  <Image src="https://cmangax.com/assets/img/icon/top/fire.png" alt="item" width={40} height={20} />
+                  <span>Truyện mới cập nhật</span>
+                </div>
+                <Button onClick={() => handleClick("hot")} className="rounded-sm">
+                  Xem thêm...
+                </Button>
               </div>
-              <div className="flex-1">
-                <ListTopAlbum albums={albums} />
-              </div>
-              <div className="flex-1">
-                 <div className="container-ttv p-2  h-full">
-                 <div className="container-ttv flex items-center border-bg_color rounded-lg border-2 p-4 h-full">
-                    <button className=' border-2 rounded-lg bg-bg_color w-full text-color_white font-bold  p-4'>Tuyển người dịch truyện</button>
-                 </div>
-                 </div>
-              </div>
+              {/* Danh sách sản phẩm */}
+              <ListProductNew albums={albumsNew} />
             </div>
           </div>
+          {/* Danh sách BXH và tuyển dịch giả */}
+          <div className="list__top--list md:basis-[30%] nav-bar">
+            <div className="flex flex-col h-full">
+
+              {/* BXH Truyện 1 */}
+              <div className="flex-1">
+                <ListTopAlbum albums={albums} />
+              </div>
+
+              {/* BXH Truyện 2 */}
+              <div className="flex-1">
+                <ListTopAlbum albums={albums} />
+              </div>
+
+              {/* Tuyển người dịch */}
+              <div className="flex-1">
+                <div className="container-ttv py-2 h-full">
+                  <div className="container-ttv flex items-center border-bg_color rounded-lg border-2 p-4 h-full">
+                    <button className="border-2 rounded-lg bg-bg_color w-full text-color_white font-bold p-4">
+                      Tuyển người dịch truyện
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
+
+        {/* Truyện nổi bật */}
         <div className="container mx-auto flex flex-wrap gap-4">
+
           <div className="w-full album_slick mt-5">
             <span className="text-color_white font-bold text-xl">Truyện nổi bật</span>
             <SlideCard albums={albums} />
           </div>
+
           <div className="w-full album_slick mt-5">
             <span className="text-color_white font-bold text-xl">Truyện nổi bật</span>
             <SlideCard albums={albums} />
           </div>
+
         </div>
       </div>
     </div>
