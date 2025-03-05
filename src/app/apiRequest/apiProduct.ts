@@ -14,16 +14,7 @@ const apiAlbums = {
    
   getAlbumsHot: async() => http.get<AlbumType[]>('/api/albums-hot'),
 
-
-
-
-
-
-
-
-
-
-
+  getAlbumId : async(id:number) => http.get<AlbumType>(`/api/albums/${id}`),
 
 
 

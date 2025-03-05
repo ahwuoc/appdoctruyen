@@ -1,173 +1,142 @@
 import { AlbumType } from "@/lib/type";
 import React, { useState, useEffect, useRef } from "react";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
-import { FaEye } from "react-icons/fa";
-import { CiBookmark } from "react-icons/ci";
-
-export default function SlideCard({ albums }: { albums: AlbumType[] }) {
+import Image from "next/image";
+import { useAlbum } from '../provider/ProviderContext';
+import { AlbumStats } from './DetailsAlbums';
+import { HoverCard } from './StyleComponents';
+export default function SlideCard({ albums }: { albums: AlbumType[]; })
+{
+  const handelick = useAlbum();
   const [currentPosition, setCurrentPosition] = useState(0);
-  const [itemsPerView, setItemsPerView] = useState(1);
+  const [itemsPerView, setItemsPerView] = useState(2);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [dragDistance, setDragDistance] = useState(0);
+  const [translateX, setTranslateX] = useState(0);
   const slideContainerRef = useRef<HTMLDivElement>(null);
 
-  const totalSlides = albums.length;
+  const totalSlides = albums.length || 0;
+  const slideWidth = 100 / itemsPerView;
+  const maxPosition = Math.max(totalSlides - itemsPerView, 0);
 
-  const getItemsPerView = () => {
-    if (typeof window === "undefined") return 1;
-    if (window.innerWidth >= 1280) return 6;
-    if (window.innerWidth >= 1024) return 4;
-    if (window.innerWidth >= 768) return 3;
-    if (window.innerWidth >= 640) return 2;
+  // Tính số item hiển thị dựa trên kích thước màn hình
+  const getItemsPerView = () =>
+  {
+    if (typeof window === "undefined") return 2;
+    const width = window.innerWidth;
+    if (width >= 1280) return 6;
+    if (width >= 1024) return 4;
+    if (width >= 768) return 3;
     return 2;
   };
 
-  useEffect(() => {
-    setItemsPerView(getItemsPerView());
-    const handleResize = () => setItemsPerView(getItemsPerView());
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+  // Khởi tạo và xử lý resize
+  useEffect(() =>
+  {
+    const updateItemsPerView = () => setItemsPerView(getItemsPerView());
+    updateItemsPerView();
+    window.addEventListener("resize", updateItemsPerView);
+    return () => window.removeEventListener("resize", updateItemsPerView);
   }, []);
 
-  const slideWidth = 100 / itemsPerView;
-
-  // Bắt đầu kéo
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault(); // Ngăn hành vi mặc định của chuột
-    console.log("Mouse down - Start dragging");
+  // Xử lý kéo
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) =>
+  {
     setIsDragging(true);
-    setStartX(e.pageX);
-    setDragDistance(0);
-    if (slideContainerRef.current) {
-      slideContainerRef.current.style.transition = "none";
-    }
+    const clientX = "touches" in e ? e.touches[0]!.clientX : e.clientX;
+    setStartX(clientX);
   };
 
-  // Kéo chuột
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const currentX = e.pageX;
-    const diff = currentX - startX;
-    setDragDistance(diff);
-    console.log("Dragging - Distance:", diff);
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) =>
+  {
+    if (!isDragging || !slideContainerRef.current) return;
+    const clientX = "touches" in e ? e.touches[0]!.clientX : e.clientX;
+    const distance = (clientX - startX) / slideContainerRef.current.offsetWidth * 100;
+    setTranslateX(-currentPosition * slideWidth + distance);
   };
 
-  // Kết thúc kéo
-  const handleMouseUp = () => {
+  const handleDragEnd = () =>
+  {
     if (!isDragging) return;
-    console.log("Mouse up - End dragging");
     setIsDragging(false);
 
-    if (slideContainerRef.current) {
-      slideContainerRef.current.style.transition = "transform 0.5s ease-in-out";
-    }
-
-    const threshold = window.innerWidth / itemsPerView / 3;
-    if (Math.abs(dragDistance) > threshold) {
-      if (dragDistance > 0 && currentPosition > 0) {
-        setCurrentPosition(Math.max(0, currentPosition - itemsPerView));
-      } else if (dragDistance < 0 && currentPosition < totalSlides - itemsPerView) {
-        setCurrentPosition(Math.min(
-          Math.floor((totalSlides - 1) / itemsPerView) * itemsPerView,
-          currentPosition + itemsPerView
-        ));
-      }
-    }
-    setDragDistance(0);
+    const threshold = slideWidth / 3; // Ngưỡng để quyết định chuyển slide
+    const newPosition = Math.round((-translateX) / slideWidth);
+    setCurrentPosition(Math.max(0, Math.min(newPosition, maxPosition)));
+    setTranslateX(0); // Reset sau khi thả
   };
 
-  // Xử lý khi chuột rời khỏi container
-  const handleMouseLeave = () => {
-    if (isDragging) {
-      console.log("Mouse leave - Force end dragging");
-      handleMouseUp();
-    }
-  };
-
-  const handleNext = () => {
-    if (currentPosition < totalSlides - itemsPerView) {
-      setCurrentPosition(currentPosition + itemsPerView);
-    } else if (totalSlides > itemsPerView) {
-      setCurrentPosition(0);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentPosition > 0) {
-      setCurrentPosition(currentPosition - itemsPerView);
-    } else if (totalSlides > itemsPerView) {
-      setCurrentPosition(Math.floor((totalSlides - 1) / itemsPerView) * itemsPerView);
-    }
-  };
-
-  const getTransformValue = () => {
-    const baseTranslate = currentPosition * slideWidth;
-    if (isDragging && slideContainerRef.current) {
-      const containerWidth = slideContainerRef.current.offsetWidth;
-      const dragPercentage = (dragDistance / containerWidth) * 100;
-      const maxTranslate = (totalSlides - itemsPerView) * slideWidth;
-      let newTranslate = baseTranslate - dragPercentage;
-      newTranslate = Math.max(0, Math.min(newTranslate, maxTranslate));
-      return `translateX(-${newTranslate}%)`;
-    }
-    return `translateX(-${baseTranslate}%)`;
-  };
+  // Xử lý nút Next/Prev
+  const goToNext = () => setCurrentPosition((prev) => Math.min(prev + 1, maxPosition));
+  const goToPrev = () => setCurrentPosition((prev) => Math.max(prev - 1, 0));
 
   return (
-    <div className="carousel-container relative mx-auto max-w-full overflow-x-hidden">
+    <div className="carousel-container relative mx-auto max-w-full overflow-hidden">
+      {/* Nút Previous */}
       <button
-        className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-500 text-white px-2 py-1 z-10 rounded-full hover:bg-gray-700 disabled:opacity-50"
-        onClick={handlePrev}
-        disabled={totalSlides <= itemsPerView}
+        className="absolute top-1/2 left-2 -translate-y-1/2 bg-gray-500 text-white p-2 z-10 rounded-full hover:bg-gray-700 disabled:opacity-50 transition-opacity"
+        onClick={goToPrev}
+        disabled={currentPosition === 0}
+        aria-label="Previous slide"
       >
-        <GrFormPreviousLink />
+        <GrFormPreviousLink size={20} />
       </button>
+
+      {/* Slide Container */}
       <div
         ref={slideContainerRef}
-        className="slide-container flex transition-transform duration-500 ease-in-out"
-        style={{ transform: getTransformValue(), userSelect: "none" }} // Ngăn chọn text khi kéo
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
+        className="slide-container flex will-change-transform transition-transform duration-300 ease-out"
+        style={{
+          transform: `translateX(${translateX || -currentPosition * slideWidth}%)`,
+        }}
+        onMouseDown={handleDragStart}
+        onMouseMove={handleDragMove}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+        onTouchStart={handleDragStart}
+        onTouchMove={handleDragMove}
+        onTouchEnd={handleDragEnd}
       >
-        {albums.map((album, index) => (
-          <div
-            key={index}
-            className="slide flex flex-col justify-center items-center flex-shrink-0 text-white"
-            style={{ width: `${slideWidth}%` }}
-          >
-            <div className="card relative h-64 w-11/12 mx-auto overflow-hidden shadow-md rounded-lg">
-              <img
-                src={album.image_url}
-                alt={album.title || ""}
-                className="h-full w-full relative object-cover pointer-events-none" // Chặn sự kiện chuột trên ảnh
-                draggable={false} // Ngăn kéo ảnh
-              />
-              <div className="absolute flex flex-col p-2 items-center justify-center bottom-0 w-full bg-bg_color bg-opacity-90 pointer-events-none">
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="flex items-center gap-1">
-                    <FaEye className="text-color_puppy font-bold" />
-                    {album.chapters?.at(0)?.view ?? 0}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <CiBookmark className="text-color_puppy font-bold" />
-                    0
-                  </span>
+        {albums.length > 0 ? (
+          albums.map((album, index) => (
+            <div
+              key={album.id || index} // Dùng id nếu có để tránh trùng key
+              className={`slide ${HoverCard} flex flex-col justify-center cursor-pointer items-center flex-shrink-0 text-white select-none`}
+              style={{ width: `${slideWidth}%` }}
+            >
+              <div className="card relative h-64 w-11/12 mx-auto overflow-hidden shadow-md rounded-lg">
+                <Image
+                  src={album.image_url || "/placeholder.jpg"}
+                  width={256}
+                  height={256}
+                  alt={album.title || "Album"}
+                  className="h-full w-full object-cover"
+                  draggable={false}
+                  onClick={() => handelick(album.title, album.id)}
+                  priority={index < itemsPerView} // Tăng tốc tải cho các slide đầu
+                />
+                <div className="absolute bottom-0 w-full bg-bg_color bg-opacity-90  flex flex-col items-center">
+                  <div className="flex items-center p-2 gap-2 text-sm">
+                    <AlbumStats views={0} following={0} />
+                  </div>
+                  <p className="font-bold text-center truncate w-full">{album.title || "Untitled"}</p>
                 </div>
-                <p className="font-bold">{album.title}</p>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="w-full text-center py-10 text-gray-500">Không có dữ liệu</div>
+        )}
       </div>
+
+      {/* Nút Next */}
       <button
-        className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-500 text-white px-2 py-1 z-10 rounded-full hover:bg-gray-700 disabled:opacity-50"
-        onClick={handleNext}
-        disabled={totalSlides <= itemsPerView}
+        className="absolute top-1/2 right-2 -translate-y-1/2 bg-gray-500 text-white p-2 z-10 rounded-full hover:bg-gray-700 disabled:opacity-50 transition-opacity"
+        onClick={goToNext}
+        disabled={currentPosition >= maxPosition}
+        aria-label="Next slide"
       >
-        <GrFormNextLink />
+        <GrFormNextLink size={20} />
       </button>
     </div>
   );

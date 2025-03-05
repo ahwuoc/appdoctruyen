@@ -16,9 +16,9 @@ export default {
 				customBg2: '#6C74FC',
 				custombg3: '#151d35',
 				cusstomBg3: '#0C1121',
-				bg_color: "#6C74FC",
-				color_white:"#fbfbfb",
-				color_puppy:'#3E3467',
+				bg_color: "#1F2937",
+				color_white: "#fbfbfb",
+				color_puppy: '#3E3467',
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'

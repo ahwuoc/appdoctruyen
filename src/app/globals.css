@@ -2,33 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  /* touch-action: pan-y; */
-}
-.glow-text{
-  text-shadow: 0 0 8px rgba(255, 223, 0, 0.8); 
+  /* ========= */
+  user-select: none;
+  /* Ngăn chọn văn bản */
+  -webkit-user-drag: none;
+  /* Ngăn kéo hình ảnh trên trình duyệt WebKit */
+  -webkit-user-select: none;
+  /* Safari */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE/Edge */
 }
 
-.num-1 { color: gold; text-shadow: 0 0 8px gold; }
-.num-2 { color: orange; text-shadow: 0 0 8px orange; }
-.num-3 { color: red; text-shadow: 0 0 8px red; }
-.num-4 { color: silver; text-shadow: 0 0 8px silver; }
-.num-5 { color: #9B9B9B; text-shadow: 0 0 8px #9B9B9B; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  touch-action: pan-y;
+}
+
+.glow-text {
+  text-shadow: 0 0 8px rgba(255, 223, 0, 0.8);
+}
+
+.num-1 {
+  color: gold;
+  text-shadow: 0 0 8px gold;
+}
+
+.num-2 {
+  color: orange;
+  text-shadow: 0 0 8px orange;
+}
+
+.num-3 {
+  color: red;
+  text-shadow: 0 0 8px red;
+}
+
+.num-4 {
+  color: silver;
+  text-shadow: 0 0 8px silver;
+}
+
+.num-5 {
+  color: #9B9B9B;
+  text-shadow: 0 0 8px #9B9B9B;
+}
 
 /* =======Scoll custom============= */
 ::-webkit-scrollbar {
-  width: 10px; 
-  height: 10px; 
+  width: 10px;
+  height: 10px;
   background-color: black;
 }
+
 ::-webkit-scrollbar-thumb {
-  background-color: gray; 
+  background-color: gray;
   border-radius: 10px;
 }
 
@@ -69,6 +102,7 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
@@ -109,6 +143,7 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }

@@ -1,10 +1,11 @@
-import { Button } from "@/components/ui/button";
+
 import { CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { AlbumType } from "@/lib/type";
-
-export default function CarouselComponents({ albums }: { albums: AlbumType[] }) {
+import { GrFormPreviousLink, GrFormNextLink } from 'react-icons/gr';
+export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
+{
   const [current, setCurrent] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -14,16 +15,19 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[] }) 
 
   const totalSlides = albums.length;
 
-  const nextSlide = () => {
+  const nextSlide = () =>
+  {
     setCurrent((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
   };
 
-  const prevSlide = () => {
+  const prevSlide = () =>
+  {
     setCurrent((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
   };
 
   // Bắt đầu kéo
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMouseDown = (e: React.MouseEvent) =>
+  {
     e.preventDefault(); // Ngăn hành vi mặc định
     setIsDragging(true);
     setStartX(e.pageX);
@@ -34,7 +38,8 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[] }) 
   };
 
   // Kéo chuột
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: React.MouseEvent) =>
+  {
     if (!isDragging) return;
     const currentX = e.pageX;
     const diff = currentX - startX;
@@ -42,7 +47,8 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[] }) 
   };
 
   // Kết thúc kéo
-  const handleMouseUp = () => {
+  const handleMouseUp = () =>
+  {
     if (!isDragging) return;
     setIsDragging(false);
 
@@ -62,28 +68,33 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[] }) 
   };
 
   // Chuột rời khỏi container
-  const handleMouseLeave = () => {
+  const handleMouseLeave = () =>
+  {
     if (isDragging) {
       handleMouseUp();
     }
   };
 
-  useEffect(() => {
-    return () => {
+  useEffect(() =>
+  {
+    return () =>
+    {
       if (autoPlayRef.current) {
         clearInterval(autoPlayRef.current);
       }
     };
   }, []);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = () =>
+  {
     if (autoPlayRef.current) {
       clearInterval(autoPlayRef.current);
     }
   };
 
   // Tính toán transform dựa trên vị trí hiện tại và khoảng cách kéo
-  const getTransformValue = () => {
+  const getTransformValue = () =>
+  {
     const baseTranslate = current * 100;
     if (isDragging && carouselRef.current) {
       const containerWidth = carouselRef.current.offsetWidth;
@@ -171,7 +182,7 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[] }) 
           onClick={prevSlide}
           className="h-8 w-8 bg-gray-800 text-white rounded-full flex items-center justify-center"
         >
-          ◀
+          <GrFormPreviousLink size={20} />
         </button>
 
         <span className="text-white text-sm flex-grow text-center">
@@ -182,7 +193,7 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[] }) 
           onClick={nextSlide}
           className="h-8 w-8 bg-gray-800 text-white rounded-full flex items-center justify-center"
         >
-          ▶
+          <GrFormNextLink size={20} />
         </button>
       </div>
     </div>

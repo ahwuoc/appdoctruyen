@@ -10,7 +10,6 @@ interface Comic {
     slug: string,
     num: string,
 }
-
 interface ResponseSlugAlbum {
     data: AlbumType[],
     pagination: {
@@ -26,8 +25,9 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
     const [displayPages, setDisplayPages] = React.useState<(number | string)[]>([]); 
     const [currentPage, setCurrentPage] = React.useState(0);
     const { slug, num } = React.use(params);
-
+    const [title,setTitle] = React.useState('');
     const router = useRouter();
+    
     const maxDisplay = 5;
 
     const handlePageChange = (page: number) => {
@@ -86,6 +86,17 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
                         pages.push(total);
                     }
                 }
+                switch(slug){
+                    case "hot":
+                        setTitle("Truyện tranh nổi tiếng");
+                        break;
+                    case "new":
+                        setTitle("Truyện tranh mới nhất");
+                        break
+                    default:
+                        setTitle('Truyện comic')
+                        break;
+                }
                 setDisplayPages(pages);
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu:", error);
@@ -93,15 +104,16 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
         };
 
         fetchData();
-    }, [slug, num]);
-
+    }, [slug,num ,pageNumber]);
     return (
         <div className="container mx-auto">
             <div className='flex flex-col min-h-screen'>
-                <div className="flex flex-1 flex-col list--product new--update">
+                <div className="flex flex-col list--product new--update">
+                    <div className="title">
+                        <h2 className='text-color_white w-full text-center p-4 font-bold text-2xl'>{title}</h2>
+                    </div>
                     <ListProductNew albums={products} />
-                </div>
-                <div className="pagination flex mt-auto justify-center gap-2 p-4">
+                    <div className="pagination flex mt-auto justify-center gap-2 p-4">
                     {displayPages.map((item, index) => (
                         typeof item === 'number' ? (
                             <Button
@@ -115,6 +127,7 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
                             <Button key={index} className="px-2">...</Button>
                         )
                     ))}
+                </div>
                 </div>
             </div>
         </div>

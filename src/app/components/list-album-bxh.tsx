@@ -3,8 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { timeAgo } from "@/lib/utils";
 import Image from "next/image";
 import type { AlbumType } from '@/lib/type';
+import { useAlbum } from '../provider/ProviderContext';
 
 export default function ListTopAlbum({ albums }: { albums: AlbumType[] }) {
+  const goToAlbumDetails = useAlbum()
   return (
     <div className="container-bxh-top h-full max-w-full">
       <div className="title_new--update p-4 flex items-center justify-between text-color_white">
@@ -16,8 +18,11 @@ export default function ListTopAlbum({ albums }: { albums: AlbumType[] }) {
       </div>
       <div className="flex gap-y-2 flex-wrap max-w-full">
         {albums.slice(0, 5).map((item, index) => (
-          <Card key={index} className="flex p-2 items-center rounded-sm border-none bg-bg_color w-full">
+          <Card key={index} 
+          onClick={() => goToAlbumDetails(item.title, item.id)}
+          className="flex p-2 items-center rounded-sm border-none bg-bg_color w-full">
             {/* Số thứ tự */}
+            
             <span className="text-yellow-700 text-center glow-text font-bold text-2xl w-8">
               {index + 1}
             </span>

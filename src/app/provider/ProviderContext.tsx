@@ -1,41 +1,35 @@
-"use client";
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import type { AlbumType ,ChapterType, CategoryType } from "@/lib/type"; 
+"use client"; // Đảm bảo chạy ở phía client trong Next.js 13+
 
+import { createContext, useContext, ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { createSlug } from "../../lib/utils";
 
-interface ProviderContextType {
-  products: AlbumType[];
-  setProducts: (products: AlbumType[]) => void;
-  chapters: ChapterType[];
-  setChapters: (chapters: ChapterType[]) => void;
-  categories : CategoryType[];
-  setCategories:(categories: CategoryType[]) => void;
-}
+// Tạo context
+const AlbumContext = createContext<((name: string, id: number) => void) | null>(null);
 
-interface ProviderProps {
-  children: ReactNode;
-}
+// Tạo Provider
+export const AlbumProvider = ({ children }: { children: ReactNode; }) =>
+{
+  const router = useRouter();
 
-const ProviderContext = createContext<ProviderContextType | undefined>(undefined);
-
-export const ProviderTest: React.FC<ProviderProps> = ({ children }) => {
-  const [products, setProducts] = useState<AlbumType[]>([]);
-  const [chapters, setChapters] = useState<ChapterType[]>([]);
-  const [categories,setCategories] = useState<CategoryType[]>([]);
+  const goToAlbumDetails = (name: string, id: number) =>
+  {
+    const slug_album = createSlug(name);
+    router.push(`/album/${slug_album}-${id}`);
+  };
 
   return (
-    <ProviderContext.Provider value={{ categories, setCategories , products, setProducts, chapters, setChapters }}>
+    <AlbumContext.Provider value={goToAlbumDetails}>
       {children}
-    </ProviderContext.Provider>
+    </AlbumContext.Provider>
   );
 };
 
-export const useProviderContext = (): ProviderContextType => {
-  const context = useContext(ProviderContext);
-
+export const useAlbum = () =>
+{
+  const context = useContext(AlbumContext);
   if (!context) {
-    throw new Error("useProviderContext phải được sử dụng bên trong Provider");
+    throw new Error("useAlbum must be used within an AlbumProvider");
   }
-
   return context;
 };

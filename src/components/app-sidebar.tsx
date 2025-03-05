@@ -1,27 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import {
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  LifeBuoy,
-  Map,
-  PieChart,
-  Send,
+import * as React from "react";
+import
+{
   Settings2,
-  SquareTerminal,
-} from "lucide-react"
+} from "lucide-react";
 import { GiTrophyCup } from "react-icons/gi";
 import { FaHome } from "react-icons/fa";
 import { BiPhotoAlbum } from "react-icons/bi";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
 
-import {
+import
+{
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -29,7 +22,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const data = {
   user: {
@@ -66,27 +59,26 @@ const data = {
       ],
     },
     {
-      title: "Tìm kiếm ",
-      url: "#",
+      title: "Tìm kiếm nâng cao",
+      url: "/album/advanced",
       icon: Settings2,
-      items: [
-        { title: "Danh mục", url: "#" },
-        { title: "Bài viết", url: "#" },
-        { title: "Tìm kiếm nâng cao", url: "#" },
-      ],
     },
 
   ],
 };
 import Image from "next/image";
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+import { useRouter } from 'next/navigation';
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
+{
+  const router = useRouter();
+
   return (
     <Sidebar className="min-h-screen !h-[calc(100svh-var(--header-height))]" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="">
+              <a onClick={() => router.push('/')}>
                 <Image
                   src={"https://nettruyenvie.com/assets/images/logo-nettruyen.png"}
                   width={50}

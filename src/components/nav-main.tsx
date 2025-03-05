@@ -1,81 +1,127 @@
-"use client"
+"use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
-
-import {
+import { ChevronRight, type LucideIcon } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import
+{
   Collapsible,
   CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
+} from "@/components/ui/collapsible";
+import
+{
+  SidebarMenuSubButton,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import { IconType } from "react-icons";
-import { useState } from "react";
 
 export function NavMain({
   items,
 }: {
   items: {
-    title: string
-    url: string
+    title: string;
+    url: string;
     icon: LucideIcon | IconType;
-    isActive?: boolean
+    isActive?: boolean;
     items?: {
-      title: string
-      url: string
-    }[]
-  }[]
-}) {
+      title: string;
+      url: string;
+    }[];
+  }[];
+})
+{
+  const [openStates, setOpenStates] = useState<{ [key: string]: boolean; }>(() =>
+  {
+    const initialState: { [key: string]: boolean; } = {};
+    items.forEach((item) =>
+    {
+      initialState[item.title] = !!item.isActive;
+    });
+    return initialState;
+  });
+
+  const toggleItem = (title: string) =>
+  {
+    setOpenStates((prev) => ({
+      ...prev,
+      [title]: !prev[title],
+    }));
+  };
+
   return (
     <SidebarGroup className="text-white">
       <SidebarGroupLabel className="text-white">Tác vụ</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => {
-          const [isOpen, setIsOpen] = useState(!!item.isActive);
-          return (
-            <Collapsible key={item.title} asChild open={isOpen}>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip={item.title}>
+        {items.map((item) => (
+          <Collapsible key={item.title} asChild open={openStates[item.title]}>
+            <SidebarMenuItem>
+              {/* Menu cha */}
+              <SidebarMenuButton
+                asChild={!!item.url}
+                tooltip={item.title}
+              >
+                {item.url ? (
+                  <Link href={item.url} className="flex items-center w-full">
+                    <item.icon />
+                    <span className="ml-2">{item.title}</span>
+                    {item.items?.length ? (
+                      <ChevronRight
+                        className={`ml-auto transition-transform ${openStates[item.title] ? "rotate-90" : ""
+                          }`}
+                        onClick={(e) =>
+                        {
+                          e.preventDefault(); // Ngăn Link điều hướng khi có sub-items
+                          toggleItem(item.title);
+                        }}
+                      />
+                    ) : null}
+                  </Link>
+                ) : (
                   <div
                     className="flex items-center cursor-pointer w-full"
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={() => toggleItem(item.title)}
                   >
                     <item.icon />
                     <span className="ml-2">{item.title}</span>
                     {item.items?.length ? (
-                      <ChevronRight className={`ml-auto transition-transform ${isOpen ? "rotate-90" : ""}`} />
+                      <ChevronRight
+                        className={`ml-auto transition-transform ${openStates[item.title] ? "rotate-90" : ""
+                          }`}
+                      />
                     ) : null}
                   </div>
-                </SidebarMenuButton>
-                {item.items?.length ? (
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items.map((subItem) => (
-                        <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild>
-                            <a className="text-white" href={subItem.url}>
-                              <span>{subItem.title}</span>
-                            </a>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                ) : null}
-              </SidebarMenuItem>
-            </Collapsible>
-          );
-        })}
+                )}
+              </SidebarMenuButton>
+
+              {/* Sub-menu */}
+              {item.items?.length ? (
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.items.map((subItem) => (
+                      <SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubButton asChild>
+                          <Link
+                            href={subItem.url}
+                            className="text-white hover:bg-gray-700 w-full flex items-center px-4 py-2 rounded"
+                          >
+                            <span>{subItem.title}</span>
+                          </Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              ) : null}
+            </SidebarMenuItem>
+          </Collapsible>
+        ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

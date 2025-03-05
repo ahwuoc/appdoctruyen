@@ -13,7 +13,7 @@ export type Database = {
         Row: {
           album_id: number
           category_id: number
-        }
+        } 
         Insert: {
           album_id: number
           category_id: number
