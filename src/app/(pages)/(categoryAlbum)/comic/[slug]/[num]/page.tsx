@@ -1,16 +1,18 @@
 'use client';
 import React from 'react';
-import ListProductNew from '../../../../../components/list-productnew';
+import AlbumsList from '../../../../../components/list-productnew';
 import http from "@/lib/http";
 import type { AlbumType } from "@/lib/type";
 import { Button } from 'antd';
 import { useRouter } from 'next/navigation';
 
-interface Comic {
+interface Comic
+{
     slug: string,
     num: string,
 }
-interface ResponseSlugAlbum {
+interface ResponseSlugAlbum
+{
     data: AlbumType[],
     pagination: {
         currentPage: number,
@@ -20,24 +22,28 @@ interface ResponseSlugAlbum {
     },
 }
 
-export default function Comic({ params }: { params: Promise<Comic> }) {
+export default function Comic({ params }: { params: Promise<Comic>; })
+{
     const [products, setProducts] = React.useState<AlbumType[]>([]);
-    const [displayPages, setDisplayPages] = React.useState<(number | string)[]>([]); 
+    const [displayPages, setDisplayPages] = React.useState<(number | string)[]>([]);
     const [currentPage, setCurrentPage] = React.useState(0);
     const { slug, num } = React.use(params);
-    const [title,setTitle] = React.useState('');
+    const [title, setTitle] = React.useState('');
     const router = useRouter();
-    
+
     const maxDisplay = 5;
 
-    const handlePageChange = (page: number) => {
+    const handlePageChange = (page: number) =>
+    {
         router.push(`/comic/${slug}/${page}`);
     };
 
     const pageNumber = parseInt(num, 10);
 
-    React.useEffect(() => {
-        const fetchData = async () => {
+    React.useEffect(() =>
+    {
+        const fetchData = async () =>
+        {
             try {
                 const response = await http.get<ResponseSlugAlbum>(`/api/comic/${slug}/${pageNumber}`);
                 if (!response.payload || !response.payload.data) return;
@@ -49,7 +55,7 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
 
                 setCurrentPage(current);
 
-             
+
                 const pages: (number | string)[] = [];
 
                 if (total <= maxDisplay) {
@@ -62,10 +68,10 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
                     let start = Math.max(2, current - 1);
                     let end = Math.min(total - 1, current + 1);
 
-                
+
                     if (current <= 3) {
                         start = 2;
-                        end = maxDisplay - 1; 
+                        end = maxDisplay - 1;
                     } else if (current >= total - 2) {
                         start = total - maxDisplay + 2;
                         end = total - 1;
@@ -86,15 +92,15 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
                         pages.push(total);
                     }
                 }
-                switch(slug){
+                switch (slug) {
                     case "hot":
                         setTitle("Truyện tranh nổi tiếng");
                         break;
                     case "new":
                         setTitle("Truyện tranh mới nhất");
-                        break
+                        break;
                     default:
-                        setTitle('Truyện comic')
+                        setTitle('Truyện comic');
                         break;
                 }
                 setDisplayPages(pages);
@@ -104,7 +110,7 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
         };
 
         fetchData();
-    }, [slug,num ,pageNumber]);
+    }, [slug, num, pageNumber]);
     return (
         <div className="container mx-auto">
             <div className='flex flex-col min-h-screen'>
@@ -112,22 +118,22 @@ export default function Comic({ params }: { params: Promise<Comic> }) {
                     <div className="title">
                         <h2 className='text-color_white w-full text-center p-4 font-bold text-2xl'>{title}</h2>
                     </div>
-                    <ListProductNew albums={products} />
+                    <AlbumsList albums={products} column={5} />
                     <div className="pagination flex mt-auto justify-center gap-2 p-4">
-                    {displayPages.map((item, index) => (
-                        typeof item === 'number' ? (
-                            <Button
-                                key={index}
-                                onClick={() => handlePageChange(item)}
-                                className={`rounded-full ${item === currentPage ? 'bg-customBg2' : ''}`}
-                            >
-                                {item}
-                            </Button>
-                        ) : (
-                            <Button key={index} className="px-2">...</Button>
-                        )
-                    ))}
-                </div>
+                        {displayPages.map((item, index) => (
+                            typeof item === 'number' ? (
+                                <Button
+                                    key={index}
+                                    onClick={() => handlePageChange(item)}
+                                    className={`rounded-full ${item === currentPage ? 'bg-customBg2' : ''}`}
+                                >
+                                    {item}
+                                </Button>
+                            ) : (
+                                <Button key={index} className="px-2">...</Button>
+                            )
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

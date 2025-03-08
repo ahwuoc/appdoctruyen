@@ -5,6 +5,9 @@ import Image from "next/image";
 import { useAlbum } from '../provider/ProviderContext';
 import { AlbumStats } from './DetailsAlbums';
 import { HoverCard } from './StyleComponents';
+
+import ImageComponents from './ImageComponents';
+
 export default function SlideCard({ albums }: { albums: AlbumType[]; })
 {
   const handelick = useAlbum();
@@ -19,7 +22,6 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
   const slideWidth = 100 / itemsPerView;
   const maxPosition = Math.max(totalSlides - itemsPerView, 0);
 
-  // Tính số item hiển thị dựa trên kích thước màn hình
   const getItemsPerView = () =>
   {
     if (typeof window === "undefined") return 2;
@@ -30,7 +32,6 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
     return 2;
   };
 
-  // Khởi tạo và xử lý resize
   useEffect(() =>
   {
     const updateItemsPerView = () => setItemsPerView(getItemsPerView());
@@ -39,7 +40,6 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
     return () => window.removeEventListener("resize", updateItemsPerView);
   }, []);
 
-  // Xử lý kéo
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) =>
   {
     setIsDragging(true);
@@ -60,19 +60,17 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
     if (!isDragging) return;
     setIsDragging(false);
 
-    const threshold = slideWidth / 3; // Ngưỡng để quyết định chuyển slide
+    const threshold = slideWidth / 3;
     const newPosition = Math.round((-translateX) / slideWidth);
     setCurrentPosition(Math.max(0, Math.min(newPosition, maxPosition)));
-    setTranslateX(0); // Reset sau khi thả
+    setTranslateX(0);
   };
 
-  // Xử lý nút Next/Prev
   const goToNext = () => setCurrentPosition((prev) => Math.min(prev + 1, maxPosition));
   const goToPrev = () => setCurrentPosition((prev) => Math.max(prev - 1, 0));
 
   return (
     <div className="carousel-container relative mx-auto max-w-full overflow-hidden">
-      {/* Nút Previous */}
       <button
         className="absolute top-1/2 left-2 -translate-y-1/2 bg-gray-500 text-white p-2 z-10 rounded-full hover:bg-gray-700 disabled:opacity-50 transition-opacity"
         onClick={goToPrev}
@@ -82,7 +80,6 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
         <GrFormPreviousLink size={20} />
       </button>
 
-      {/* Slide Container */}
       <div
         ref={slideContainerRef}
         className="slide-container flex will-change-transform transition-transform duration-300 ease-out"
@@ -100,20 +97,18 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
         {albums.length > 0 ? (
           albums.map((album, index) => (
             <div
-              key={album.id || index} // Dùng id nếu có để tránh trùng key
+              onClick={() => handelick(album.title, album.id)}
+              key={album.id || index}
               className={`slide ${HoverCard} flex flex-col justify-center cursor-pointer items-center flex-shrink-0 text-white select-none`}
               style={{ width: `${slideWidth}%` }}
             >
               <div className="card relative h-64 w-11/12 mx-auto overflow-hidden shadow-md rounded-lg">
-                <Image
-                  src={album.image_url || "/placeholder.jpg"}
-                  width={256}
-                  height={256}
-                  alt={album.title || "Album"}
-                  className="h-full w-full object-cover"
-                  draggable={false}
-                  onClick={() => handelick(album.title, album.id)}
-                  priority={index < itemsPerView} // Tăng tốc tải cho các slide đầu
+                <ImageComponents
+                  image={{
+                    src: album.image_url,
+                    name: album.title
+                  }}
+
                 />
                 <div className="absolute bottom-0 w-full bg-bg_color bg-opacity-90  flex flex-col items-center">
                   <div className="flex items-center p-2 gap-2 text-sm">

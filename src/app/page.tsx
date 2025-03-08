@@ -6,7 +6,7 @@ import SlideCard from '@/app/components/SlideCard';
 import { AlbumType } from "@/lib/type";
 import { apiProduct } from '@/app/apiRequest/apiProduct';
 import ListTopAlbum from '@/app/components/list-album-bxh';
-import ListProductNew from '@/app/components/list-productnew';
+import AlbumsList from '@/app/components/list-productnew';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -19,8 +19,6 @@ export default function Page()
 {
   const [albums, setAlbums] = React.useState<AlbumType[]>([]);
   const [albumsNew, setAlbumNew] = React.useState<AlbumType[]>([]);
-
-
 
   React.useEffect(() =>
   {
@@ -63,7 +61,7 @@ export default function Page()
                   </Button>
                 </div>
                 {/* Danh sách sản phẩm */}
-                <ListProductNew albums={albumsNew} />
+                <AlbumsList albums={albumsNew} />
               </div>
             </div>
             {/* Danh sách BXH và tuyển dịch giả */}

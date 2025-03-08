@@ -4,6 +4,9 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { AlbumType } from "@/lib/type";
 import { GrFormPreviousLink, GrFormNextLink } from 'react-icons/gr';
+import ImageComponents from './ImageComponents'; import { url } from 'inspector';
+;
+
 export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
 {
   const [current, setCurrent] = useState(0);
@@ -25,10 +28,9 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
     setCurrent((prev) => (prev === 0 ? totalSlides - 1 : prev - 1));
   };
 
-  // Bắt đầu kéo
   const handleMouseDown = (e: React.MouseEvent) =>
   {
-    e.preventDefault(); // Ngăn hành vi mặc định
+    e.preventDefault();
     setIsDragging(true);
     setStartX(e.pageX);
     setDragDistance(0);
@@ -75,6 +77,7 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
     }
   };
 
+
   useEffect(() =>
   {
     return () =>
@@ -120,31 +123,20 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
       >
         {albums.map((album, index) => (
           <div key={index} className="min-w-full h-96 relative">
-            <Image
-              src={
-                album.image_url ??
-                "https://imgs.search.brave.com/8bHoBZczToeB5Rr3Wsk10sSIFEhjdr3z1fRreaUPvZk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzExLzk3LzY0LzQ3/LzM2MF9GXzExOTc2/NDQ3MjhfRm1yTTVQ/VzhYd09rdjZXWVpN/SWhtQXJOdW5yU285/MEEuanBn"
-              }
-              alt={album.title}
-              width={100}
-              height={100}
-              className="object-cover blur-lg w-full h-full brightness-50 pointer-events-none"
-              draggable={false}
-              priority={index === 0}
+            <ImageComponents
+              image={{
+                src: album.image_url,
+                name: album.title
+              }}
             />
             <CardContent className="absolute bottom-20 md:bottom-0 w-full z-10 flex items-center p-4 md:p-6 pointer-events-none">
               <div className="container mx-auto flex md:flex-row gap-4 w-full">
                 <div className="w-48 h-40 md:w-48 md:h-64">
-                  <Image
-                    src={
-                      album.image_url ??
-                      "https://imgs.search.brave.com/8bHoBZczToeB5Rr3Wsk10sSIFEhjdr3z1fRreaUPvZk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzExLzk3LzY0LzQ3/LzM2MF9GXzExOTc2/NDQ3MjhfRm1yTTVQ/VzhYd09rdjZXWVpN/SWhtQXJOdW5yU285/MEEuanBn"
-                    }
-                    alt={album.title}
-                    width={100}
-                    height={100}
-                    className="w-full h-full pointer-events-none"
-                    draggable={false}
+                  <ImageComponents
+                    image={{
+                      src: album.image_url,
+                      name: album.title
+                    }}
                   />
                 </div>
                 <div className="flex flex-col text-color_white w-full max-h-64 overflow-hidden">

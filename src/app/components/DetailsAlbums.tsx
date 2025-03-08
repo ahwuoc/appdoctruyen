@@ -29,7 +29,7 @@ export function AlbumsCategories({ item })
             {Array.isArray(item.categories) && item.categories.length > 0 ? (
                 <>
                     {item.categories.slice(0, 3).map((category, index) => (
-                        <span key={index} className="text-sm px-2 bg-color_puppy">{category.name}</span>
+                        <span key={index} className="text-sm  px-2 bg-color_puppy">{category.name}</span>
                     ))}
 
                     {item.categories.length > 3 && (
