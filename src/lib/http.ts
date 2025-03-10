@@ -1,13 +1,20 @@
-interface HttpErrorType {
+interface HttpErrorType
+{
   status: number;
   payload: unknown;
 }
-
-class HttpError extends Error {
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+interface CustomRequestOptions extends Omit<RequestInit, 'body'>
+{
+  body?: { [key: string]: unknown; } | null;
+}
+class HttpError extends Error
+{
   status: number;
   payload: unknown;
 
-  constructor({ status, payload }: HttpErrorType) {
+  constructor({ status, payload }: HttpErrorType)
+  {
     super(`HTTP Error: ${status}`);
     this.status = status;
     this.payload = payload;
@@ -15,40 +22,40 @@ class HttpError extends Error {
   }
 }
 
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-const request = async <T>(method: Method, url: string, options?: RequestInit): Promise<{ status: number, payload: T }> => {
+const request = async <T>(
+  method: Method,
+  url: string,
+  options?: CustomRequestOptions
+): Promise<{ status: number; payload: T; }> =>
+{
   const url_full = url.startsWith('/') ? `${url}` : `/${url}`;
   const finalHeaders = {
     ...(options?.headers ?? {}),
-    ...(options?.body ? { 'Content-Type': 'application/json' } : {}),
-  }
-  
+    ...(['POST', 'PUT', 'DELETE'].includes(method) ? { 'Content-Type': 'application/json' } : {}),
+  };
   const finalBody = method === 'GET' || options?.body === undefined ? undefined : JSON.stringify(options.body);
-  console.log("url",url_full);
-  const response =  await fetch(url_full, {
+  const response = await fetch(url_full, {
     method,
     headers: finalHeaders,
     body: finalBody,
   });
   const payload = await response.json();
   if (!response.ok) {
-
     throw new HttpError({ status: response.status, payload });
   }
-  const data = {
+  return {
     status: response.status,
-    payload: payload
-  }
-  return data;
+    payload: payload,
+  };
 };
 
 const http = {
   get: <T>(url: string) => request<T>('GET', url),
-  post: <T>(url: string, options: RequestInit) => request<T>('POST', url, options),
-  delete: <T>(url: string, options: RequestInit) => request<T>('DELETE', url, options),
-  put: <T>(url: string, options: RequestInit) => request<T>('PUT', url, options),
-}
+  post: <T>(url: string, options: CustomRequestOptions) => request<T>('POST', url, options),
+  delete: <T>(url: string, options: CustomRequestOptions) => request<T>('DELETE', url, options),
+  put: <T>(url: string, options: CustomRequestOptions) => request<T>('PUT', url, options),
+};
 
 export default http;
 

@@ -147,7 +147,7 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
                         <>
                           {album.categories.slice(0, 3).map((category, index) => (
                             <span key={index} className="text-sm px-2 bg-color_puppy">
-                              {category.name}
+                              {category.title}
                             </span>
                           ))}
                           {album.categories.length > 3 && (

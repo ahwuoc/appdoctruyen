@@ -1,5 +1,6 @@
 import { FaEye } from "react-icons/fa";
 import { CiBookmark } from "react-icons/ci";
+import { AlbumType, CategoryType } from '../../lib/type';
 type ALbumState = {
     views: number | undefined;
     following: number | undefined;
@@ -22,22 +23,21 @@ export function AlbumStats({ views, following }: ALbumState)
     )
         ;
 }
-export function AlbumsCategories({ item })
+export function AlbumsCategories({ item }: { item: AlbumType; })
 {
     return (
         <>
             {Array.isArray(item.categories) && item.categories.length > 0 ? (
                 <>
-                    {item.categories.slice(0, 3).map((category, index) => (
-                        <span key={index} className="text-sm  px-2 bg-color_puppy">{category.name}</span>
+                    {item.categories.slice(0, 3).map((category: CategoryType, index: number) => (
+                        <span key={index} className="text-sm truncate  p-1 rounded-md  bg-color_puppy">{category.title}</span>
                     ))}
-
                     {item.categories.length > 3 && (
                         <span className="text-sm px-2 bg-color_puppy">...</span>
                     )}
                 </>
             ) : (
-                <span className="text-sm text-gray-500">Không có danh mục</span>
+                <span className="text-sm text-gray-500">Cập nhật</span>
             )}
         </>
     );

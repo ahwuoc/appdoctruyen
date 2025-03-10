@@ -49,8 +49,7 @@ export default function Page()
 
             {/* Danh sách truyện mới cập nhật */}
             <div className="md:basis-[70%] flex flex-col list--product new--update max-w-full">
-              <div className="container__listproduct max-w-full overflow-x-hidden">
-
+              <div className="container__listproduct">
                 <div className="title_new--update p-4 flex items-center justify-between text-color_white">
                   <div className="flex gap-2 items-center">
                     <Image src="https://cmangax.com/assets/img/icon/top/fire.png" alt="item" width={40} height={20} />
@@ -60,7 +59,6 @@ export default function Page()
                     Xem thêm...
                   </Button>
                 </div>
-                {/* Danh sách sản phẩm */}
                 <AlbumsList albums={albumsNew} />
               </div>
             </div>

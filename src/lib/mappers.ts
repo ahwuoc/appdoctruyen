@@ -24,7 +24,7 @@ export const mapAlbumData = (album: RawAlbumFromSupabase): AlbumConvert => ({
   image_url: album.image_url,
   chapters: album.chapters.map((chapter) => ({
     id: chapter.id,
-    name: chapter.title,
+    title: chapter.title,
     view: chapter.views ?? 0,
     created_at: chapter.created_at,
     sort_order: chapter.order_sort,
@@ -32,7 +32,7 @@ export const mapAlbumData = (album: RawAlbumFromSupabase): AlbumConvert => ({
   content: album.content,
   categories: album.album_categories.map((cat) => ({
     id: cat.category_id,
-    name: cat.categories.title,
+    title: cat.categories.title,
   })),
   created_at: album.created_at,
   updated_at: album.updated_at,

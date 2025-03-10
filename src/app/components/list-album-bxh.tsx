@@ -42,7 +42,7 @@ export default function ListTopAlbum({ albums }: { albums: AlbumType[]; })
                 <span className="font-bold">{item.title}</span>
                 <div className="flex mt-auto justify-between opacity-70 text-sm">
                   <span>
-                    {item?.chapters?.length ? item.chapters.at(0)?.name ?? "Đang cập nhật" : "Đang cập nhật"}
+                    {item?.chapters?.length ? item.chapters.at(0)?.title ?? "Đang cập nhật" : "Đang cập nhật"}
                   </span>
                   <span>
                     {item?.chapters?.length ? timeAgo(item.chapters.at(0)?.created_at ?? new Date().toISOString()) : "Đang cập nhật"}

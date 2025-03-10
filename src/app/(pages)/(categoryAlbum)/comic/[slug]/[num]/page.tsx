@@ -118,7 +118,7 @@ export default function Comic({ params }: { params: Promise<Comic>; })
                     <div className="title">
                         <h2 className='text-color_white w-full text-center p-4 font-bold text-2xl'>{title}</h2>
                     </div>
-                    <AlbumsList albums={products} column={5} />
+                    <AlbumsList albums={products} column={4} />
                     <div className="pagination flex mt-auto justify-center gap-2 p-4">
                         {displayPages.map((item, index) => (
                             typeof item === 'number' ? (

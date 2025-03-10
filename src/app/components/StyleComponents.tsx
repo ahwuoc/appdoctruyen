@@ -1,1 +1,1 @@
-export const HoverCard = "hover:translate-y-1  hover:shadow-purple-600   transition-all duration-300";
+export const HoverCard = "hover:translate-y-[-1rem]  hover:shadow-purple-600   transition-all duration-300";

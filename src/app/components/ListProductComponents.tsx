@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { EyeOutlined , HeartFilled } from '@ant-design/icons';
+import { EyeOutlined, HeartFilled } from '@ant-design/icons';
 
 
 
@@ -17,21 +17,24 @@ import { RootState } from '@/lib/store';
 
 
 
-const ListProductComponents = () => {
+const ListProductComponents = () =>
+{
     const router = useRouter();
-    const products = useSelector((state: RootState) => state.products.products)
-    const totalPages = useSelector((state: RootState) => state.page.totalPages)
-    const currentPage = useSelector((state: RootState) => state.page.currentPage)
+    const products = useSelector((state: RootState) => state.products.products);
+    const totalPages = useSelector((state: RootState) => state.page.totalPages);
+    const currentPage = useSelector((state: RootState) => state.page.currentPage);
     const slug_category = useSelector((state: RootState) => state.categories.slug_category);
-    const handlePageChange = (pageNumber: number) => {
+    const handlePageChange = (pageNumber: number) =>
+    {
         if (pageNumber >= 1 && pageNumber <= totalPages && pageNumber !== currentPage) {
             router.push(`/${slug_category}/page/${pageNumber}`);
         }
     };
-    const handlePageAlbumChange = (name: string, id: number) => {
+    const handlePageAlbumChange = (name: string, id: number) =>
+    {
         const url = createSlug(name) + "-" + id;
         router.push(`/album/${url}`);
-    }
+    };
     return (
         <>
             <div className="lg:p-4 flex-col items-center flex lg:flex-row lg:items-stretch lg:flex-wrap">
@@ -82,7 +85,7 @@ const ListProductComponents = () => {
                                     {product.chapters && product.chapters.length > 0 ? (
                                         product.chapters.map((item, index) => (
                                             <div key={index} className="flex lg:text-xs lg:mt-5 gap-2 items-center">
-                                                <span>{item.name}</span> -{" "}
+                                                <span>{item.title}</span> -{" "}
                                                 <span>{time(item.created_at)}</span>
                                             </div>
                                         ))

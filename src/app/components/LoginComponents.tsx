@@ -1,13 +1,14 @@
 "use client";
 import React from 'react';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
+import
+    {
+        Dialog,
+        DialogContent,
+        DialogDescription,
+        DialogHeader,
+        DialogTitle,
+        DialogTrigger,
+    } from "@/components/ui/dialog";
 import { Input, Form, Button } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,18 +16,16 @@ import { useForm, Controller } from 'react-hook-form';
 import { LoginInput, LoginSchema } from '../schema/schema-login';
 import apiAuth from '../apiRequest/apiAuth';
 
-const LoginComponents = () => {
+const LoginComponents = () =>
+{
     const { control, handleSubmit, formState: { errors } } = useForm<LoginInput>({
         resolver: zodResolver(LoginSchema)
     });
 
-    const onSubmit = async (data: LoginInput) => {
-        console.log("Form submitted:", data);
+    const onSubmit = async (data: LoginInput) =>
+    {
         const response = await apiAuth.login(data);
-        console.log(response.status);
-        console.log(response.payload)
     };
-
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -68,7 +67,7 @@ const LoginComponents = () => {
                                     addonBefore={<LockOutlined />}
                                     type="password"
                                     placeholder="Mật khẩu"
-                                  
+
                                 />
                             )}
                         />

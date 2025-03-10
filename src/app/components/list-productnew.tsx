@@ -5,34 +5,48 @@ import { AlbumStats, AlbumsCategories } from './DetailsAlbums';
 import { HoverCard } from './StyleComponents';
 import { useAlbum } from '../provider/ProviderContext';
 import ImageComponents from './ImageComponents';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default function AlbumsList({ albums, column }: { albums: AlbumType[], column?: number; })
+
+export default function AlbumsList({ albums, column = 2 }: { albums: AlbumType[]; column?: number; })
 {
+  const [col, setCol] = React.useState(0);
+  useEffect(
+    () =>
+    {
+      const updateColumn = () =>
+      {
+        if (window.innerWidth <= 436) {
+          setCol(1);
+        }
+        else {
+          setCol(column);
+        }
+      };
+      updateColumn();
+      window.addEventListener("resize", updateColumn);
+      return () => window.removeEventListener("resize", updateColumn);
+
+    }
+    , [column]);
+  const cardWidth = `calc(100% / ${col} - 8px)`;
   const goToAlbumDetails = useAlbum();
-
-  const col = column ?? 2;
-  if (!albums.length) {
-    return <div className="p-4 text-center text-color_white">Không có album nào để hiển thị</div>;
-  }
-
   return (
-    <div className="flex p-1 overflow-hidden flex-col md:flex-row md:flex-wrap  max-w-full">
+    <div className="flex items-stretch flex-wrap gap-1">
       {albums.map((item, index) =>
       {
         const latestChapter = item.chapters?.[0];
-        const chapterName = latestChapter?.name ?? "Đang cập nhật";
+        const chapterName = latestChapter?.title ?? "Đang cập nhật";
         const chapterTime = timeAgo(latestChapter?.created_at ?? "Đang cập nhật");
-
         return (
           <Card
             onClick={() => goToAlbumDetails(item.title, item.id)}
             key={item.id || index}
             role="button"
             tabIndex={0}
-            className={`flex cursor-pointer ${HoverCard} w-1/${col} p-2 rounded-sm border-none bg-bg_color`}
-          >
-            <div className="album__image flex justify-center items-center w-32 h-32 aspect-square">
+            style={{ width: cardWidth }}
+            className={`flex p-2  cursor-pointer h-40 overflow-hidden  ${HoverCard} rounded-sm border-none bg-bg_color`} >
+            <div className="w-1/3  h-full flex justify-center items-center">
               <ImageComponents
                 image={{
                   src: item.image_url,
@@ -40,15 +54,15 @@ export default function AlbumsList({ albums, column }: { albums: AlbumType[], co
                 }}
               />
             </div>
-            <CardContent className="flex flex-col w-full text-color_white ">
+            <CardContent className="flex px-2 py-1 justify-between flex-col w-full text-color_white ">
               <span className="font-bold  text-nowrap">{item.title}</span>
               <div className="flex  items-center justify-between ">
                 <AlbumStats views={0} following={0} />
               </div>
-              <div className="flex gap-2  items-center">
+              <div className="flex gap-2 flex-wrap">
                 <AlbumsCategories item={item} />
               </div>
-              <div className="flex mt-auto text-nowrap justify-between opacity-70 text-sm">
+              <div className="flex justify-between opacity-70 text-sm">
                 <span>{chapterName}</span>
                 <span>{chapterTime}</span>
               </div>

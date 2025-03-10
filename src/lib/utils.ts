@@ -3,6 +3,9 @@ import { twMerge } from "tailwind-merge";
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import slugify from "slugify";
+import { NextResponse } from 'next/server';
+import { STATUS_Response } from './status';
+import { message } from 'antd';
 export function cn(...inputs: ClassValue[])
 {
   return twMerge(clsx(inputs));
@@ -38,4 +41,15 @@ export const getNumberSlug = (slug: string): number | null =>
     return null;
   }
   return id;
+};
+
+type ResponseType = {
+  status: STATUS_Response;
+  data?: unknown;
+  message?: string;
+};
+
+export const Response = ({ status, data, message }: ResponseType) =>
+{
+  return NextResponse.json({ message: message, data: data }, { status: status });
 };
