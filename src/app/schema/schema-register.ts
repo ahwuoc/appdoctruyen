@@ -7,7 +7,7 @@ export const registerSchema = z.object({
     confirmPassword: z.string().trim().min(6, "Xác nhận mật khẩu phải có ít nhất 6 ký tự"),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Mật khẩu xác nhận không khớp",
-    path: ["confirmPassword"], 
+    path: ["confirmPassword"],
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;

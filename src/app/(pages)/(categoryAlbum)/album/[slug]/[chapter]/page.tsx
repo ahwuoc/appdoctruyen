@@ -66,7 +66,9 @@ export default function Page({ params }: { params: Promise<{ chapter: string; }>
         </div>
       </div>
       <div className="w-full max-w-3xl mx-auto mt-6 px-2 sm:px-4 lg:px-0">
-        <CommentComponents />
+        <CommentComponents params={{
+          chapter_id: chapterId,
+        }} />
       </div>
     </div>
   );

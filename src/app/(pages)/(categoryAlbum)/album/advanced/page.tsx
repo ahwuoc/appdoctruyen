@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, Suspense } from "react";
-import { FaSearch, FaFilter, FaSortUp, FaSortDown, FaTimes } from "react-icons/fa";
+import { FaSearch, FaFilter, FaSortUp, FaSortDown, FaTimes, FaTrashAlt } from "react-icons/fa";
 import AlbumsList from "../../../../components/list-productnew";
 import { supabase } from "../../../../../lib/supabaseClient";
 import { Checkbox, Tag } from "antd";
@@ -77,6 +77,15 @@ export default function StoryAdvancedFilter()
         };
         fetchData();
     }, []);
+    const handleClearFilters = () =>
+    {
+        setSearchTerm("");
+        setSelectedCategories([]);
+        setRangeFollower([0, 1]);
+        setRangeViews([0, 1]);
+
+
+    };
     const fetchFilterAlbum = async () =>
     {
         let query = supabase.from('albums')
@@ -209,7 +218,17 @@ export default function StoryAdvancedFilter()
                                 ))}
 
                             </div>
-                            <Button onClick={fetchFilterAlbum}>Lọc</Button>
+                            <div className='w-full flex gap-2'>
+                                <Button className='flex-1' onClick={fetchFilterAlbum}>
+                                    <FaFilter className="mr-2" />
+                                    Lọc
+                                </Button>
+                                <Button className='flex-1' onClick={handleClearFilters}>
+                                    <FaTrashAlt className="mr-2" />
+                                    Dọn
+                                </Button>
+                            </div>
+
 
                         </div>
                     </div>

@@ -8,6 +8,7 @@ import { FaEnvelope, FaGoogle, FaLock } from "react-icons/fa";
 import Image from "next/image";
 import { Eye } from "lucide-react";
 import Link from "next/link";
+import { supabase } from "../../../../lib/supabaseClient";
 
 const LoginComponents = () =>
 {
@@ -22,22 +23,31 @@ const LoginComponents = () =>
     const onSubmit = async (data: LoginInput) =>
     {
         try {
-            const response = await apiAuth.login(data);
-            console.log("Đăng nhập thành công:", response);
+            const { email, password } = data;
+            const { data: session, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+            if (error) {
+                console.error("Đăng nhập thất bại:", error.message);
+            } else {
+                console.log("Đăng nhập thành công", session);
+            }
         } catch (error) {
-            console.error("Đăng nhập thất bại:", error);
+            console.error("Lỗi đăng nhập:", error);
         }
     };
 
     const [showPassword, setShowPassword] = React.useState(false);
+
     const handleGoogleLogin = () =>
     {
         console.log("Đăng nhập bằng Gmail");
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center  p-4">
-            <div className="flex flex-col md:flex-row max-w-4xl w-full bg-customBg2  rounded-xl shadow-lg overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <div className="flex flex-col md:flex-row max-w-4xl w-full bg-customBg2 rounded-xl shadow-lg overflow-hidden">
                 {/* Hình ảnh minh họa */}
                 <div className="hidden md:flex w-1/2 p-4 items-center justify-center ">
                     <Image
@@ -98,11 +108,15 @@ const LoginComponents = () =>
                         </div>
                         {/* Liên kết quên mật khẩu và đăng ký */}
                         <div className="flex justify-between items-center text-sm text-blue-500">
-                            <Link href="/forgot-password" className="hover:underline text-color_white">Quên mật khẩu?</Link>
-                            <Link href="/register" className="font-semibold hover:underline  text-color_white">Đăng ký</Link>
+                            <Link href="/forgot-password" className="hover:underline text-color_white">
+                                Quên mật khẩu?
+                            </Link>
+                            <Link href="/register" className="font-semibold hover:underline text-color_white">
+                                Đăng ký
+                            </Link>
                         </div>
                         {/* Nút đăng nhập */}
-                        <div className='flex flex-col gap-2'>
+                        <div className="flex flex-col gap-2">
                             <button
                                 type="submit"
                                 disabled={isSubmitting}

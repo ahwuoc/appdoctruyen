@@ -91,20 +91,16 @@ export default function Page()
             </div>
 
           </div>
-
           {/* Truyện nổi bật */}
           <div className="container mx-auto flex flex-wrap gap-4">
-
             <div className="w-full album_slick mt-5">
               <span className="text-color_white font-bold text-xl">Truyện nổi bật</span>
               <SlideCard albums={albums} />
             </div>
-
             <div className="w-full album_slick mt-5">
               <span className="text-color_white font-bold text-xl">Truyện nổi bật</span>
               <SlideCard albums={albums} />
             </div>
-
           </div>
         </div>
       </div>

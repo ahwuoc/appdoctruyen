@@ -5,7 +5,7 @@ import { vi } from 'date-fns/locale';
 import slugify from "slugify";
 import { NextResponse } from 'next/server';
 import { STATUS_Response } from './status';
-import { message } from 'antd';
+import { supabase } from './supabaseClient';
 export function cn(...inputs: ClassValue[])
 {
   return twMerge(clsx(inputs));
@@ -52,4 +52,13 @@ type ResponseType = {
 export const Response = ({ status, data, message }: ResponseType) =>
 {
   return NextResponse.json({ message: message, data: data }, { status: status });
+};
+export const getAuthentication = async () =>
+{
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session) {
+    return null;
+  }
+  return session;
 };

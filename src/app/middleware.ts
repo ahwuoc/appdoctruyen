@@ -1,24 +1,21 @@
-// import { NextResponse, NextRequest } from 'next/server';
+// import { NextRequest, NextResponse } from "next/server";
+// import { supabase } from '../lib/supabaseClient';
 
-// import { supabase } from '@/lib/supabaseClient';
-// const protectedRoutes = ['/dashboard', '/profile', '/setting', '/admin'];
-// export  async function middleware(req: NextRequest)
+// export function middleware(request: NextRequest)
 // {
-//     const token = req.cookies.get('sb-access-token')?.value;
+//     {
+//         const { data: { session } } = await supabase.auth.getSession();
 
-//     const pathname = req.nextUrl.pathname;
+//         if (session || req.nextUrl.pathname === "/login") {
+//             return NextResponse.redirect(new URL("/", req.url));
+//         }
 
-//     const isProtected = protectedRoutes.some((router) => pathname === router || pathname.startsWith(`${router}/`));
-
-//     if (isProtected && !token) {
-//         return NextResponse.redirect('/');
-
+//         return NextResponse.next();
 //     }
-//     return NextResponse.next();
 // }
-// export const config = [
-//   {
-//     matcher: ['/api/*'],
-//     middleware: [middleware],
-//   },
-// ]
+
+// export const config = {
+//     matcher: [
+//         "/profile/:path*",
+//     ],
+// };

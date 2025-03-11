@@ -5,14 +5,11 @@ import { store } from "@/lib/store";
 import { Provider } from "react-redux";
 import { Toaster } from "@/components/ui/toaster";
 import { AlbumProvider } from './provider/ProviderContext';
-
 const geistSans = Geist({ subsets: ["latin"], weight: "400" });
-
 // ===============Components Shadcui=============
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-
 // ==================================================
 export default function RootLayout({ children }: { children: React.ReactNode; })
 {

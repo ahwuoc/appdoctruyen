@@ -1,5 +1,4 @@
 "use client";
-
 import { SidebarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -14,10 +13,26 @@ import
 } from "@/components/ui/dropdown-menu";
 import SearchComponents from '../app/components/SearchComponent';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { supabase } from '../lib/supabaseClient';
+import { Session } from '@supabase/supabase-js';
 
 export function SiteHeader()
 {
+  const [_session, _setSession] = useState<Session | null>(null);
   const { toggleSidebar } = useSidebar();
+
+  useEffect(() =>
+  {
+    async function fetchAuthentication()
+    {
+      const { data: { session } } = await supabase.auth.getSession();
+      _setSession(session);
+    }
+    fetchAuthentication();
+  }, []);
+
+
   return (
     <header className="flex bg-bg_color sticky top-0 z-50 w-full items-center border-b bg-background">
       <div className="flex md:container md:mx-auto justify-between h-[--header-height] w-full items-center gap-2 px-4">
@@ -39,13 +54,28 @@ export function SiteHeader()
                   <Avatar />
                 </span>
               </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem asChild>
-                  <Link href="/register">Đăng ký</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/login">Đăng nhập</Link>
-                </DropdownMenuItem>
+              <DropdownMenuContent className='p-2'>
+                {_session ? (
+                  <>
+
+                    <DropdownMenuItem asChild>
+                      <Link href={'/profile'}>Hồ sơ</Link>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem>Đăng xuất</DropdownMenuItem>
+                  </>
+
+
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <Link href="/register">Đăng ký</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/login">Đăng nhập</Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

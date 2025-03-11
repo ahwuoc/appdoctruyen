@@ -6,10 +6,10 @@ import { CiWifiOn, CiBoxList } from "react-icons/ci";
 import { AiOutlineSync } from "react-icons/ai";
 import { FaEye } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import CommentComponents from "@/app/components/CommentComponents";
 import { useRouter } from "next/navigation";
 import { timeAgo, createSlug } from "@/lib/utils";
 import { apiProduct } from "@/app/apiRequest/apiProduct";
+import { Button } from '../../../../../components/ui/button';
 
 type PageProps = {
   params: Promise<{ slug: string; }>;
@@ -20,7 +20,6 @@ export default function Page({ params }: PageProps)
   const { slug } = React.use(params);
   const [albumData, setAlbumData] = useState<AlbumType | null>(null);
   const router = useRouter();
-
   useEffect(() =>
   {
     const fetchAlbums = async () =>
@@ -35,9 +34,11 @@ export default function Page({ params }: PageProps)
     fetchAlbums();
   }, []);
 
+
+
   const handleChapter = (product_name: string, chapter_name: string, chapter_id: number) =>
   {
-    const url = `${createSlug(product_name)}/${createSlug(chapter_name)}-${chapter_id}`;
+    const url = `${slug}/${createSlug(chapter_name)}-${chapter_id}`;
     router.push(`/album/${url}`);
   };
 
@@ -47,14 +48,14 @@ export default function Page({ params }: PageProps)
         {/* Header Section */}
         <div className="flex flex-col gap-6 p-4 md:p-6">
           {/* Image and Info */}
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col md:flex-row ">
             <div className="w-full md:w-1/3 flex justify-center">
               <div className="relative w-48 h-72 md:w-64 md:h-96">
                 <Image
                   src={albumData?.image_url ?? "https://cmangag.com/assets/tmp/album/81644.webp?v=1737041843"}
                   alt={albumData?.title ?? "Truyện Tranh"}
                   fill
-                  className="rounded-md object-cover"
+                  className="rounded-md w-full h-full  object-cover"
                 />
               </div>
             </div>
@@ -75,27 +76,73 @@ export default function Page({ params }: PageProps)
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 gap-3 text-white text-sm md:text-base">
+              <div className="flex flex-col gap-3 md:items-start items-center text-white text-sm md:text-base">
                 <div className="flex items-center gap-2 md:gap-3">
-                  <CiWifiOn className="text-lg md:text-xl" />
-                  <span className="w-20 md:w-24">Tình trạng:</span>
+                  <div className='flex items-center gap-2'>
+                    <CiWifiOn className="text-lg md:text-xl" />
+                    <span className="w-20 md:w-24">Tình trạng:</span>
+                  </div>
                   <span>{albumData?.is_active ? "Đang tiến hành" : "Đã hoàn thành"}</span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3">
-                  <AiOutlineSync className="text-lg md:text-xl" />
-                  <span className="w-20 md:w-24">Cập nhật:</span>
+                  <div className='flex items-center gap-2'>
+                    <AiOutlineSync className="text-lg md:text-xl" />
+                    <span className="w-20 md:w-24">Cập nhật:</span>
+                  </div>
                   <span>{albumData?.created_at && timeAgo(albumData.created_at)}</span>
                 </div>
                 <div className="flex items-center gap-2 md:gap-3">
-                  <FaEye className="text-lg md:text-xl" />
-                  <span className="w-20 md:w-24">Lượt xem:</span>
+                  <div className='flex items-center gap-2'>
+                    <FaEye className="text-lg md:text-xl" />
+                    <span className="w-20 md:w-24">Lượt xem:</span>
+                  </div>
                   <span>
                     {albumData?.chapters && albumData?.chapters?.length > 0
                       ? albumData.chapters.reduce((total, chapter) => total + (chapter.view ?? 0), 0)
                       : 0}
                   </span>
                 </div>
+
               </div>
+              <div className="flex justify-center md:justify-start gap-2">
+                <Button
+                  onClick={async () =>
+                  {
+                    if (!albumData) return;
+                    try {
+                      // Giả sử API toggleFollow có sẵn
+                      alert("Bạn đã theo dõi truyện này!");
+                    } catch (error) {
+                      console.error("Lỗi khi theo dõi:", error);
+                    }
+                  }}
+                >
+                  Theo dõi
+                </Button>
+
+                <Button
+                  onClick={() =>
+                  {
+                    if (!albumData?.chapters?.length) return;
+                    const firstChapter = albumData.chapters[0];
+                    handleChapter(albumData.title, firstChapter.title, firstChapter.id);
+                  }}
+                >
+                  Đọc từ đầu
+                </Button>
+
+                <Button
+                  onClick={() =>
+                  {
+                    if (!albumData?.chapters?.length) return;
+                    const latestChapter = albumData.chapters[albumData.chapters.length - 1];
+                    handleChapter(albumData.title, latestChapter.title, latestChapter.id);
+                  }}
+                >
+                  Đọc mới nhất
+                </Button>
+              </div>
+
             </div>
           </div>
         </div>
@@ -107,16 +154,7 @@ export default function Page({ params }: PageProps)
               <CiBoxList size={10} className="md:size-5" />
               Danh sách chương
             </h2>
-            <div className="flex gap-2 w-full sm:w-auto">
-              <input
-                type="text"
-                placeholder="Nhập chapter"
-                className="w-full sm:w-40 bg-gray-700 text-white border border-gray-600 rounded-md px-3 py-1 text-sm focus:outline-none focus:border-blue-500"
-              />
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded-md text-sm md:text-base">
-                Mở
-              </button>
-            </div>
+
           </div>
 
           <div className="border border-gray-700 rounded-md overflow-hidden">
@@ -148,9 +186,7 @@ export default function Page({ params }: PageProps)
             </div>
           </div>
 
-          <div className="mt-6">
-            <CommentComponents />
-          </div>
+
         </div>
       </div>
     </div>
