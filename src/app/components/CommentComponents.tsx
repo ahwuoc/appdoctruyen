@@ -4,9 +4,25 @@ import { IoSend } from "react-icons/io5";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaReply } from "react-icons/fa";
 import { supabase } from "../../lib/supabaseClient";
-import { Comment, getComment_ChapterId } from '../(action)/comment';
+import { Comment, getComment_ChapterId } from "../(action)/comment";
+import LeaderLine from "leader-line";
 
-const sendMessage = async (chapter_id: number, content: string, parent_id?: string) =>
+// Interface cho props của các component
+interface SendMessageParams
+{
+  chapter_id: number;
+  content: string;
+  parent_id?: string;
+}
+
+interface TreeCommentProps
+{
+  comments: Comment[];
+  onComment: (params: SendMessageParams) => Promise<void>;
+}
+
+// Gửi comment lên Supabase
+const sendMessage = async ({ chapter_id, content, parent_id }: SendMessageParams) =>
 {
   const user = await supabase.auth.getUser();
   if (user.error || !user.data.user) {
@@ -30,18 +46,23 @@ const sendMessage = async (chapter_id: number, content: string, parent_id?: stri
     console.error("Lỗi khi gửi comment:", error);
     return null;
   }
-
   return data;
 };
 
-const TreeComment = ({ comments, onComment }: { comments: Comment[]; onComment: (chapter_id: number, content: string, parent_id?: string) => Promise<void>; }) =>
+const TreeComment: React.FC<TreeCommentProps> = ({ comments, onComment }) =>
 {
   const [replyId, setReplyId] = useState<string | null>(null);
   const [replyMessages, setReplyMessages] = useState<Record<string, string>>({});
+  const [openReplies, setOpenReplies] = useState<Record<string, boolean>>({}); // State để kiểm soát mở/đóng
 
   const handleReplyChange = (commentId: string, value: string) =>
   {
     setReplyMessages((prev) => ({ ...prev, [commentId]: value }));
+  };
+
+  const toggleReplies = (commentId: string) =>
+  {
+    setOpenReplies((prev) => ({ ...prev, [commentId]: !prev[commentId] }));
   };
 
   return (
@@ -56,9 +77,10 @@ const TreeComment = ({ comments, onComment }: { comments: Comment[]; onComment: 
               </Avatar>
               <div className="bg-purple-700 text-white relative pr-4 w-full p-2 rounded-lg">
                 <p>{comment.content}</p>
-                <FaReply onClick={() => setReplyId(comment.id)} className="absolute right-2 top-[50%] translate-y-[-50%]" />
+                <FaReply onClick={() => setReplyId(comment.id)} className="absolute right-2 top-[50%] translate-y-[-50%] cursor-pointer" />
               </div>
             </div>
+
             {replyId === comment.id && (
               <div className="flex text-gray-700 relative border-none rounded-md px-2 items-center">
                 <input
@@ -70,7 +92,7 @@ const TreeComment = ({ comments, onComment }: { comments: Comment[]; onComment: 
                 <IoSend
                   onClick={() =>
                   {
-                    onComment(comment.chapter_id, replyMessages[comment.id]!, comment.id);
+                    onComment({ chapter_id: comment.chapter_id, content: replyMessages[comment.id]!, parent_id: comment.id });
                     setReplyMessages((prev) => ({ ...prev, [comment.id]: "" }));
                     setReplyId(null);
                   }}
@@ -78,19 +100,31 @@ const TreeComment = ({ comments, onComment }: { comments: Comment[]; onComment: 
                 />
               </div>
             )}
+
+            {comment.replies && comment.replies.length > 0 && (
+              <span
+                onClick={() => toggleReplies(comment.id)}
+                className="text-color_white text-sm ml-12 hover:underline"
+              >
+                {openReplies[comment.id] ? "Ẩn phản hồi" : `Xem phản hồi (${comment.replies.length})`}
+              </span>
+            )}
+
+            {openReplies[comment.id] && comment.replies && (
+              <div className="pl-10 text-white">
+                <TreeComment comments={comment.replies} onComment={onComment} />
+              </div>
+            )}
           </div>
-          {comment.replies && comment.replies.length > 0 && (
-            <div className="pl-10 text-white">
-              <TreeComment comments={comment.replies} onComment={onComment} />
-            </div>
-          )}
         </div>
       ))}
     </>
   );
 };
 
-const CommentComponents = ({ params }: { params: { chapter_id?: number; }; }) =>
+
+// Component chính
+const CommentComponents: React.FC<{ params: { chapter_id?: number; }; }> = ({ params }) =>
 {
   const [comments, setComments] = useState<Comment[]>([]);
   const [messages, setMessages] = useState<string>("");
@@ -107,9 +141,9 @@ const CommentComponents = ({ params }: { params: { chapter_id?: number; }; }) =>
     fetchComments();
   }, [params]);
 
-  const handleMessages = useCallback(async (chapter_id: number, content: string, parent_id?: string) =>
+  const handleMessages = useCallback(async ({ chapter_id, content, parent_id }: SendMessageParams) =>
   {
-    await sendMessage(chapter_id, content, parent_id);
+    await sendMessage({ chapter_id, content, parent_id });
     const updatedComments = await getComment_ChapterId(chapter_id);
     setComments(updatedComments);
   }, []);
@@ -127,7 +161,7 @@ const CommentComponents = ({ params }: { params: { chapter_id?: number; }; }) =>
         <IoSend
           onClick={() =>
           {
-            handleMessages(params.chapter_id!, messages);
+            handleMessages({ chapter_id: params.chapter_id!, content: messages });
             setMessages("");
           }}
           className="flex z-10 absolute top-50 translate-x-[50%] cursor-pointer right-5 justify-center items-center"
@@ -141,5 +175,4 @@ const CommentComponents = ({ params }: { params: { chapter_id?: number; }; }) =>
     </div>
   );
 };
-
 export default CommentComponents;

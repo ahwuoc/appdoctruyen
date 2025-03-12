@@ -40,6 +40,7 @@ const data = {
     {
       title: "Bảng xếp hạng",
       url: "#",
+
       icon: GiTrophyCup,
       items: [
         { title: "Genesis", url: "#" },
@@ -63,8 +64,19 @@ const data = {
       url: "/album/advanced",
       icon: Settings2,
     },
-
   ],
+  navManager: [
+    {
+      title: "Quản lý truyện tranh",
+      url: "#",
+      icon: BiPhotoAlbum,
+      items: [
+        { title: "Đăng truyện", url: "/manager/album/create" },
+        { title: "Chỉnh sữa", url: "#" },
+        { title: "Kho lưu trữ", url: "#" },
+      ],
+    },
+  ]
 };
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
@@ -92,7 +104,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={data.navMain} title={"Tác vụ"} />
+        <NavMain items={data.navManager} title={"Quản lý"} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

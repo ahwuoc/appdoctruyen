@@ -23,7 +23,9 @@ import { IconType } from "react-icons";
 
 export function NavMain({
   items,
+  title,
 }: {
+  title: string;
   items: {
     title: string;
     url: string;
@@ -56,7 +58,7 @@ export function NavMain({
 
   return (
     <SidebarGroup className="text-white">
-      <SidebarGroupLabel className="text-white">Tác vụ</SidebarGroupLabel>
+      <SidebarGroupLabel className="text-white">{title}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible key={item.title} asChild open={openStates[item.title]}>
