@@ -18,3 +18,12 @@ A modern online story-reading application built with **Next.js**, **Supabase**, 
 ```bash
 git clone https://github.com/anhquoc1k98/appdoctruyen.git
 cd appdoctruyen
+
+2️⃣ Install dependencies
+bun install
+npm install -g bun
+
+3️⃣ Configure environment variables
+Create a .env.local file in the root directory and add your Supabase credentials:
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
