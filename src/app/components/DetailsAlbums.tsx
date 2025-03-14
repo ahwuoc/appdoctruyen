@@ -30,10 +30,10 @@ export function AlbumsCategories({ item }: { item: AlbumType; })
             {Array.isArray(item.categories) && item.categories.length > 0 ? (
                 <>
                     {item.categories.slice(0, 3).map((category: CategoryType, index: number) => (
-                        <span key={index} className="text-sm truncate  p-1 rounded-md  bg-color_puppy">{category.title}</span>
+                        <span key={index} className="text-sm truncate p-2 mx-1 rounded-md text-color_white  bg-color_puppy">{category.title}</span>
                     ))}
                     {item.categories.length > 3 && (
-                        <span className="text-sm px-2 bg-color_puppy">...</span>
+                        <span className="text-sm px-2 p-2 text-color_white rounded-md bg-color_puppy">...</span>
                     )}
                 </>
             ) : (

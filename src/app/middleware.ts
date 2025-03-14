@@ -1,21 +1,8 @@
-// import { NextRequest, NextResponse } from "next/server";
+// import { NextResponse, NextRequest } from 'next/server';
 // import { supabase } from '../lib/supabaseClient';
+// import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 
-// export function middleware(request: NextRequest)
+// export async function middleware(req: NextRequest)
 // {
-//     {
-//         const { data: { session } } = await supabase.auth.getSession();
-
-//         if (session || req.nextUrl.pathname === "/login") {
-//             return NextResponse.redirect(new URL("/", req.url));
-//         }
-
-//         return NextResponse.next();
-//     }
+//     const res = NextResponse.next();
 // }
-
-// export const config = {
-//     matcher: [
-//         "/profile/:path*",
-//     ],
-// };

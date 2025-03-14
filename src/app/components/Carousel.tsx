@@ -58,12 +58,12 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
       carouselRef.current.style.transition = "transform 0.5s ease-in-out";
     }
 
-    const threshold = window.innerWidth / 4; // Ngưỡng để chuyển slide (1/4 chiều rộng màn hình)
+    const threshold = window.innerWidth / 4;
     if (Math.abs(dragDistance) > threshold) {
       if (dragDistance > 0 && current > 0) {
-        setCurrent(current - 1); // Kéo sang phải -> slide trước
+        setCurrent(current - 1);
       } else if (dragDistance < 0 && current < totalSlides - 1) {
-        setCurrent(current + 1); // Kéo sang trái -> slide sau
+        setCurrent(current + 1);
       }
     }
     setDragDistance(0);

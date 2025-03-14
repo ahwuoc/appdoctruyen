@@ -71,8 +71,7 @@ const data = {
       url: "#",
       icon: BiPhotoAlbum,
       items: [
-        { title: "Đăng truyện", url: "/manager/album/create" },
-        { title: "Chỉnh sữa", url: "#" },
+        { title: "Đăng truyện", url: "/manager/album/index" },
         { title: "Kho lưu trữ", url: "#" },
       ],
     },

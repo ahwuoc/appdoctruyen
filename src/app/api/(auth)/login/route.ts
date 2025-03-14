@@ -7,8 +7,6 @@ export const POST = async (request: NextRequest) =>
 {
     try {
         const body = await request.json();
-        
-
         const result = LoginSchema.safeParse(body);
         if (!result.success) {
             return NextResponse.json(

@@ -4,8 +4,9 @@ import { mapAlbumData, RawAlbumFromSupabase } from '@/lib/mappers';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string; pageNumber: string } }
-) {
+  { params }: { params: { slug: string; pageNumber: string; }; }
+)
+{
   const { slug, pageNumber } = params;
 
   if (slug !== 'new' && slug !== 'hot') {

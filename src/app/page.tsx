@@ -86,10 +86,8 @@ export default function Page()
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
-
           </div>
           {/* Truyện nổi bật */}
           <div className="container mx-auto flex flex-wrap gap-4">
