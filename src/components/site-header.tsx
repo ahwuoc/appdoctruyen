@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Avatar } from "antd";
-import
-{
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -16,22 +15,23 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { Session } from '@supabase/supabase-js';
-
-export function SiteHeader()
-{
+import apiAuth from "../app/apiRequest/apiAuth";
+export function SiteHeader() {
   const [_session, _setSession] = useState<Session | null>(null);
   const { toggleSidebar } = useSidebar();
 
-  useEffect(() =>
-  {
-    async function fetchAuthentication()
-    {
+  useEffect(() => {
+    async function fetchAuthentication() {
       const { data: { session } } = await supabase.auth.getSession();
       _setSession(session);
     }
     fetchAuthentication();
-  }, []);
-
+  }, [_session]);
+  const handleLogout = async () => {
+    const response = await apiAuth.logout();
+    const setSession = await localStorage.clear();
+    _setSession(null);
+  }
 
   return (
     <header className="flex bg-bg_color sticky top-0 z-50 w-full items-center border-b bg-background">
@@ -57,15 +57,11 @@ export function SiteHeader()
               <DropdownMenuContent className='p-2'>
                 {_session ? (
                   <>
-
                     <DropdownMenuItem asChild>
                       <Link href={'/profile'}>Hồ sơ</Link>
                     </DropdownMenuItem>
-
-                    <DropdownMenuItem>Đăng xuất</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleLogout()}>Đăng xuất</DropdownMenuItem>
                   </>
-
-
                 ) : (
                   <>
                     <DropdownMenuItem asChild>

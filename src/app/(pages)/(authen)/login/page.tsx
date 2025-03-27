@@ -8,31 +8,21 @@ import { FaEnvelope, FaGoogle, FaLock } from "react-icons/fa";
 import Image from "next/image";
 import { Eye } from "lucide-react";
 import Link from "next/link";
-import { supabase } from "../../../../lib/supabaseClient";
-
-const LoginComponents = () =>
-{
+import { useRouter } from "next/navigation";
+const LoginComponents = () => {
     const {
         control,
         handleSubmit,
         formState: { errors, isSubmitting },
     } = useForm<LoginInput>({
-        resolver: zodResolver(LoginSchema),
+        resolver: zodResolver(LoginSchema)
     });
-
-    const onSubmit = async (data: LoginInput) =>
-    {
+    const router = useRouter();
+    const onSubmit = async (data: LoginInput) => {
         try {
             const { email, password } = data;
-            const { data: session, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            });
-            if (error) {
-                console.error("Đăng nhập thất bại:", error.message);
-            } else {
-                console.log("Đăng nhập thành công", session);
-            }
+            const handleLogin = apiAuth.login(data);
+            router.refresh();
         } catch (error) {
             console.error("Lỗi đăng nhập:", error);
         }
@@ -40,9 +30,8 @@ const LoginComponents = () =>
 
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleGoogleLogin = () =>
-    {
-        console.log("Đăng nhập bằng Gmail");
+    const handleGoogleLogin = () => {
+        console.log("Đăng nhập bằng Gmail chua duoc support");
     };
 
     return (
@@ -71,13 +60,14 @@ const LoginComponents = () =>
                                 <Controller
                                     name="email"
                                     control={control}
-                                    render={({ field }) => (
-                                        <input
+                                    render={({ field }) => {
+                                        return (< input
                                             {...field}
                                             className="w-full pl-10 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             placeholder="Email"
-                                        />
-                                    )}
+
+                                        />)
+                                    }}
                                 />
                             </div>
                             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
@@ -96,6 +86,7 @@ const LoginComponents = () =>
                                             {...field}
                                             className="w-full px-10 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                             placeholder="Mật khẩu"
+                                            defaultValue={""}
                                         />
                                     )}
                                 />

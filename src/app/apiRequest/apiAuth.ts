@@ -3,12 +3,10 @@ import { RegisterInput } from '../schema/schema-register';
 import { LoginInput } from "../schema/schema-login";
 
 
-interface RegisterResponse
-{
+interface RegisterResponse {
     message: string;
 }
-interface LoginResponse
-{
+interface LoginResponse {
     message: string,
     token: string;
 
@@ -16,6 +14,7 @@ interface LoginResponse
 const apiAuth = {
     register: async (data: RegisterInput) => await http.post<RegisterResponse>('/api/register', { body: data }),
     login: async (data: LoginInput) => await http.post<LoginResponse>('/api/login', { body: data }),
+    logout: async () => await http.post('/api/logout')
 };
 
 

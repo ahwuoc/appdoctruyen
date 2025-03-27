@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import
-{
-  Settings2,
+import {
+Settings2,
 } from "lucide-react";
 import { GiTrophyCup } from "react-icons/gi";
 import { FaHome } from "react-icons/fa";
@@ -13,15 +12,14 @@ import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 
-import
-{
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+import {
+Sidebar,
+SidebarContent,
+SidebarFooter,
+SidebarHeader,
+SidebarMenu,
+SidebarMenuButton,
+SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
 const data = {
@@ -79,8 +77,7 @@ const data = {
 };
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
-{
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
 
   return (
@@ -91,7 +88,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>)
             <SidebarMenuButton size="lg" asChild>
               <a onClick={() => router.push('/')}>
                 <Image
-                  src={"https://nettruyenvie.com/assets/images/logo-nettruyen.png"}
+                  src={"/logo-white.png"}
                   width={50}
                   height={50}
                   alt="bame"

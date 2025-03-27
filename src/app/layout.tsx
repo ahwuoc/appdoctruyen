@@ -11,11 +11,11 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 // ==================================================
-export default function RootLayout({ children }: { children: React.ReactNode; })
-{
+export default function RootLayout({ children }: { children: React.ReactNode; }) {
   return (
     <html lang="en">
       <head>
+        <link rel="manifest" href="/manifest.json" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
       </head>
       <body className={` geistSans.className}`}>
