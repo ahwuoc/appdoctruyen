@@ -1,4 +1,4 @@
-# 📚 Story Reader App  
+# 📚 AppDocTruyen
 
 A modern online story-reading application built with **Next.js**, **Supabase**, and **Bun** for lightning-fast performance and a seamless user experience. 🚀  
 
