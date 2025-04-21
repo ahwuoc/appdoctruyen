@@ -16,9 +16,8 @@ import { DialogTitle } from '@radix-ui/react-dialog';
 export default function SearchComponents() {
     const [search, setSearch] = useState<string>("");
     const [albums, setAlbums] = useState<AlbumType[]>([]);
-
-
-    const fetchAlbums = async () => {
+    const [debouncetimer, setDebounceTimer] = useState<NodeJS.Timeout | null>(null);
+    const fetchAlbums = async (query: string) => {
         if (!search.trim()) {
             setAlbums([]);
             return;
@@ -30,6 +29,17 @@ export default function SearchComponents() {
             setAlbums([]);
         }
     };
+    const handlerSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (debouncetimer) {
+            clearTimeout(debouncetimer);
+        }
+        const timer = setTimeout(() => {
+            fetchAlbums(value);
+        }, 500)
+        setDebounceTimer(timer
+        )
+    }
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -46,9 +56,9 @@ export default function SearchComponents() {
                             className="col-span-3"
                             placeholder="Nhập tên album..."
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
+                            onChange={handlerSearch}
                         />
-                        <Button onClick={() => fetchAlbums()}>Tìm kiếm</Button>
+                        <Button onClick={() => fetchAlbums(search)}>Tìm kiếm</Button>
                     </div>
                 </div>
                 <div className="overflow-auto">

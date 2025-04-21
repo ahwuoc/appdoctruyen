@@ -89,7 +89,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   src={"/logo-white.png"}
                   width={50}
                   height={50}
-                  alt="bame"
+                  alt="logo"
                   className="w-full h-full object-contain"
                 />
               </a>

@@ -95,14 +95,13 @@ export default function StoryAdvancedFilter() {
                 order_sort
             )
         `);
-        // lọc
+
         if (selectedCategories.length > 0) {
             query = query.in('album_categories.category_id', selectedCategories.map(c => c.id));
         }
         if (rangeViews[0] > 0 || rangeViews[1] < maxViews) {
             query = query.gte('chapters.views', rangeViews[0]).lte('chapters.views', rangeViews[1]);
         }
-        // lọc theo số lượng
         if (rangeFollower[0] > 0 || rangeFollower[1] < maxFollowers) {
             query = query.gte("followers", rangeFollower[0]).lte('followers', rangeFollower[1]);
         }
