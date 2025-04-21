@@ -1,29 +1,33 @@
 # 📚 AppDocTruyen
 
-A modern online story-reading application built with **Next.js**, **Supabase**, and **Bun** for lightning-fast performance and a seamless user experience. 🚀  
+Một ứng dụng đọc truyện trực tuyến hiện đại được xây dựng bằng **Next.js**, **Supabase**, và **Bun** để mang lại hiệu suất vượt trội và trải nghiệm người dùng mượt mà. 🚀  
 
-## 🌟 Features  
+## 🌟 Tính năng  
 
-✅ **Smooth Reading Experience** – Enjoy a beautifully designed UI/UX optimized for effortless reading.  
-✅ **Story Management** – Easily manage stories using Supabase (Authentication, Database, and Storage).  
-✅ **Advanced Search & Categorization** – Quickly find stories with powerful search and filtering features.  
-✅ **Favorite & Bookmark Support** – Mark your favorite stories for easy access.  
-✅ **Blazing Fast Performance** – Powered by Bun, making it significantly faster than traditional Node.js setups.  
+✅ **Trải nghiệm đọc mượt mà** – Tận hưởng giao diện người dùng được thiết kế đẹp mắt, tối ưu cho việc đọc truyện.  
+✅ **Quản lý truyện** – Dễ dàng quản lý truyện với Supabase (Xác thực, Cơ sở dữ liệu, và Lưu trữ).  
+✅ **Tìm kiếm & Phân loại nâng cao** – Nhanh chóng tìm kiếm truyện với các tính năng lọc và tìm kiếm mạnh mẽ.  
+✅ **Hỗ trợ Yêu thích & Đánh dấu** – Đánh dấu các truyện yêu thích để truy cập dễ dàng.  
+✅ **Hiệu suất vượt trội** – Được hỗ trợ bởi Bun, nhanh hơn đáng kể so với các thiết lập Node.js truyền thống.  
 
 ---  
 
-## 🔧 Installation & Setup  
+## 🔧 Cài đặt & Thiết lập  
 
-### **1️⃣ Clone the repository**  
+### **1️⃣ Sao chép kho lưu trữ**  
 ```bash
 git clone https://github.com/anhquoc1k98/appdoctruyen.git
 cd appdoctruyen
+```
 
-2️⃣ Install dependencies
+### **2️⃣ Cài đặt các thư viện phụ thuộc**  
+```bash
 bun install
 npm install -g bun
+```
 
-3️⃣ Configure environment variables
-Create a .env.local file in the root directory and add your Supabase credentials:
+### **3️⃣ Cấu hình biến môi trường**  
+Tạo tệp `.env.local` trong thư mục gốc và thêm thông tin xác thực Supabase của bạn:  
+```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
