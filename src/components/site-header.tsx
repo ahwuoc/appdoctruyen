@@ -13,7 +13,7 @@ import {
 import SearchComponents from '../app/components/SearchComponent';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../lib/supabase/supabaseClient';
 import { Session } from '@supabase/supabase-js';
 import apiAuth from "../app/apiRequest/apiAuth";
 export function SiteHeader() {

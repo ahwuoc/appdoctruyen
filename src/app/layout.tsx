@@ -1,7 +1,7 @@
 "use client";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import { store } from "@/lib/store";
+import { store } from "@/utils/common/store";
 import { Provider } from "react-redux";
 import { Toaster } from "@/components/ui/toaster";
 import { AlbumProvider } from './provider/ProviderContext';

@@ -1,23 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import { getNumberSlug } from "@/lib/utils";
+import { supabase } from "@/lib/supabase/supabaseClient";
+import { getNumberSlug } from "@/utils/common/utils";
 import Image from "next/image";
 import CommentComponents from "@/app/components/CommentComponents";
 import Loading from "../../../../../loading";
 
-export default function Page({ params }: { params: Promise<{ chapter: string; }>; })
-{
+export default function Page({ params }: { params: Promise<{ chapter: string; }>; }) {
   const [images, setImages] = useState<{ image_url: string; }[]>([]);
   const [loading, setLoading] = useState(true);
 
   const resolvedParams = React.use(params);
   const chapterId = getNumberSlug(resolvedParams.chapter) as number;
 
-  useEffect(() =>
-  {
-    const fetchChapters = async () =>
-    {
+  useEffect(() => {
+    const fetchChapters = async () => {
       setLoading(true);
       try {
         const { data, error } = await supabase

@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { timeAgo } from "@/lib/utils";
+import { timeAgo } from "@/utils/common/utils";
 import Image from "next/image";
-import type { AlbumType } from '@/lib/type';
+import type { AlbumType } from '@/utils/types/type';
 import { useAlbum } from '../provider/ProviderContext';
 import ImageComponents from './ImageComponents';
 
-export default function ListTopAlbum({ albums }: { albums: AlbumType[]; })
-{
+export default function ListTopAlbum({ albums }: { albums: AlbumType[]; }) {
   const goToAlbumDetails = useAlbum();
   return (
     <div className="container-bxh-top h-full max-w-full">

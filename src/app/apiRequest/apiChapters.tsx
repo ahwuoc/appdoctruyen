@@ -1,7 +1,7 @@
-import http from "@/lib/http";
-import type { ChapterType } from "@/lib/type";
+import http from "@/utils/types/http";
+import type { ChapterType } from "@/utils/types/type";
 
-const apiChapters ={
+const apiChapters = {
     getChapterList: async (chapterId: number) => {
         return await http.get<ChapterType>(`/api/album/chapter?id=${chapterId}`);
     },

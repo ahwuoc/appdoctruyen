@@ -1,5 +1,5 @@
 "use client";
-import { AlbumType } from "@/lib/type";
+import { AlbumType } from "@/utils/types/type";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { CiWifiOn, CiBoxList } from "react-icons/ci";
@@ -7,7 +7,7 @@ import { AiOutlineSync } from "react-icons/ai";
 import { FaEye } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { timeAgo, createSlug } from "@/lib/utils";
+import { timeAgo, createSlug } from "@/utils/common/utils";
 import { apiProduct } from "@/app/apiRequest/apiProduct";
 import { Button } from '../../../../../components/ui/button';
 
@@ -15,15 +15,12 @@ type PageProps = {
   params: Promise<{ slug: string; }>;
 };
 
-export default function Page({ params }: PageProps)
-{
+export default function Page({ params }: PageProps) {
   const { slug } = React.use(params);
   const [albumData, setAlbumData] = useState<AlbumType | null>(null);
   const router = useRouter();
-  useEffect(() =>
-  {
-    const fetchAlbums = async () =>
-    {
+  useEffect(() => {
+    const fetchAlbums = async () => {
       try {
         const response = await apiProduct.getAlbumId(1);
         setAlbumData(response.payload);
@@ -36,8 +33,7 @@ export default function Page({ params }: PageProps)
 
 
 
-  const handleChapter = (product_name: string, chapter_name: string, chapter_id: number) =>
-  {
+  const handleChapter = (product_name: string, chapter_name: string, chapter_id: number) => {
     const url = `${slug}/${createSlug(chapter_name)}-${chapter_id}`;
     router.push(`/album/${url}`);
   };
@@ -106,8 +102,7 @@ export default function Page({ params }: PageProps)
               </div>
               <div className="flex justify-center md:justify-start gap-2">
                 <Button
-                  onClick={async () =>
-                  {
+                  onClick={async () => {
                     if (!albumData) return;
                     try {
                       // Giả sử API toggleFollow có sẵn
@@ -121,8 +116,7 @@ export default function Page({ params }: PageProps)
                 </Button>
 
                 <Button
-                  onClick={() =>
-                  {
+                  onClick={() => {
                     if (!albumData?.chapters?.length) return;
                     const firstChapter = albumData.chapters[0];
                     handleChapter(albumData.title, firstChapter.title, firstChapter.id);
@@ -132,8 +126,7 @@ export default function Page({ params }: PageProps)
                 </Button>
 
                 <Button
-                  onClick={() =>
-                  {
+                  onClick={() => {
                     if (!albumData?.chapters?.length) return;
                     const latestChapter = albumData.chapters[albumData.chapters.length - 1];
                     handleChapter(albumData.title, latestChapter.title, latestChapter.id);

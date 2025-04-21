@@ -3,7 +3,7 @@ import * as React from "react";
 
 import CarouselComponents from '@/app/components/Carousel';
 import SlideCard from '@/app/components/SlideCard';
-import { AlbumType } from "@/lib/type";
+import { AlbumType } from "@/utils/types/type";
 import { apiProduct } from '@/app/apiRequest/apiProduct';
 import ListTopAlbum from '@/app/components/list-album-bxh';
 import AlbumsList from '@/app/components/list-productnew';
@@ -15,15 +15,15 @@ import { Button } from '../components/ui/button';
 type slug = "new" | "hot";
 import { Suspense } from 'react';
 import Loading from './loading';
-export default function Page()
-{
+
+export default function Page() {
   const [albums, setAlbums] = React.useState<AlbumType[]>([]);
   const [albumsNew, setAlbumNew] = React.useState<AlbumType[]>([]);
 
-  React.useEffect(() =>
-  {
-    const albumsGet = async () =>
-    {
+  React.useEffect(() => {
+
+
+    const albumsGet = async () => {
       const responseAll = await apiProduct.getAlbums();
       const responseNew = await apiProduct.getAlbumsNew();
       setAlbumNew(responseNew.payload);
@@ -32,9 +32,7 @@ export default function Page()
     albumsGet();
   }, []);
   const router = useRouter();
-
-  const handleClick = (slug: slug) =>
-  {
+  const handleClick = (slug: slug) => {
     router.push(`/comic/${slug}/${1}`);
   };
   return (

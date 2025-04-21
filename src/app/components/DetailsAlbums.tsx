@@ -1,13 +1,12 @@
 import { FaEye } from "react-icons/fa";
 import { CiBookmark } from "react-icons/ci";
-import { AlbumType, CategoryType } from '../../lib/type';
+import { AlbumType, CategoryType } from '../../utils/types/type';
 type ALbumState = {
     views: number | undefined;
     following: number | undefined;
 };
 
-export function AlbumStats({ views, following }: ALbumState)
-{
+export function AlbumStats({ views, following }: ALbumState) {
     return (
 
         <div className="flex items-center gap-2 text-sm">
@@ -23,8 +22,7 @@ export function AlbumStats({ views, following }: ALbumState)
     )
         ;
 }
-export function AlbumsCategories({ item }: { item: AlbumType; })
-{
+export function AlbumsCategories({ item }: { item: AlbumType; }) {
     return (
         <>
             {Array.isArray(item.categories) && item.categories.length > 0 ? (

@@ -1,18 +1,16 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { formatDistanceToNow } from 'date-fns';
-import { vi } from 'date-fns/locale';
+import { formatDistanceToNow } from "date-fns";
+import { vi } from "date-fns/locale";
 import slugify from "slugify";
-import { NextResponse } from 'next/server';
-import { STATUS_Response } from './status';
-import { supabase } from './supabaseClient';
-export function cn(...inputs: ClassValue[])
-{
+import { NextResponse } from "next/server";
+import { STATUS_Response } from "../types/status";
+import { supabase } from "../../lib/supabase/supabaseClient";
+export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function timeAgo(time: string | Date): string
-{
+export function timeAgo(time: string | Date): string {
   if (!time) return "Đang cập nhật";
 
   const parsedTime = typeof time === "string" ? new Date(time) : time;
@@ -21,8 +19,7 @@ export function timeAgo(time: string | Date): string
   return formatDistanceToNow(parsedTime, { addSuffix: true, locale: vi });
 }
 
-export function createSlug(name: string)
-{
+export function createSlug(name: string) {
   const slug = slugify(name, {
     lower: true,
     strict: true,
@@ -30,8 +27,7 @@ export function createSlug(name: string)
   return slug;
 }
 
-export const getNumberSlug = (slug: string): number | null =>
-{
+export const getNumberSlug = (slug: string): number | null => {
   if (!slug) {
     return null;
   }
@@ -49,13 +45,16 @@ type ResponseType = {
   message?: string;
 };
 
-export const Response = ({ status, data, message }: ResponseType) =>
-{
-  return NextResponse.json({ message: message, data: data }, { status: status });
+export const Response = ({ status, data, message }: ResponseType) => {
+  return NextResponse.json(
+    { message: message, data: data },
+    { status: status }
+  );
 };
-export const getAuthentication = async () =>
-{
-  const { data: { session } } = await supabase.auth.getSession();
+export const getAuthentication = async () => {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
   if (!session) {
     return null;

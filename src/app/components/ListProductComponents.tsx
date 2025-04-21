@@ -8,30 +8,27 @@ import { EyeOutlined, HeartFilled } from '@ant-design/icons';
 
 
 import Pagination from "./Pagination";
-import { time, createSlug } from "@/lib/utils";
+import { time, createSlug } from "@/utils/common/utils";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { RootState } from '@/lib/store';
+import { RootState } from '@/utils/common/store';
 
 
 
 
 
-const ListProductComponents = () =>
-{
+const ListProductComponents = () => {
     const router = useRouter();
     const products = useSelector((state: RootState) => state.products.products);
     const totalPages = useSelector((state: RootState) => state.page.totalPages);
     const currentPage = useSelector((state: RootState) => state.page.currentPage);
     const slug_category = useSelector((state: RootState) => state.categories.slug_category);
-    const handlePageChange = (pageNumber: number) =>
-    {
+    const handlePageChange = (pageNumber: number) => {
         if (pageNumber >= 1 && pageNumber <= totalPages && pageNumber !== currentPage) {
             router.push(`/${slug_category}/page/${pageNumber}`);
         }
     };
-    const handlePageAlbumChange = (name: string, id: number) =>
-    {
+    const handlePageAlbumChange = (name: string, id: number) => {
         const url = createSlug(name) + "-" + id;
         router.push(`/album/${url}`);
     };

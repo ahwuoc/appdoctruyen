@@ -3,23 +3,20 @@ import React, { useState, useEffect } from "react";
 import { Card, Table, Button, Drawer, message } from "antd";
 import ImageComponents from "../../../../components/ImageComponents";
 import { getAlbums } from "../../../../(action)/album";
-import { AlbumType } from "../../../../../lib/type";
+import { AlbumType } from "../../../../../utils/types/type";
 import FormAlbum from "./AlbumFormDrawer";
 import { CardContent } from "../../../../../components/ui/card";
 import { AlbumsCategories } from '../../../../components/DetailsAlbums';
 import Link from 'next/link';
 
-const ComicAlbumPage = () =>
-{
+const ComicAlbumPage = () => {
     const [albums, setAlbums] = useState<AlbumType[]>([]);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedAlbum, setSelectedAlbum] = useState<AlbumType | undefined>(undefined);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() =>
-    {
-        getAlbums().then((data) =>
-        {
+    useEffect(() => {
+        getAlbums().then((data) => {
             const cleanedData = data.map((album) => ({
                 ...album,
                 title: album.title ?? "Không có tiêu đề",
@@ -31,20 +28,17 @@ const ComicAlbumPage = () =>
     }, []);
 
 
-    const openForm = (album?: AlbumType) =>
-    {
+    const openForm = (album?: AlbumType) => {
         setSelectedAlbum(album);
         setIsOpen(true);
     };
 
-    const closeForm = () =>
-    {
+    const closeForm = () => {
         setIsOpen(false);
         setSelectedAlbum(undefined);
     };
 
-    const handleDeleteAlbum = async (id: number) =>
-    {
+    const handleDeleteAlbum = async (id: number) => {
         setLoading(true);
         try {
             // await deleteAlbum(id);
@@ -65,8 +59,7 @@ const ComicAlbumPage = () =>
             </div>
 
             <Drawer title={selectedAlbum ? "Chỉnh sửa album" : "Thêm album"} onClose={closeForm} open={isOpen}>
-                <FormAlbum album={selectedAlbum} onSuccess={() =>
-                {
+                <FormAlbum album={selectedAlbum} onSuccess={() => {
                     closeForm();
                     getAlbums().then((data) => setAlbums(data as AlbumType[]));
 

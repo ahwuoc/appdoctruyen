@@ -1,6 +1,6 @@
 // app/story-advanced-filter/page.tsx
-import { supabase } from "@/lib/supabaseClient";
-import { mapAlbumData } from "@/lib/mappers";
+import { supabase } from "@/lib/supabase/supabaseClient";
+import { mapAlbumData } from "@/utils/common/mappers";
 import StoryAdvancedFilter from "@/components/StoryAdvancedFilter";
 
 // Server-side: Fetch dữ liệu ban đầu

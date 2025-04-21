@@ -1,4 +1,4 @@
-import { AlbumType } from "@/lib/type";
+import { AlbumType } from "@/utils/types/type";
 import React, { useState, useEffect, useRef } from "react";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 import Image from "next/image";
@@ -8,8 +8,7 @@ import { HoverCard } from './StyleComponents';
 
 import ImageComponents from './ImageComponents';
 
-export default function SlideCard({ albums }: { albums: AlbumType[]; })
-{
+export default function SlideCard({ albums }: { albums: AlbumType[]; }) {
   const handelick = useAlbum();
   const [currentPosition, setCurrentPosition] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(2);
@@ -22,8 +21,7 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
   const slideWidth = 100 / itemsPerView;
   const maxPosition = Math.max(totalSlides - itemsPerView, 0);
 
-  const getItemsPerView = () =>
-  {
+  const getItemsPerView = () => {
     if (typeof window === "undefined") return 2;
     const width = window.innerWidth;
     if (width >= 1280) return 6;
@@ -32,31 +30,27 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; })
     return 2;
   };
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     const updateItemsPerView = () => setItemsPerView(getItemsPerView());
     updateItemsPerView();
     window.addEventListener("resize", updateItemsPerView);
     return () => window.removeEventListener("resize", updateItemsPerView);
   }, []);
 
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) =>
-  {
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
     setIsDragging(true);
     const clientX = "touches" in e ? e.touches[0]!.clientX : e.clientX;
     setStartX(clientX);
   };
 
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) =>
-  {
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDragging || !slideContainerRef.current) return;
     const clientX = "touches" in e ? e.touches[0]!.clientX : e.clientX;
     const distance = (clientX - startX) / slideContainerRef.current.offsetWidth * 100;
     setTranslateX(-currentPosition * slideWidth + distance);
   };
 
-  const handleDragEnd = () =>
-  {
+  const handleDragEnd = () => {
     if (!isDragging) return;
     setIsDragging(false);
 

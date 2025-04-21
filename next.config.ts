@@ -12,7 +12,14 @@ const pwaConfig = withPWA({
 
 const nextConfig = {
   images: {
-    domains: ["cmangax.com", "hlafeihngnjueskyjfmh.supabase.co"],
+    domains: [
+      "i.hinhhinh.com",
+      "example.com",
+      "cmangax.com",
+      "cmangax.com",
+      "hlafeihngnjueskyjfmh.supabase.co",
+      "hlafeihngnjueskyjfmh.supabase.co",
+    ],
   },
 };
 

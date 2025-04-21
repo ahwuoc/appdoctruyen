@@ -1,27 +1,24 @@
 import { Button } from '../../components/ui/button';
 import { CiSearch } from 'react-icons/ci';
-import
-{
+import {
     Dialog,
     DialogContent,
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import http from '../../lib/http';
+import http from '../../utils/types/http';
 import React, { useState, useEffect, Suspense } from 'react';
-import type { AlbumType } from '../../lib/type';
+import type { AlbumType } from '../../utils/types/type';
 import AlbumsList from './list-productnew';
 import Loading from '../loading';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
-export default function SearchComponents()
-{
+export default function SearchComponents() {
     const [search, setSearch] = useState<string>("");
     const [albums, setAlbums] = useState<AlbumType[]>([]);
 
 
-    const fetchAlbums = async () =>
-    {
+    const fetchAlbums = async () => {
         if (!search.trim()) {
             setAlbums([]);
             return;

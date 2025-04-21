@@ -1,5 +1,5 @@
-import { AlbumType } from '@/lib/type';
-import { timeAgo } from "@/lib/utils";
+import { AlbumType } from '@/utils/types/type';
+import { timeAgo } from "@/utils/common/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlbumStats, AlbumsCategories } from './DetailsAlbums';
 import { HoverCard } from './StyleComponents';
@@ -8,14 +8,11 @@ import ImageComponents from './ImageComponents';
 import React, { useEffect } from 'react';
 
 
-export default function AlbumsList({ albums, column = 2 }: { albums: AlbumType[]; column?: number; })
-{
+export default function AlbumsList({ albums, column = 2 }: { albums: AlbumType[]; column?: number; }) {
   const [col, setCol] = React.useState(0);
   useEffect(
-    () =>
-    {
-      const updateColumn = () =>
-      {
+    () => {
+      const updateColumn = () => {
         if (window.innerWidth <= 436) {
           setCol(1);
         }
@@ -33,8 +30,7 @@ export default function AlbumsList({ albums, column = 2 }: { albums: AlbumType[]
   const goToAlbumDetails = useAlbum();
   return (
     <div className="flex items-stretch flex-wrap gap-1">
-      {albums.map((item, index) =>
-      {
+      {albums.map((item, index) => {
         const latestChapter = item.chapters?.[0];
         const chapterName = latestChapter?.title ?? "Đang cập nhật";
         const chapterTime = timeAgo(latestChapter?.created_at ?? "Đang cập nhật");

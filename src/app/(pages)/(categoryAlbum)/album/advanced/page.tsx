@@ -2,20 +2,18 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { FaSearch, FaFilter, FaSortUp, FaSortDown, FaTimes, FaTrashAlt } from "react-icons/fa";
 import AlbumsList from "../../../../components/list-productnew";
-import { supabase } from "../../../../../lib/supabaseClient";
+import { supabase } from "../../../../../lib/supabase/supabaseClient";
 import { Checkbox, Tag } from "antd";
-import { AlbumType, CategoryType } from "../../../../../lib/type";
-import { mapAlbumData, RawAlbumFromSupabase } from '../../../../../lib/mappers';
+import { AlbumType, CategoryType } from "../../../../../utils/types/type";
+import { mapAlbumData, RawAlbumFromSupabase } from '../../../../../utils/common/mappers';
 import SliderRange from '../../../../components/slider';
 import { Button } from '../../../../../components/ui/button';
-interface SelectCategory
-{
+interface SelectCategory {
     id: number,
     title: string,
 }
 
-export default function StoryAdvancedFilter()
-{
+export default function StoryAdvancedFilter() {
     const [albums, setAlbums] = useState<AlbumType[]>([]);
     const [maxViews, setMaxViews] = useState<number>(0);
     const [maxFollowers, setMaxFollowers] = useState<number>(0);
@@ -26,19 +24,15 @@ export default function StoryAdvancedFilter()
     const [rangeFollower, setRangeFollower] = useState<[number, number]>([0, 1]);
     const [rangeViews, setRangeViews] = useState<[number, number]>([0, 1]);
 
-    const handleRangeFollower = React.useCallback((value: [number, number]) =>
-    {
+    const handleRangeFollower = React.useCallback((value: [number, number]) => {
         setRangeFollower(value);
     }, []);
 
-    const handleRangeViews = React.useCallback((value: [number, number]) =>
-    {
+    const handleRangeViews = React.useCallback((value: [number, number]) => {
         setRangeViews(value);
     }, []);
-    useEffect(() =>
-    {
-        const fetchData = async () =>
-        {
+    useEffect(() => {
+        const fetchData = async () => {
 
             const queryAlbums = await supabase.from('albums').select(`
                 *,
@@ -77,8 +71,7 @@ export default function StoryAdvancedFilter()
         };
         fetchData();
     }, []);
-    const handleClearFilters = () =>
-    {
+    const handleClearFilters = () => {
         setSearchTerm("");
         setSelectedCategories([]);
         setRangeFollower([0, 1]);
@@ -86,8 +79,7 @@ export default function StoryAdvancedFilter()
 
 
     };
-    const fetchFilterAlbum = async () =>
-    {
+    const fetchFilterAlbum = async () => {
         let query = supabase.from('albums')
             .select(`
             *,
@@ -128,12 +120,10 @@ export default function StoryAdvancedFilter()
         })));
     };
 
-    const handleRemoveCategory = (id: number) =>
-    {
+    const handleRemoveCategory = (id: number) => {
         setSelectedCategories((prev) => prev.filter((c) => c.id !== id));
     };
-    const handleCategoryChange = (category: CategoryType) =>
-    {
+    const handleCategoryChange = (category: CategoryType) => {
         setSelectedCategories((prev) =>
             prev.some((c) => c.id === category.id)
                 ? prev.filter((c) => c.id !== category.id)

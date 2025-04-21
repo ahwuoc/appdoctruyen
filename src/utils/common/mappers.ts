@@ -1,12 +1,13 @@
-import { AlbumType } from '@/lib/type';
-import { Database } from '@/types/supabase';
+import { AlbumType } from "@/utils/types/type";
+import { Database } from "@/utils/types/supabase";
 
-export type RawAlbumFromSupabase = Database['public']['Tables']['albums']['Row'] & {
-  album_categories: (Database['public']['Tables']['album_categories']['Row'] & {
-    categories: Database['public']['Tables']['categories']['Row'];
-  })[];
-  chapters: Database['public']['Tables']['chapters']['Row'][];
-};
+export type RawAlbumFromSupabase =
+  Database["public"]["Tables"]["albums"]["Row"] & {
+    album_categories: (Database["public"]["Tables"]["album_categories"]["Row"] & {
+      categories: Database["public"]["Tables"]["categories"]["Row"];
+    })[];
+    chapters: Database["public"]["Tables"]["chapters"]["Row"][];
+  };
 
 type toNull<T> = {
   [K in keyof T]: T[K] extends string ? string | null : T[K];

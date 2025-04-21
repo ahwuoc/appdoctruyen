@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import apiCategories from "@/app/apiRequest/apiCategories";
 import { setCategories } from '../redux/category.redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/lib/store';
+import { RootState } from '@/utils/common/store';
 import { apiProduct } from "@/app/apiRequest/apiProduct";
-import { setProducts} from "@/app/redux/product.redux";
+import { setProducts } from "@/app/redux/product.redux";
 import { setTotalPages } from '../redux/page.redux';
 type DropdownProps = {
   isOpen: boolean;
@@ -32,7 +32,7 @@ type categoriesType = {
   value: string;
 };
 
-export default function ListCategories (){
+export default function ListCategories() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [categoriesList, setCategoriesList] = useState<categoriesType[]>([]);
   const dispatch = useDispatch();
@@ -51,16 +51,16 @@ export default function ListCategories (){
     chapter: ["20 chapter", "40 chapter", "60 chapter", "80 chapter", "100 chapter"],
   };
 
-  const fetchData = async (item:string) => {
-     const response =  await  apiProduct.getProductOptions({
-      slug_category:  item,
+  const fetchData = async (item: string) => {
+    const response = await apiProduct.getProductOptions({
+      slug_category: item,
       limit: 20,
     });
     dispatch(setProducts(response?.data));
     dispatch(setTotalPages(response?.last_page))
-    
+
   };
-  
+
   const toggleSelectItem = (item: string) => {
     dispatch(setCategories(item));
     closeDropdown();

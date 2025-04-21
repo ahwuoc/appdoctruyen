@@ -6,15 +6,13 @@ import { UploadOutlined } from "@ant-design/icons";
 import { AlbumInput, albumSchema } from "../../../../schema/schema-album";
 import { PostAlbum, UpdateAlbum } from "../../../../(action)/album";
 import { getCategories } from "../../../../(action)/category";
-import { AlbumType, CategoryType } from "../../../../../lib/type";
+import { AlbumType, CategoryType } from "../../../../../utils/types/type";
 import type { RcFile, UploadFile } from "antd/es/upload/interface";
-interface Props
-{
+interface Props {
     album?: AlbumType;
     onSuccess: () => void;
 }
-const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => 
-{
+const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
     const [categories, setCategories] = React.useState<CategoryType[]>([]);
 
     const { control, handleSubmit, setValue, reset, formState: { errors } } = useForm<AlbumInput>({
@@ -22,18 +20,15 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) =>
         defaultValues: { title: "", content: "", categoryIds: [], imageFile: undefined },
     });
 
-    useEffect(() =>
-    {
-        const fetchCategories = async () =>
-        {
+    useEffect(() => {
+        const fetchCategories = async () => {
             const data = await getCategories();
             setCategories(data);
         };
         fetchCategories();
     }, []);
 
-    useEffect(() =>
-    {
+    useEffect(() => {
         if (album) {
             setValue("title", album.title);
             setValue("content", album.content);
@@ -44,8 +39,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) =>
         }
     }, [album, setValue, reset]);
 
-    const onFinish = async (data: AlbumInput) =>
-    {
+    const onFinish = async (data: AlbumInput) => {
         try {
             if (album) {
                 await UpdateAlbum(album.id, data);
@@ -103,8 +97,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) =>
                                 url: URL.createObjectURL(field.value),
                                 originFileObj: field.value as RcFile,
                             }] as UploadFile<RcFile>[] : []}
-                            onChange={({ fileList }) =>
-                            {
+                            onChange={({ fileList }) => {
                                 setValue("imageFile", fileList[0]?.originFileObj || undefined);
                             }}
                         >

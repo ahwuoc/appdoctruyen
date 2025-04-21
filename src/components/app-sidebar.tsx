@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import {
-Settings2,
+  Settings2,
 } from "lucide-react";
 import { GiTrophyCup } from "react-icons/gi";
 import { FaHome } from "react-icons/fa";
@@ -13,13 +13,13 @@ import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 
 import {
-Sidebar,
-SidebarContent,
-SidebarFooter,
-SidebarHeader,
-SidebarMenu,
-SidebarMenuButton,
-SidebarMenuItem,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
 const data = {
@@ -41,9 +41,9 @@ const data = {
 
       icon: GiTrophyCup,
       items: [
-        { title: "Genesis", url: "#" },
-        { title: "Explorer", url: "#" },
-        { title: "Quantum", url: "#" },
+        { title: "Nhiều lượt xem", url: "top-views" },
+        { title: "Nhiều chapter", url: "top-chapters" },
+
       ],
     },
     {
@@ -51,10 +51,8 @@ const data = {
       url: "#",
       icon: BiPhotoAlbum,
       items: [
-        { title: "Mới cập nhật", url: "#" },
+        { title: "Mới cập nhật", url: "new-comic" },
         { title: "Nổi bật", url: "#" },
-        { title: "View khủng", url: "#" },
-        { title: "Nhiều chapter", url: "#" },
       ],
     },
     {

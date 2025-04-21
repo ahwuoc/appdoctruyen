@@ -1,18 +1,16 @@
 'use client';
 import React from 'react';
 import AlbumsList from '../../../../../components/list-productnew';
-import http from "@/lib/http";
-import type { AlbumType } from "@/lib/type";
+import http from "@/utils/types/http";
+import type { AlbumType } from "@/utils/types/type";
 import { Button } from 'antd';
 import { useRouter } from 'next/navigation';
 
-interface Comic
-{
+interface Comic {
     slug: string,
     num: string,
 }
-interface ResponseSlugAlbum
-{
+interface ResponseSlugAlbum {
     data: AlbumType[],
     pagination: {
         currentPage: number,
@@ -22,8 +20,7 @@ interface ResponseSlugAlbum
     },
 }
 
-export default function Comic({ params }: { params: Promise<Comic>; })
-{
+export default function Comic({ params }: { params: Promise<Comic>; }) {
     const [products, setProducts] = React.useState<AlbumType[]>([]);
     const [displayPages, setDisplayPages] = React.useState<(number | string)[]>([]);
     const [currentPage, setCurrentPage] = React.useState(0);
@@ -33,17 +30,14 @@ export default function Comic({ params }: { params: Promise<Comic>; })
 
     const maxDisplay = 5;
 
-    const handlePageChange = (page: number) =>
-    {
+    const handlePageChange = (page: number) => {
         router.push(`/comic/${slug}/${page}`);
     };
 
     const pageNumber = parseInt(num, 10);
 
-    React.useEffect(() =>
-    {
-        const fetchData = async () =>
-        {
+    React.useEffect(() => {
+        const fetchData = async () => {
             try {
                 const response = await http.get<ResponseSlugAlbum>(`/api/comic/${slug}/${pageNumber}`);
                 if (!response.payload || !response.payload.data) return;

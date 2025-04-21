@@ -2,18 +2,16 @@
 
 import { createContext, useContext, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { createSlug } from "../../lib/utils";
+import { createSlug } from "../../utils/common/utils";
 
 // Tạo context
 const AlbumContext = createContext<((name: string, id: number) => void) | null>(null);
 
 // Tạo Provider
-export const AlbumProvider = ({ children }: { children: ReactNode; }) =>
-{
+export const AlbumProvider = ({ children }: { children: ReactNode; }) => {
   const router = useRouter();
 
-  const goToAlbumDetails = (name: string, id: number) =>
-  {
+  const goToAlbumDetails = (name: string, id: number) => {
     const slug_album = createSlug(name);
     router.push(`/album/${slug_album}-${id}`);
   };
@@ -25,8 +23,7 @@ export const AlbumProvider = ({ children }: { children: ReactNode; }) =>
   );
 };
 
-export const useAlbum = () =>
-{
+export const useAlbum = () => {
   const context = useContext(AlbumContext);
   if (!context) {
     throw new Error("useAlbum must be used within an AlbumProvider");

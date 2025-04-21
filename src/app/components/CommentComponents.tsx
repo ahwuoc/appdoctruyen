@@ -3,27 +3,24 @@ import React, { useState, useCallback } from "react";
 import { IoSend } from "react-icons/io5";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaReply } from "react-icons/fa";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "../../lib/supabase/supabaseClient";
 import { Comment, getComment_ChapterId } from "../(action)/comment";
 import LeaderLine from "leader-line";
 
 // Interface cho props của các component
-interface SendMessageParams
-{
+interface SendMessageParams {
   chapter_id: number;
   content: string;
   parent_id?: string;
 }
 
-interface TreeCommentProps
-{
+interface TreeCommentProps {
   comments: Comment[];
   onComment: (params: SendMessageParams) => Promise<void>;
 }
 
 // Gửi comment lên Supabase
-const sendMessage = async ({ chapter_id, content, parent_id }: SendMessageParams) =>
-{
+const sendMessage = async ({ chapter_id, content, parent_id }: SendMessageParams) => {
   const user = await supabase.auth.getUser();
   if (user.error || !user.data.user) {
     console.error("Lỗi lấy user hoặc user chưa đăng nhập:", user.error);
@@ -49,19 +46,16 @@ const sendMessage = async ({ chapter_id, content, parent_id }: SendMessageParams
   return data;
 };
 
-const TreeComment: React.FC<TreeCommentProps> = ({ comments, onComment }) =>
-{
+const TreeComment: React.FC<TreeCommentProps> = ({ comments, onComment }) => {
   const [replyId, setReplyId] = useState<string | null>(null);
   const [replyMessages, setReplyMessages] = useState<Record<string, string>>({});
   const [openReplies, setOpenReplies] = useState<Record<string, boolean>>({}); // State để kiểm soát mở/đóng
 
-  const handleReplyChange = (commentId: string, value: string) =>
-  {
+  const handleReplyChange = (commentId: string, value: string) => {
     setReplyMessages((prev) => ({ ...prev, [commentId]: value }));
   };
 
-  const toggleReplies = (commentId: string) =>
-  {
+  const toggleReplies = (commentId: string) => {
     setOpenReplies((prev) => ({ ...prev, [commentId]: !prev[commentId] }));
   };
 
@@ -90,8 +84,7 @@ const TreeComment: React.FC<TreeCommentProps> = ({ comments, onComment }) =>
                   className="w-full h-full p-2 pr-10 rounded-md outline-none"
                 />
                 <IoSend
-                  onClick={() =>
-                  {
+                  onClick={() => {
                     onComment({ chapter_id: comment.chapter_id, content: replyMessages[comment.id]!, parent_id: comment.id });
                     setReplyMessages((prev) => ({ ...prev, [comment.id]: "" }));
                     setReplyId(null);
@@ -124,15 +117,12 @@ const TreeComment: React.FC<TreeCommentProps> = ({ comments, onComment }) =>
 
 
 // Component chính
-const CommentComponents: React.FC<{ params: { chapter_id?: number; }; }> = ({ params }) =>
-{
+const CommentComponents: React.FC<{ params: { chapter_id?: number; }; }> = ({ params }) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [messages, setMessages] = useState<string>("");
 
-  React.useEffect(() =>
-  {
-    const fetchComments = async () =>
-    {
+  React.useEffect(() => {
+    const fetchComments = async () => {
       if (params.chapter_id) {
         const commentTree = await getComment_ChapterId(params.chapter_id);
         setComments(commentTree);
@@ -141,8 +131,7 @@ const CommentComponents: React.FC<{ params: { chapter_id?: number; }; }> = ({ pa
     fetchComments();
   }, [params]);
 
-  const handleMessages = useCallback(async ({ chapter_id, content, parent_id }: SendMessageParams) =>
-  {
+  const handleMessages = useCallback(async ({ chapter_id, content, parent_id }: SendMessageParams) => {
     await sendMessage({ chapter_id, content, parent_id });
     const updatedComments = await getComment_ChapterId(chapter_id);
     setComments(updatedComments);
@@ -159,8 +148,7 @@ const CommentComponents: React.FC<{ params: { chapter_id?: number; }; }> = ({ pa
           className="w-full h-full p-4 pr-10 rounded-md outline-none"
         />
         <IoSend
-          onClick={() =>
-          {
+          onClick={() => {
             handleMessages({ chapter_id: params.chapter_id!, content: messages });
             setMessages("");
           }}
