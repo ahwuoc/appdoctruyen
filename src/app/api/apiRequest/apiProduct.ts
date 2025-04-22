@@ -1,5 +1,5 @@
-import http from "@/utils/types/http";
-import type { AlbumType, PaginatedProducts } from "@/utils/types/type";
+import http from "@/app/utils/types/http";
+import type { AlbumType, PaginatedProducts } from "@/app/utils/types/type";
 
 interface ProductPagenation {
   data: number[];

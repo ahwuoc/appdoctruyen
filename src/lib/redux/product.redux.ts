@@ -1,4 +1,4 @@
-import { AlbumType } from "@/utils/types/type";
+import { AlbumType } from "@/app/utils/types/type";
 import { createSlice } from "@reduxjs/toolkit";
 interface initialStateType {
   products: AlbumType[];

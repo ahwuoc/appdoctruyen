@@ -1,7 +1,10 @@
 import { NextResponse, NextRequest } from "next/server";
 import { supabase } from "@/lib/supabase/supabaseClient";
-import { STATUS_Response } from "@/utils/types/status";
-import { RegisterInput, registerSchema } from "../../../schema/schema-register";
+import { STATUS_Response } from "@/app/utils/types/status";
+import {
+  RegisterInput,
+  registerSchema,
+} from "../../../../lib/schema/schema-register";
 
 export const POST = async (request: NextRequest) => {
   try {

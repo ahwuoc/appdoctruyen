@@ -1,16 +1,16 @@
 "use client";
-import React, { useState, useEffect, Suspense } from "react";
-import { FaSearch, FaFilter, FaSortUp, FaSortDown, FaTimes, FaTrashAlt } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaSearch, FaFilter, FaTrashAlt } from "react-icons/fa";
 import AlbumsList from "../../../../components/list-productnew";
-import { supabase } from "../../../../../lib/supabase/supabaseClient";
 import { Checkbox, Tag } from "antd";
-import { AlbumType, CategoryType } from "../../../../../utils/types/type";
-import { mapAlbumData, RawAlbumFromSupabase } from '../../../../../utils/common/mappers';
-import SliderRange from '../../../../components/slider';
-import { Button } from '../../../../../components/ui/button';
+import { AlbumType, CategoryType } from "../../../../utils/types/type";
+import SliderRange from "../../../../components/slider";
+import { Button } from "../../../../../components/ui/button";
+import { fetchAlbumData, fetchFilteredAlbums } from "../../../../services/AlbumServices";
+
 interface SelectCategory {
-    id: number,
-    title: string,
+    id: number;
+    title: string;
 }
 
 export default function StoryAdvancedFilter() {
@@ -24,113 +24,59 @@ export default function StoryAdvancedFilter() {
     const [rangeFollower, setRangeFollower] = useState<[number, number]>([0, 1]);
     const [rangeViews, setRangeViews] = useState<[number, number]>([0, 1]);
 
-    const handleRangeFollower = React.useCallback((value: [number, number]) => {
-        setRangeFollower(value);
-    }, []);
-
-    const handleRangeViews = React.useCallback((value: [number, number]) => {
-        setRangeViews(value);
-    }, []);
     useEffect(() => {
         const fetchData = async () => {
-
-            const queryAlbums = await supabase.from('albums').select(`
-                *,
-                album_categories (
-                  category_id,
-                  categories (title)
-                ),
-                chapters (
-                  id,
-                  title,
-                  views,
-                  created_at,
-                  order_sort
-                )
-              `);
-            if (queryAlbums.error) throw queryAlbums.error;
-            const formattedData = (queryAlbums.data as RawAlbumFromSupabase[] || []).map(mapAlbumData);
-            setAlbums(formattedData as AlbumType[]);
-            const viewsResponse = await supabase
-                .from("chapters")
-                .select("views")
-                .order("views", { ascending: false })
-                .limit(1)
-                .single();
-            if (viewsResponse.error) throw viewsResponse.error;
-            setMaxViews(viewsResponse.data.views);
-            const followersResponse = await supabase.rpc("get_most_followed_album");
-            if (followersResponse.error) throw followersResponse.error;
-            setMaxFollowers(followersResponse.data.follower_count);
-            const categoriesResponse = await supabase
-                .from("categories")
-                .select("*")
-                .limit(14);
-            if (categoriesResponse.error) throw categoriesResponse.error;
-            setCategories(categoriesResponse.data);
+            const { albums: fetchedAlbums, maxViews, maxFollowers, categories } = await fetchAlbumData();
+            setAlbums(fetchedAlbums);
+            setMaxViews(maxViews);
+            setMaxFollowers(maxFollowers);
+            setCategories(categories);
         };
         fetchData();
     }, []);
+
+    const handleRangeFollower = (value: [number, number]) => {
+        setRangeFollower(value);
+    };
+
+    const handleRangeViews = (value: [number, number]) => {
+        setRangeViews(value);
+    };
+
     const handleClearFilters = () => {
         setSearchTerm("");
         setSelectedCategories([]);
         setRangeFollower([0, 1]);
         setRangeViews([0, 1]);
-
-
     };
-    const fetchFilterAlbum = async () => {
-        let query = supabase.from('albums')
-            .select(`
-            *,
-            album_categories (
-                category_id,
-                categories (title)
-            ),
-            chapters (
-                id,
-                title,
-                views,
-                created_at,
-                order_sort
-            )
-        `);
 
-        if (selectedCategories.length > 0) {
-            query = query.in('album_categories.category_id', selectedCategories.map(c => c.id));
+    const fetchFilterAlbum = async () => {
+        try {
+            const filtered = await fetchFilteredAlbums({
+                selectedCategories,
+                rangeViews,
+                maxViews,
+                rangeFollower,
+                maxFollowers,
+                searchTerm,
+            });
+            setAlbums(filtered);
+        } catch (error) {
+            console.error("Lỗi khi lọc album:", error);
         }
-        if (rangeViews[0] > 0 || rangeViews[1] < maxViews) {
-            query = query.gte('chapters.views', rangeViews[0]).lte('chapters.views', rangeViews[1]);
-        }
-        if (rangeFollower[0] > 0 || rangeFollower[1] < maxFollowers) {
-            query = query.gte("followers", rangeFollower[0]).lte('followers', rangeFollower[1]);
-        }
-        if (searchTerm.trim() !== "") {
-            query = query.ilike('title', `%${searchTerm}%`);
-        }
-        const { data, error } = await query;
-        if (error) {
-            console.error("Lỗi khi fetch dữ liệu: ", error);
-            return;
-        }
-        setAlbums(data.map(album => ({
-            ...album,
-            title: album.title ?? "No Title"
-        })));
     };
 
     const handleRemoveCategory = (id: number) => {
         setSelectedCategories((prev) => prev.filter((c) => c.id !== id));
     };
+
     const handleCategoryChange = (category: CategoryType) => {
         setSelectedCategories((prev) =>
             prev.some((c) => c.id === category.id)
                 ? prev.filter((c) => c.id !== category.id)
                 : [...prev, { id: category.id, title: category.title }]
         );
-
     };
-
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -148,21 +94,20 @@ export default function StoryAdvancedFilter() {
                         <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                     </div>
                     <div className="flex gap-2">
-
                         <Button
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
                             className="flex items-center h-12 rounded-full bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
                         >
-                            {<FaFilter />}
+                            <FaFilter className="mr-2" />
                             {isFilterOpen ? "Ẩn bộ lọc" : "Hiển thị bộ lọc"}
                         </Button>
                     </div>
                 </div>
+
                 {/* Advanced Filter Section */}
                 {isFilterOpen && (
                     <div className="mt-6 p-6 bg-white rounded-xl shadow-lg border border-gray-100 animate-in fade-in duration-300">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
                             {/* Category Filter */}
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Danh mục</h3>
@@ -172,57 +117,55 @@ export default function StoryAdvancedFilter() {
                                             key={item.id}
                                             checked={selectedCategories.some((c) => c.id === item.id)}
                                             onChange={() => handleCategoryChange(item)}
-                                            className="text-gray-700">
+                                            className="text-gray-700"
+                                        >
                                             {item.title}
                                         </Checkbox>
-
-
                                     ))}
                                 </div>
                             </div>
 
                             <div>
                                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Lượt xem</h3>
-                                <SliderRange params={
-                                    {
+                                <SliderRange
+                                    params={{
                                         maxRange: maxViews,
                                         onChange: handleRangeViews,
-                                    }
-                                } />
+                                    }}
+                                />
                                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Người theo dõi</h3>
-                                <SliderRange params={
-                                    {
+                                <SliderRange
+                                    params={{
                                         maxRange: maxFollowers,
                                         onChange: handleRangeFollower,
-                                    }
-                                } />
+                                    }}
+                                />
                             </div>
 
-                            <div className=''>
-                                <h2>Tag</h2>
+                            <div>
+                                <h2 className="text-lg font-semibold text-gray-800 mb-3">Tag</h2>
                                 {selectedCategories.map((item) => (
                                     <Tag key={item.id} closable onClose={() => handleRemoveCategory(item.id)}>
                                         {item.title}
                                     </Tag>
                                 ))}
-
                             </div>
-                            <div className='w-full flex gap-2'>
-                                <Button className='flex-1' onClick={fetchFilterAlbum}>
+
+                            <div className="w-full flex gap-2">
+                                <Button className="flex-1" onClick={fetchFilterAlbum}>
                                     <FaFilter className="mr-2" />
                                     Lọc
                                 </Button>
-                                <Button className='flex-1' onClick={handleClearFilters}>
+                                <Button className="flex-1" onClick={handleClearFilters}>
                                     <FaTrashAlt className="mr-2" />
                                     Dọn
                                 </Button>
                             </div>
-
-
                         </div>
                     </div>
                 )}
             </div>
+
             <div className="rounded-xl shadow-lg">
                 <AlbumsList albums={albums} column={4} />
             </div>

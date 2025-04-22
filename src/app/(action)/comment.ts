@@ -1,6 +1,6 @@
 "use server";
 import { supabase } from "../../lib/supabase/supabaseClient";
-import { buildCommentTree } from "../components/_commentree";
+import { buildCommentTree } from "../components/commentree";
 export interface Comment {
   id: string;
   parent_id: string;

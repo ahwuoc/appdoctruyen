@@ -1,6 +1,6 @@
 import http from "../../utils/types/http";
-import { RegisterInput } from "../schema/schema-register";
-import { LoginInput } from "../schema/schema-login";
+import { RegisterInput } from "../../../lib/schema/schema-register";
+import { LoginInput } from "../../../lib/schema/schema-login";
 
 interface RegisterResponse {
   message: string;

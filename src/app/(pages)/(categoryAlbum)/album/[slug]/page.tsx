@@ -1,5 +1,5 @@
 "use client";
-import { AlbumType } from "@/utils/types/type";
+import { AlbumType } from "@/app/utils/types/type";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { CiWifiOn, CiBoxList } from "react-icons/ci";
@@ -7,7 +7,7 @@ import { AiOutlineSync } from "react-icons/ai";
 import { FaEye } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { timeAgo, createSlug } from "@/utils/common/utils";
+import { timeAgo, createSlug } from "@/app/utils/common/utils";
 import { apiProduct } from "@/app/apiRequest/apiProduct";
 import { Button } from '../../../../../components/ui/button';
 

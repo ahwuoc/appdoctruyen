@@ -3,10 +3,10 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Upload, Form, Input, Button, Checkbox, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { AlbumInput, albumSchema } from "../../../../schema/schema-album";
+import { AlbumInput, albumSchema } from "../../../../../lib/schema/schema-album";
 import { PostAlbum, UpdateAlbum } from "../../../../(action)/album";
 import { getCategories } from "../../../../(action)/category";
-import { AlbumType, CategoryType } from "../../../../../utils/types/type";
+import { AlbumType, CategoryType } from "../../../../utils/types/type";
 import type { RcFile, UploadFile } from "antd/es/upload/interface";
 interface Props {
     album?: AlbumType;

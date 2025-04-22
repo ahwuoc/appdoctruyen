@@ -2,12 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import apiCategories from "@/app/apiRequest/apiCategories";
-import { setCategories } from '../redux/category.redux';
+import { setCategories } from '../../lib/redux/category.redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/utils/common/store';
+import { RootState } from '@/app/utils/common/store';
 import { apiProduct } from "@/app/apiRequest/apiProduct";
-import { setProducts } from "@/app/redux/product.redux";
-import { setTotalPages } from '../redux/page.redux';
+import { setProducts } from "@/lib/redux/product.redux";
+import { setTotalPages } from '../../lib/redux/page.redux';
 type DropdownProps = {
   isOpen: boolean;
   closeDropdown: () => void;

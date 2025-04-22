@@ -2,7 +2,7 @@
 import { CardContent } from "@/components/ui/card";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
-import { AlbumType } from "@/utils/types/type";
+import { AlbumType } from "@/app/utils/types/type";
 import { GrFormPreviousLink, GrFormNextLink } from 'react-icons/gr';
 import ImageComponents from './ImageComponents'; import { url } from 'inspector';
 ;

@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { timeAgo } from "@/utils/common/utils";
+import { timeAgo } from "@/app/utils/common/utils";
 import Image from "next/image";
-import type { AlbumType } from '@/utils/types/type';
-import { useAlbum } from '../provider/ProviderContext';
+import type { AlbumType } from '@/app/utils/types/type';
+import { useAlbum } from "../utils/provider/ProviderContext";
 import ImageComponents from './ImageComponents';
 
 export default function ListTopAlbum({ albums }: { albums: AlbumType[]; }) {

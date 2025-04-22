@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Card, Table, Button, Drawer, message } from "antd";
 import ImageComponents from "../../../../components/ImageComponents";
 import { getAlbums } from "../../../../(action)/album";
-import { AlbumType } from "../../../../../utils/types/type";
+import { AlbumType } from "../../../../utils/types/type";
 import FormAlbum from "./AlbumFormDrawer";
 import { CardContent } from "../../../../../components/ui/card";
 import { AlbumsCategories } from '../../../../components/DetailsAlbums';

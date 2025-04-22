@@ -1,5 +1,5 @@
-import http from "@/utils/types/http";
-import type { CategoryType } from "@/utils/types/type";
+import http from "@/app/utils/types/http";
+import type { CategoryType } from "@/app/utils/types/type";
 
 const apiCategories = {
   getCategoriesList: async () =>

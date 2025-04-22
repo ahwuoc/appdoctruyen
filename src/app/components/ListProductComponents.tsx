@@ -8,10 +8,10 @@ import { EyeOutlined, HeartFilled } from '@ant-design/icons';
 
 
 import Pagination from "./Pagination";
-import { time, createSlug } from "@/utils/common/utils";
+import { time, createSlug } from "@/app/utils/common/utils";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
-import { RootState } from '@/utils/common/store';
+import { RootState } from '@/app/utils/common/store';
 
 
 

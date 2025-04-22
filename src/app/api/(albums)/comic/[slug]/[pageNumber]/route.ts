@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase/supabaseClient";
-import { mapAlbumData, RawAlbumFromSupabase } from "@/utils/common/mappers";
+import { mapAlbumData, RawAlbumFromSupabase } from "@/app/utils/common/mappers";
 
 export async function GET(
   req: NextRequest,

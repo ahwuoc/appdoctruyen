@@ -5,7 +5,7 @@ import { vi } from "date-fns/locale";
 import slugify from "slugify";
 import { NextResponse } from "next/server";
 import { STATUS_Response } from "../types/status";
-import { supabase } from "../../lib/supabase/supabaseClient";
+import { supabase } from "../../../lib/supabase/supabaseClient";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

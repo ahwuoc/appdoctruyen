@@ -1,5 +1,5 @@
-import http from "@/utils/types/http";
-import type { ChapterType } from "@/utils/types/type";
+import http from "@/app/utils/types/http";
+import type { ChapterType } from "@/app/utils/types/type";
 
 const apiChapters = {
     getChapterList: async (chapterId: number) => {

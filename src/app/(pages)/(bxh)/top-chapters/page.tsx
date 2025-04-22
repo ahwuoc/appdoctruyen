@@ -17,7 +17,7 @@ interface Album {
     id: number;
     rank: number;
     title: string;
-    chapters: { id: number }[]; // Cập nhật kiểu chapters từ number thành array chứa id
+    chapters: { id: number }[];
     image_url: string;
 }
 

@@ -6,9 +6,9 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import http from '../../utils/types/http';
+import http from '../utils/types/http';
 import React, { useState, useEffect, Suspense } from 'react';
-import type { AlbumType } from '../../utils/types/type';
+import type { AlbumType } from '../utils/types/type';
 import AlbumsList from './list-productnew';
 import Loading from '../loading';
 import { DialogTitle } from '@radix-ui/react-dialog';

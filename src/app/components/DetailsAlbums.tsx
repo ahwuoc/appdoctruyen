@@ -1,6 +1,6 @@
 import { FaEye } from "react-icons/fa";
 import { CiBookmark } from "react-icons/ci";
-import { AlbumType, CategoryType } from '../../utils/types/type';
+import { AlbumType, CategoryType } from '../utils/types/type';
 type ALbumState = {
     views: number | undefined;
     following: number | undefined;

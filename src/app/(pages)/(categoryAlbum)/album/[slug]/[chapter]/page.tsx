@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase/supabaseClient";
-import { getNumberSlug } from "@/utils/common/utils";
+import { getNumberSlug } from "@/app/utils/common/utils";
 import Image from "next/image";
 import CommentComponents from "@/app/components/CommentComponents";
 import Loading from "../../../../../loading";

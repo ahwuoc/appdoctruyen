@@ -1,7 +1,7 @@
 "use server";
-import { mapAlbumData, RawAlbumFromSupabase } from "../../utils/common/mappers";
+import { mapAlbumData, RawAlbumFromSupabase } from "../utils/common/mappers";
 import { supabase } from "../../lib/supabase/supabaseClient";
-import { AlbumInput, albumSchema } from "../schema/schema-album";
+import { AlbumInput, albumSchema } from "../../lib/schema/schema-album";
 
 export const getAlbumTopChapters = async () => {
   const { data, error } = await supabase.from("albums").select(

@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 import AlbumsList from '../../../../../components/list-productnew';
-import http from "@/utils/types/http";
-import type { AlbumType } from "@/utils/types/type";
+import http from "@/app/utils/types/http";
+import type { AlbumType } from "@/app/utils/types/type";
 import { Button } from 'antd';
 import { useRouter } from 'next/navigation';
 

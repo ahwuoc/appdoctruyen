@@ -1,8 +1,8 @@
-import { AlbumType } from "@/utils/types/type";
+import { AlbumType } from "@/app/utils/types/type";
 import React, { useState, useEffect, useRef } from "react";
 import { GrFormNextLink, GrFormPreviousLink } from "react-icons/gr";
 import Image from "next/image";
-import { useAlbum } from '../provider/ProviderContext';
+import { useAlbum } from "../utils/provider/ProviderContext";
 import { AlbumStats } from './DetailsAlbums';
 import { HoverCard } from './StyleComponents';
 

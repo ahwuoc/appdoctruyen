@@ -1,10 +1,9 @@
 'use client';
-import * as React from "react";
-
+import React from 'react';
 import CarouselComponents from '@/app/components/Carousel';
 import SlideCard from '@/app/components/SlideCard';
-import { AlbumType } from "@/utils/types/type";
-import { apiProduct } from '@/app/apiRequest/apiProduct';
+import { AlbumType } from "@/app/utils/types/type";
+import { apiProduct } from "./api/apiRequest/apiProduct";
 import ListTopAlbum from '@/app/components/list-album-bxh';
 import AlbumsList from '@/app/components/list-productnew';
 

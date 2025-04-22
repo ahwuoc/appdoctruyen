@@ -1,9 +1,9 @@
-import { AlbumType } from '@/utils/types/type';
-import { timeAgo } from "@/utils/common/utils";
+import { AlbumType } from '@/app/utils/types/type';
+import { timeAgo } from "@/app/utils/common/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { AlbumStats, AlbumsCategories } from './DetailsAlbums';
 import { HoverCard } from './StyleComponents';
-import { useAlbum } from '../provider/ProviderContext';
+import { useAlbum } from '../utils/provider/ProviderContext';
 import ImageComponents from './ImageComponents';
 import React, { useEffect } from 'react';
 

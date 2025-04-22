@@ -11,16 +11,14 @@ import { TbTrashX } from "react-icons/tb";
 
 
 
-interface Images
-{
+interface Images {
     id: number;
     title?: string;
     image_url: string;
     order_sort: number;
 }
 
-interface Chapter
-{
+interface Chapter {
     id: number;
     title: string;
     content: string;
@@ -29,8 +27,7 @@ interface Chapter
     order_sort: number;
 }
 
-interface ResponseData
-{
+interface ResponseData {
     id: number;
     title: string;
     content: string;
@@ -38,17 +35,14 @@ interface ResponseData
     chapters: Chapter[];
 }
 
-export default function ChapterSort()
-{
+export default function ChapterSort() {
     const [albumData, setAlbumData] = useState<ResponseData | null>(null);
     const [chapters, setChapters] = useState<Chapter[]>([]);
     const [expandedChapters, setExpandedChapters] = useState<Set<string>>(new Set());
     const [loading, setLoading] = useState<boolean>(true);
 
-    useEffect(() =>
-    {
-        const fetchAlbum = async () =>
-        {
+    useEffect(() => {
+        const fetchAlbum = async () => {
             try {
                 const data = await getAlbumId(1);
                 if (data) {
@@ -73,8 +67,7 @@ export default function ChapterSort()
     }, []);
 
 
-    const handleChapterSort = (newOrder: Chapter[]) =>
-    {
+    const handleChapterSort = (newOrder: Chapter[]) => {
         const updatedChapters = newOrder.map((chapter, index) => ({
             ...chapter,
             order_sort: index + 1,
@@ -82,8 +75,7 @@ export default function ChapterSort()
         setChapters(updatedChapters);
     };
 
-    const handleImageSort = (chapterId: number, newImages: Images[]) =>
-    {
+    const handleImageSort = (chapterId: number, newImages: Images[]) => {
         const updatedImages = newImages.map((image, index) => ({
             ...image,
             order_sort: index + 1,
@@ -95,10 +87,8 @@ export default function ChapterSort()
         );
     };
 
-    const toggleChapter = (chapterId: number) =>
-    {
-        setExpandedChapters((prev) =>
-        {
+    const toggleChapter = (chapterId: number) => {
+        setExpandedChapters((prev) => {
             const newSet = new Set(prev);
             const idStr = chapterId.toString();
             if (newSet.has(idStr)) {
@@ -159,8 +149,7 @@ const Chapter = ({
     onImageSort: (chapterId: number, newImages: Images[]) => void;
     isExpanded: boolean;
     toggleExpand: () => void;
-}) =>
-{
+}) => {
 
     const sortedImages = [...chapter.chapter_images].sort((a, b) => a.order_sort - b.order_sort);
 
@@ -206,8 +195,7 @@ const Chapter = ({
     );
 };
 
-const ImageItem = ({ image }: { image: Images; }) =>
-{
+const ImageItem = ({ image }: { image: Images; }) => {
     return (
         <div className="border p-2 bg-gray-100 rounded-md flex items-center h-48 w-48">
             <div className="ml-2 flex-1">

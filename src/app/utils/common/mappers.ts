@@ -1,5 +1,5 @@
-import { AlbumType } from "@/utils/types/type";
-import { Database } from "@/utils/types/supabase";
+import { AlbumType } from "@/app/utils/types/type";
+import { Database } from "@/app/utils/types/supabase";
 
 export type RawAlbumFromSupabase =
   Database["public"]["Tables"]["albums"]["Row"] & {
