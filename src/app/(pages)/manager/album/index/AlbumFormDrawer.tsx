@@ -108,7 +108,6 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                 />
                 {errors.imageFile && <p className="text-red-500">{errors.imageFile.message}</p>}
             </Form.Item>
-
             <Button type="primary" htmlType="submit">{album ? "Cập nhật" : "Thêm"} Album</Button>
         </Form>
 

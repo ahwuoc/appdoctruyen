@@ -1,6 +1,6 @@
 "use client";
 import { AlbumType } from "@/app/utils/types/type";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { CiWifiOn, CiBoxList } from "react-icons/ci";
 import { AiOutlineSync } from "react-icons/ai";
@@ -8,7 +8,7 @@ import { FaEye } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { timeAgo, createSlug } from "@/app/utils/common/utils";
-import { apiProduct } from "@/app/apiRequest/apiProduct";
+import { apiProduct } from "../../../../api/apiRequest/apiProduct";
 import { Button } from '../../../../../components/ui/button';
 
 type PageProps = {
@@ -17,26 +17,38 @@ type PageProps = {
 
 export default function Page({ params }: PageProps) {
   const { slug } = React.use(params);
-  const [albumData, setAlbumData] = useState<AlbumType | null>(null);
+  const [albumData, setAlbumData] = React.useState<AlbumType | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string | null>(null);
   const router = useRouter();
-  useEffect(() => {
+
+  React.useEffect(() => {
     const fetchAlbums = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const response = await apiProduct.getAlbumId(1);
         setAlbumData(response.payload);
       } catch (error) {
-        console.error("Lỗi khi lấy album:", error);
+        setError("Lỗi khi lấy album!");
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchAlbums();
   }, []);
 
-
-
   const handleChapter = (product_name: string, chapter_name: string, chapter_id: number) => {
-    const url = `${slug}/${createSlug(chapter_name)}-${chapter_id}`;
+    const formattedSlug = typeof slug === 'string' ? slug : '';
+
+    const url = `${formattedSlug}/${createSlug(chapter_name)}-${chapter_id}`;
+
     router.push(`/album/${url}`);
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
@@ -118,22 +130,33 @@ export default function Page({ params }: PageProps) {
                 <Button
                   onClick={() => {
                     if (!albumData?.chapters?.length) return;
+
                     const firstChapter = albumData.chapters[0];
-                    handleChapter(albumData.title, firstChapter.title, firstChapter.id);
+
+                    if (firstChapter?.title && firstChapter.id) {
+                      handleChapter(albumData.title, firstChapter.title, firstChapter.id);
+                    } else {
+                      console.error("error");
+                    }
                   }}
                 >
                   Đọc từ đầu
                 </Button>
-
                 <Button
                   onClick={() => {
                     if (!albumData?.chapters?.length) return;
+
                     const latestChapter = albumData.chapters[albumData.chapters.length - 1];
-                    handleChapter(albumData.title, latestChapter.title, latestChapter.id);
+                    if (latestChapter?.title && latestChapter.id) {
+                      handleChapter(albumData.title, latestChapter?.title, latestChapter.id);
+                    } else {
+                      console.error("error");
+                    }
                   }}
                 >
                   Đọc mới nhất
                 </Button>
+
               </div>
 
             </div>
@@ -178,10 +201,8 @@ export default function Page({ params }: PageProps) {
               )}
             </div>
           </div>
-
-
         </div>
       </div>
-    </div>
+    </div >
   );
 }

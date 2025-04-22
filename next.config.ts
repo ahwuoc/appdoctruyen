@@ -17,6 +17,7 @@ const nextConfig = {
       "example.com",
       "cmangax.com",
       "cmangax.com",
+      "cmangag.com",
       "hlafeihngnjueskyjfmh.supabase.co",
       "hlafeihngnjueskyjfmh.supabase.co",
     ],
