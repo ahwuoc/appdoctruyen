@@ -11,10 +11,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
+import { getAlbums, getAlbumsNew } from './(action)/album';
+
+export default async function Page() {
+  const [albums, albumsNew] = await Promise.all([
+    getAlbums(),
+    getAlbumsNew()
+  ]);
+
   return (
     <Suspense fallback={<Loading />}>
-      <HomeClient />
+      <HomeClient initialAlbums={albums} initialAlbumsNew={albumsNew} />
     </Suspense>
   );
 }

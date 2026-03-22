@@ -11,27 +11,41 @@ import AlbumsList from '@/app/components/list-productnew';
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/ui/button';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { Flame, Sparkles, TrendingUp, Users } from 'lucide-react';
+import { Flame, Sparkles, TrendingUp, Users, Loader2 } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type slug = "new" | "hot";
 
-export default function HomeClient() {
-  const [albums, setAlbums] = React.useState<AlbumType[]>([]);
-  const [albumsNew, setAlbumNew] = React.useState<AlbumType[]>([]);
+interface HomeClientProps {
+  initialAlbums?: AlbumType[];
+  initialAlbumsNew?: AlbumType[];
+}
+
+export default function HomeClient({ initialAlbums, initialAlbumsNew }: HomeClientProps) {
+  const [albums, setAlbums] = React.useState<AlbumType[]>(initialAlbums || []);
+  const [albumsNew, setAlbumNew] = React.useState<AlbumType[]>(initialAlbumsNew || []);
+  const [loading, setLoading] = React.useState(!initialAlbums || !initialAlbumsNew);
 
   React.useEffect(() => {
+    if (initialAlbums && initialAlbumsNew) return;
+
     const albumsGet = async () => {
+      setLoading(true);
       try {
-        const responseAll = await apiProduct.getAlbums();
-        const responseNew = await apiProduct.getAlbumsNew();
+        const [responseAll, responseNew] = await Promise.all([
+          apiProduct.getAlbums(),
+          apiProduct.getAlbumsNew()
+        ]);
         setAlbumNew(responseNew.payload || []);
         setAlbums(responseAll.payload || []);
       } catch (error) {
         console.error("Failed to fetch albums:", error);
+      } finally {
+        setLoading(false);
       }
     };
     albumsGet();
-  }, []);
+  }, [initialAlbums, initialAlbumsNew]);
 
   const router = useRouter();
   const handleClick = (slug: slug) => {
@@ -66,7 +80,16 @@ export default function HomeClient() {
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="relative w-full overflow-hidden border-b border-white/5 bg-mimi-dark"
       >
-        <CarouselComponents albums={albums} />
+        {loading ? (
+          <div className="w-full h-[35rem] md:h-[45rem] bg-mimi-deep/30 flex items-center justify-center">
+            <div className="flex flex-col items-center gap-4">
+              <Loader2 className="w-10 h-10 text-mimi-blue animate-spin" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-mimi-muted">Syncing main deck...</span>
+            </div>
+          </div>
+        ) : (
+          <CarouselComponents albums={albums} />
+        )}
         <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-mimi-dark/20 to-mimi-dark"></div>
       </motion.section>
 
@@ -110,12 +133,28 @@ export default function HomeClient() {
                 </div>
 
                 <div className="p-6">
-                  <AlbumsList albums={albumsNew} />
+                  {loading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {[...Array(6)].map((_, i) => (
+                        <div key={i} className="flex gap-4">
+                          <Skeleton className="w-[120px] h-[160px] rounded-2xl shrink-0" />
+                          <div className="flex-1 space-y-4 py-2">
+                            <Skeleton className="h-4 w-3/4 rounded-full" />
+                            <Skeleton className="h-3 w-1/2 rounded-full" />
+                            <div className="space-y-2 pt-2">
+                              <Skeleton className="h-2 w-full rounded-full" />
+                              <Skeleton className="h-2 w-full rounded-full" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <AlbumsList albums={albumsNew} />
+                  )}
                 </div>
               </div>
             </div>
-
-            {/* Editorial Style Recruitment Banner */}
             <motion.div
               whileHover={{ scale: 1.002, y: -2 }}
               className="relative p-[1px] rounded-[32px] bg-gradient-to-br from-mimi-cyan via-mimi-blue to-mimi-purple shadow-[0_20px_50px_-15px_rgba(37,99,235,0.3)] group cursor-pointer overflow-hidden transition-all duration-500"
@@ -143,8 +182,6 @@ export default function HomeClient() {
               </div>
             </motion.div>
           </motion.div>
-
-          {/* Right Section: Sidebar/Ranking */}
           <motion.div variants={itemVariants} className="lg:col-span-4 space-y-10">
             <div className="sticky top-24 space-y-10">
               <div className="relative p-[1px] rounded-[32px] bg-gradient-to-b from-white/10 to-transparent overflow-hidden">
@@ -161,7 +198,21 @@ export default function HomeClient() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <ListTopAlbum albums={albums} />
+                    {loading ? (
+                      <div className="space-y-6">
+                        {[...Array(5)].map((_, i) => (
+                          <div key={i} className="flex gap-4">
+                            <Skeleton className="w-10 h-10 rounded-xl shrink-0" />
+                            <div className="flex-1 space-y-2">
+                              <Skeleton className="h-3 w-3/4" />
+                              <Skeleton className="h-2 w-1/4" />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <ListTopAlbum albums={albums} />
+                    )}
                   </div>
                 </div>
               </div>

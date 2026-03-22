@@ -1,5 +1,6 @@
 "use server";
 import { mapAlbumData, RawAlbumFromSupabase } from "../utils/common/mappers";
+import { AlbumType } from "../utils/types/type";
 import { createClient } from "../../lib/supabase/server";
 import { AlbumInput, albumSchema } from "../../lib/schema/schema-album";
 
@@ -80,6 +81,34 @@ export const getALbumsTopViews = async () => {
   return albumsWithViews;
 };
 
+export const getAlbumsNew = async () => {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("albums")
+    .select(
+      `
+            *,
+            album_categories (
+                category_id,
+                categories (title)
+            ),
+            chapters (
+                *,
+                chapter_images!chapter_images_chapter_id_fkey (*)
+            )
+        `
+    )
+    .order("id", { ascending: false })
+    .limit(16);
+
+  if (error) {
+    console.error("Error fetching new albums:", error);
+    return [];
+  }
+
+  return (data as RawAlbumFromSupabase[]).map(album => mapAlbumData(album) as unknown as AlbumType);
+};
+
 export const getAlbums = async () => {
   const { user, role, supabase } = await getCurrentUserSession();
 
@@ -110,7 +139,7 @@ export const getAlbums = async () => {
     throw new Error(error.message);
   }
   const formattedData = data.map((album) =>
-    mapAlbumData(album as RawAlbumFromSupabase)
+    mapAlbumData(album as RawAlbumFromSupabase) as unknown as AlbumType
   );
   return formattedData;
 };
