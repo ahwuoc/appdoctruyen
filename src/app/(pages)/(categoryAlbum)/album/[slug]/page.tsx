@@ -269,7 +269,7 @@ export default function Page({ params }: PageProps) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Nhà phát hành</span>
-                  <span className="text-gray-300">Team Anh Quoc</span>
+                  <span className="text-gray-300">mimi Team</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Độ tuổi</span>

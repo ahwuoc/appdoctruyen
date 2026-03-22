@@ -77,7 +77,7 @@ export function SiteHeader() {
               <Home className="w-5 h-5 text-white" />
             </div>
             <span className="hidden md:inline-block font-black italic text-xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
-              TRUYỆN CHỮ
+              mimi
             </span>
           </Link>
         </div>

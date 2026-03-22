@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "App Đọc Truyện Online",
-    short_name: "AppDocTruyen",
-    description: "Trang web đọc truyện tranh online miễn phí cập nhật mới nhất Manga, Manhwa, Manhua.",
+    name: "mimi - Đọc Truyện Online",
+    short_name: "mimi",
+    description: "mimi - Trang web đọc truyện tranh online miễn phí cập nhật mới nhất Manga, Manhwa, Manhua.",
     start_url: "/",
     display: "standalone",
     background_color: "#151d35",

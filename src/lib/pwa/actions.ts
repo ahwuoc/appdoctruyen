@@ -40,7 +40,7 @@ export async function sendNotification(message: string) {
         await webpush.sendNotification(
             subscription,
             JSON.stringify({
-                title: 'App đọc truyện',
+                title: 'mimi',
                 body: message,
                 icon: '/icon-192x192.png',
             })

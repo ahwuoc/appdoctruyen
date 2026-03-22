@@ -98,7 +98,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-black italic tracking-tighter text-lg bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                    TRUYỆN CHỮ
+                    mimi
                   </span>
                   <span className="truncate text-xs text-gray-500">Đọc truyện online</span>
                 </div>
