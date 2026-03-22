@@ -4,10 +4,8 @@ import { createContext, useContext, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { createSlug } from "../common/utils";
 
-// Tạo context
 const AlbumContext = createContext<((name: string, id: number) => void) | null>(null);
 
-// Tạo Provider
 export const AlbumProvider = ({ children }: { children: ReactNode; }) => {
   const router = useRouter();
 

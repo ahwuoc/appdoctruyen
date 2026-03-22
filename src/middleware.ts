@@ -8,10 +8,11 @@ type Cookie = {
   options?: Record<string, unknown>;
 };
 
-// =============Const Const============
-export const protectedRoutes = ["/dashboard", "/profile"];
+// ============= Tuyến đường cần bảo vệ ============
+export const protectedRoutes = ["/dashboard", "/profile", "/manager"];
 export const authRoutes = ["/login", "/register"];
-// ===============End Const==================
+export const managerOnlyRoutes = ["/manager"];
+// ===============================================
 
 export async function middleware(request: NextRequest) {
   const cookieStore = await cookies();
@@ -36,16 +37,33 @@ export async function middleware(request: NextRequest) {
     error,
   } = await supabase.auth.getUser();
 
+  const pathname = request.nextUrl.pathname;
+
   const isProtectedRoute = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
+    pathname.startsWith(route)
   );
 
   if (isProtectedRoute && (!user || error)) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  const isManagerRoute = managerOnlyRoutes.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  if (isManagerRoute && user) {
+    const role = user.user_metadata?.role || "USER";
+    console.warn("role", role);
+
+    if (role === "USER") {
+      console.warn(`[Middleware] Chặn truy cập trái phép: User ${user.email} đang cố vào /manager`);
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  // 3. Đã đăng nhập rồi thì không vào lại trang Login/Register
   const isAuthRoute = authRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
+    pathname.startsWith(route)
   );
 
   if (isAuthRoute && user) {

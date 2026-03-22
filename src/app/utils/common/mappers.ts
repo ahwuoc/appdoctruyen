@@ -6,7 +6,9 @@ export type RawAlbumFromSupabase =
     album_categories: (Database["public"]["Tables"]["album_categories"]["Row"] & {
       categories: Database["public"]["Tables"]["categories"]["Row"];
     })[];
-    chapters: Database["public"]["Tables"]["chapters"]["Row"][];
+    chapters: (Database["public"]["Tables"]["chapters"]["Row"] & {
+      chapter_images: Database["public"]["Tables"]["chapter_images"]["Row"][];
+    })[];
   };
 
 type toNull<T> = {
@@ -23,13 +25,22 @@ export const mapAlbumData = (album: RawAlbumFromSupabase): AlbumConvert => ({
   id: album.id,
   title: album.title,
   image_url: album.image_url,
-  chapters: album.chapters.map((chapter) => ({
-    id: chapter.id,
-    title: chapter.title,
-    view: chapter.views ?? 0,
-    created_at: chapter.created_at,
-    sort_order: chapter.order_sort,
-  })),
+  chapters: album.chapters
+    .sort((a, b) => (a.order_sort ?? 0) - (b.order_sort ?? 0))
+    .map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      view: chapter.views ?? 0,
+      created_at: chapter.created_at,
+      order_sort: chapter.order_sort ?? 0,
+      images: chapter.chapter_images
+        ?.sort((a, b) => (a.order_sort ?? 0) - (b.order_sort ?? 0))
+        .map((img) => ({
+          id: img.id,
+          image_path: img.image_url,
+          order_sort: img.order_sort ?? 0
+        }))
+    })),
   content: album.content,
   categories: album.album_categories.map((cat) => ({
     id: cat.category_id,

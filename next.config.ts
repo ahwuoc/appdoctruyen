@@ -1,27 +1,39 @@
-/** @type {import('next').NextConfig} */
-import withPWA from "next-pwa";
+import type { NextConfig } from "next";
 
-const pwaConfig = withPWA({
-  dest: "public",
-  register: true,
-  skipWaiting: true,
-  disable: false,
-  cacheOnFrontEndNav: true,
-  reloadOnOnline: true,
-});
-
-const nextConfig = {
+const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
   images: {
-    domains: [
-      "i.hinhhinh.com",
-      "example.com",
-      "cmangax.com",
-      "cmangax.com",
-      "cmangag.com",
-      "hlafeihngnjueskyjfmh.supabase.co",
-      "hlafeihngnjueskyjfmh.supabase.co",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'hlafeihngnjueskyjfmh.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'scephwyrmfmyzdjbuxgp.supabase.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'imgs.search.brave.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
 
-export default pwaConfig(nextConfig);
+export default nextConfig;

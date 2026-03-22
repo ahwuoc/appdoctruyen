@@ -1,9 +1,17 @@
 "use server";
 import { mapAlbumData, RawAlbumFromSupabase } from "../utils/common/mappers";
-import { supabase } from "../../lib/supabase/supabaseClient";
+import { createClient } from "../../lib/supabase/server";
 import { AlbumInput, albumSchema } from "../../lib/schema/schema-album";
 
+const getCurrentUserSession = async () => {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const role = user?.user_metadata?.role || "USER";
+  return { user, role, supabase };
+};
+
 export const getAlbumTopChapters = async () => {
+  const supabase = await createClient();
   const { data, error } = await supabase.from("albums").select(
     `
         id,
@@ -35,6 +43,7 @@ export const getAlbumTopChapters = async () => {
 };
 
 export const getALbumsTopViews = async () => {
+  const supabase = await createClient();
   const supabaseQuery = supabase
     .from("albums")
     .select(
@@ -68,12 +77,13 @@ export const getALbumsTopViews = async () => {
       ...album,
       rank: index + 1,
     }));
-  console.log(albumsWithViews);
-
   return albumsWithViews;
 };
+
 export const getAlbums = async () => {
-  const supabaseQuery = supabase
+  const { user, role, supabase } = await getCurrentUserSession();
+
+  let supabaseQuery = supabase
     .from("albums")
     .select(
       `
@@ -90,6 +100,10 @@ export const getAlbums = async () => {
     )
     .order("updated_at", { ascending: false });
 
+  if (role === "AUTHOR" && user) {
+    supabaseQuery = supabaseQuery.eq("author_id", user.id);
+  }
+
   const { data, error } = await supabaseQuery;
   if (error) {
     console.error("Error fetching albums:", error);
@@ -100,7 +114,9 @@ export const getAlbums = async () => {
   );
   return formattedData;
 };
+
 export const getAlbumId = async (id: number) => {
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("albums")
     .select(
@@ -123,8 +139,9 @@ export const getAlbumId = async (id: number) => {
 };
 
 export const ImageUpload = async (image: File): Promise<string | undefined> => {
+  const supabase = await createClient();
   const bucketName = "album-images";
-  const filePath = `public/${image.name}`;
+  const filePath = `public/${Date.now()}_${image.name}`; // Thêm timestamp để tránh trùng file
   try {
     const { data, error } = await supabase.storage
       .from(bucketName)
@@ -147,23 +164,23 @@ export const ImageUpload = async (image: File): Promise<string | undefined> => {
     throw error;
   }
 };
+
 const safeParseAlbum = (album: AlbumInput) => {
   const parseResult = albumSchema.safeParse(album);
 
   if (!parseResult.success) {
     throw new Error(`Dữ liệu không hợp lệ ${parseResult.error.message}`);
   }
-  const { data: validatedAlbum } = parseResult;
   return parseResult.data;
 };
 
 export const PostAlbum = async (album: AlbumInput) => {
   try {
+    const { user, supabase } = await getCurrentUserSession();
+    if (!user) throw new Error("Vui lòng đăng nhập.");
+
     const validatedAlbum = safeParseAlbum(album);
-    if (
-      !validatedAlbum.imageFile ||
-      !(validatedAlbum.imageFile instanceof File)
-    ) {
+    if (!validatedAlbum.imageFile || !(validatedAlbum.imageFile instanceof File)) {
       throw new Error("Ảnh không hợp lệ hoặc không được cung cấp.");
     }
     const publicUrl = await ImageUpload(validatedAlbum.imageFile);
@@ -175,13 +192,14 @@ export const PostAlbum = async (album: AlbumInput) => {
           title: validatedAlbum.title,
           content: validatedAlbum.content ?? null,
           image_url: publicUrl,
+          author_id: user.id, // TỰ ĐỘNG GÁN AUTHOR_ID KHI TẠO MỚI
         },
       ])
       .select()
       .single();
-    if (error) {
-      console.error("L��i thêm album:", error.message);
-    }
+
+    if (error) throw new Error(error.message);
+
     const albumId = data?.id;
     if (validatedAlbum.categoryIds?.length > 0) {
       const categoryRows = validatedAlbum.categoryIds.map((categoryId) => ({
@@ -189,24 +207,19 @@ export const PostAlbum = async (album: AlbumInput) => {
         category_id: categoryId,
       }));
 
-      const { error: categoryError } = await supabase
-        .from("album_categories")
-        .insert(categoryRows);
-
-      if (categoryError) {
-        throw new Error(`Lỗi thêm danh mục: ${categoryError.message};`);
-      }
+      await supabase.from("album_categories").insert(categoryRows);
     }
-    console.log("✅ Thêm sản phẩm thành công:", data);
+    console.log("✅ Thêm truyện thành công!");
     return data;
-  } catch (error) {
-    console.error("Lỗi trong quá trình đăng album:", error);
+  } catch (error: any) {
+    console.error("Lỗi trong quá trình đăng album:", error.message);
     return null;
   }
 };
 
 export const UpdateAlbum = async (id: number, data: AlbumInput) => {
   try {
+    const { supabase } = await getCurrentUserSession();
     const validatedAlbum = safeParseAlbum(data);
     let newImageUrl: string | undefined;
 
@@ -215,16 +228,12 @@ export const UpdateAlbum = async (id: number, data: AlbumInput) => {
         throw new Error("File ảnh không hợp lệ.");
       }
 
-      const { data: currentAlbum, error: fetchError } = await supabase
+      const { data: currentAlbum } = await supabase
         .from("albums")
         .select("image_url")
         .eq("id", id)
         .single();
 
-      if (fetchError) {
-        throw new Error(`Không tìm thấy album: ${fetchError.message}`);
-      }
-      newImageUrl = currentAlbum?.image_url;
       if (currentAlbum?.image_url) {
         const oldImageUrlParts = currentAlbum.image_url.split("/");
         const oldFileName = oldImageUrlParts[oldImageUrlParts.length - 1];
@@ -234,22 +243,21 @@ export const UpdateAlbum = async (id: number, data: AlbumInput) => {
             .from("album-images")
             .remove([`public/${oldFileName}`]);
         }
-        newImageUrl = await ImageUpload(validatedAlbum.imageFile);
       }
       newImageUrl = await ImageUpload(validatedAlbum.imageFile);
     }
+
     const { error } = await supabase
       .from("albums")
       .update({
         title: validatedAlbum.title,
         content: validatedAlbum.content ?? null,
         image_url: newImageUrl,
+        status: validatedAlbum.status, // Cập nhật trạng thái (PENDING, PUBLISHED, etc.)
       })
-      .eq("id", id);
+      .eq("id", id); // RLS SẼ CHẶN NẾU KHÔNG PHẢI CHỈNH SỬA TRUYỆN CỦA MÌNH
 
-    if (error) {
-      throw new Error("Lỗi cập nhật album: " + error.message);
-    }
+    if (error) throw new Error(error.message);
 
     if (validatedAlbum.categoryIds) {
       await supabase.from("album_categories").delete().eq("album_id", id);
@@ -257,19 +265,38 @@ export const UpdateAlbum = async (id: number, data: AlbumInput) => {
         album_id: id,
         category_id,
       }));
-      const { error: categoryError } = await supabase
-        .from("album_categories")
-        .insert(categoryData);
+      await supabase.from("album_categories").insert(categoryData);
+    }
 
-      if (categoryError) {
-        throw new Error(`Lỗi cập nhật danh mục: ${categoryError.message}`);
+    return { success: true };
+  } catch (error: any) {
+    console.error("Lỗi khi cập nhật album:", error.message);
+    throw error;
+  }
+};
+
+export const DeleteAlbum = async (id: number) => {
+  try {
+    const { supabase } = await getCurrentUserSession();
+    const { data: album } = await supabase
+      .from("albums")
+      .select("image_url")
+      .eq("id", id)
+      .single();
+
+    if (album?.image_url) {
+      const fileName = album.image_url.split("/").pop();
+      if (fileName) {
+        await supabase.storage.from("album-images").remove([`public/${fileName}`]);
       }
     }
 
-    console.log("✅ Cập nhật album thành công!");
+    const { error } = await supabase.from("albums").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+
     return { success: true };
-  } catch (error) {
-    console.error("Lỗi khi cập nhật album:", error);
-    throw error;
+  } catch (error: any) {
+    console.error("Lỗi xóa album:", error.message);
+    return { success: false };
   }
 };

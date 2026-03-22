@@ -21,13 +21,13 @@ export interface ChapterType {
   view: number;
   created_at: string | null;
   images?: ImageType[];
-  sort_order: number;
+  order_sort: number; // Đổi từ sort_order sang order_sort
 }
 
 export interface ImageType {
   id: number;
   image_path: string;
-  sort_order: number;
+  order_sort: number; // Đã đổi cho đồng bộ
 }
 export interface PaginatedProducts {
   data: AlbumType[];
