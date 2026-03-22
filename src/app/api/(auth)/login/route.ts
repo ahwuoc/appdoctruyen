@@ -15,7 +15,7 @@ const loginWithSupabase = async (credentials: LoginInput) => {
           const cookieStore = await cookies();
           return cookieStore.getAll();
         },
-        async setAll(cookiesToSet) {
+        async setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
           const cookieStore = await cookies();
           cookiesToSet.forEach(({ name, value, options: supabaseOptions }) => {
             const nextJsCookieOptions: Partial<ResponseCookie> = {
