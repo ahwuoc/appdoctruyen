@@ -37,10 +37,17 @@ interface Props {
     nextOrder?: number;
 }
 
+interface PreviewImage {
+    id: string | number;
+    url: string;
+    file?: File;
+    isExisting: boolean;
+}
+
 const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 });
-    const [previewImages, setPreviewImages] = useState<any[]>([]);
+    const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { toast } = useToast();
 
@@ -60,14 +67,12 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
             setValue("content", chapter.content);
             setValue("order_sort", chapter.order_sort);
 
-            // Load existing images into previews
             if (chapter.chapter_images) {
                 const existingPreviews = chapter.chapter_images.map(img => ({
                     id: img.id,
                     url: img.image_url,
                     isExisting: true
                 }));
-                // Use functional update to avoid stale state if multiple effects run
                 setPreviewImages(existingPreviews);
             }
         } else {
@@ -87,14 +92,14 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
             newSelectedFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
             const currentSelectedFiles = watch("imageFiles") || [];
             const allSelectedFiles = [...currentSelectedFiles, ...newSelectedFiles];
-            const existingPreviews = previewImages.filter((p: any) => p.isExisting);
+            const existingPreviews = previewImages.filter((p) => p.isExisting);
             const newPreviews = allSelectedFiles.map((file, idx) => ({
                 id: `new-${Date.now()}-${idx}`,
                 file,
                 url: URL.createObjectURL(file),
                 isExisting: false
             }));
-            previewImages.forEach((img: any) => {
+            previewImages.forEach((img) => {
                 if (!img.isExisting && img.url) URL.revokeObjectURL(img.url);
             });
 
@@ -104,21 +109,21 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
         }
     };
 
-    const handleSort = (newList: any[]) => {
+    const handleSort = (newList: PreviewImage[]) => {
         setPreviewImages(newList);
         const sortedFiles = newList
-            .filter((p: any) => !p.isExisting)
-            .map((p: any) => p.file);
+            .filter((p) => !p.isExisting && p.file)
+            .map((p) => p.file as File);
         setValue("imageFiles", sortedFiles);
     };
 
     const removeImage = async (index: number) => {
-        const preview = previewImages[index] as any;
+        const preview = previewImages[index];
 
         if (preview?.isExisting && preview.id) {
             if (!window.confirm("Bạn có chắc chắn muốn xóa vĩnh viễn ảnh này khỏi hệ thống?")) return;
             try {
-                await DeleteImage(preview.id, preview.url);
+                await DeleteImage(preview.id as number, preview.url);
                 toast({ title: "Đã xóa ảnh", description: "Ảnh đã được loại bỏ khỏi hệ thống." });
             } catch (error) {
                 toast({ title: "Lỗi", description: "Không thể xóa ảnh!", variant: "destructive" });
@@ -127,7 +132,7 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
         }
 
         const newPreviewList = [...previewImages];
-        const removed = newPreviewList.splice(index, 1)[0] as any;
+        const removed = newPreviewList.splice(index, 1)[0];
 
         // Revoke if it was a local file
         if (removed?.url && !removed.isExisting) {
@@ -136,11 +141,11 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
 
         // Update imageFiles state for newly added files
         const remainingFiles = newPreviewList
-            .filter((p: any) => !p.isExisting)
-            .map((p: any) => p.file);
+            .filter((p) => !p.isExisting && p.file)
+            .map((p) => p.file as File);
 
         setValue("imageFiles", remainingFiles);
-        setPreviewImages(newPreviewList as any);
+        setPreviewImages(newPreviewList);
     };
 
     const onFinish = async (data: ChapterInput) => {
