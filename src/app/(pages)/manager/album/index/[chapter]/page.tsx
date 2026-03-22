@@ -23,7 +23,6 @@ import { getAlbumId } from "../../../../../(action)/album";
 import { DeleteChapter, UpdateChapterOrder, DeleteImage } from "../../../../../(action)/chapter";
 import ImageComponents from "../../../../../components/ImageComponents";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
     Sheet,
@@ -322,15 +321,15 @@ export default function ChapterSort() {
     );
 }
 
-const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sortable }: { 
-    chapter: { id: number; title: string; order_sort: number; chapter_images?: { id: number; image_url: string; order_sort: number }[] }; 
-    isExpanded: boolean; 
-    toggleExpand: () => void; 
-    onEdit: () => void; 
-    onDelete: () => void; 
+const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sortable }: {
+    chapter: { id: number; title: string; order_sort: number; chapter_images?: { id: number; image_url: string; order_sort: number }[] };
+    isExpanded: boolean;
+    toggleExpand: () => void;
+    onEdit: () => void;
+    onDelete: () => void;
     onImageSort: (id: number, images: { id: number; image_url: string; order_sort: number }[]) => void;
     onDeleteImage: (id: number, url: string) => void;
-    sortable: boolean 
+    sortable: boolean
 }) => {
     return (
         <div className={`border rounded-[1.5rem] transition-all duration-300 ${isExpanded ? 'bg-white/10 border-blue-500/50 shadow-2xl' : 'bg-white/5 border-white/5 hover:border-white/10'}`}>
@@ -350,10 +349,20 @@ const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sort
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <Button variant="ghost" size="icon" onClick={onEdit} className="w-10 h-10 hover:bg-white/10 text-gray-400 hover:text-white rounded-xl">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onEdit}
+                        className="w-10 h-10 bg-white/10 border border-white/5 hover:bg-blue-600 hover:text-white rounded-xl transition-all shadow-lg"
+                    >
                         <Pencil className="w-4 h-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={onDelete} className="w-10 h-10 hover:bg-red-600/10 text-gray-400 hover:text-red-500 rounded-xl">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onDelete}
+                        className="w-10 h-10 bg-white/10 border border-white/5 hover:bg-rose-600 hover:text-white rounded-xl transition-all shadow-lg"
+                    >
                         <Trash2 className="w-4 h-4" />
                     </Button>
                     <div className="w-px h-6 bg-white/10 mx-1" />
@@ -361,7 +370,7 @@ const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sort
                         variant="ghost"
                         size="icon"
                         onClick={toggleExpand}
-                        className={`w-10 h-10 rounded-xl ${isExpanded ? 'bg-blue-600 text-white' : 'text-gray-500'}`}
+                        className={`w-10 h-10 rounded-xl transition-all shadow-lg ${isExpanded ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]' : 'bg-white/10 border border-white/5 text-slate-400 hover:bg-white/20 hover:text-white'}`}
                     >
                         {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                     </Button>
@@ -387,8 +396,8 @@ const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sort
                                     <ImageComponents image={{ src: img.image_url, name: "p" }} />
                                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <div className="flex flex-col gap-2">
-                                            <Button size="icon" variant="ghost" className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20"><Eye className="w-4 h-4" /></Button>
-                                            <Button size="icon" variant="destructive" className="w-8 h-8 rounded-full"><Trash2 className="w-4 h-4" /></Button>
+                                            <Button size="icon" variant="ghost" className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30"><Eye className="w-4 h-4" /></Button>
+                                            <Button size="icon" variant="ghost" className="w-8 h-8 rounded-full bg-rose-600/80 hover:bg-rose-600"><Trash2 className="w-4 h-4 text-white" /></Button>
                                         </div>
                                     </div>
                                     <div className="absolute top-1 left-1 bg-black/60 px-1 rounded text-[8px] font-black">{img.order_sort}</div>

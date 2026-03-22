@@ -120,12 +120,12 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                 >
                     {/* Image Upload Area */}
                     <div className="group relative">
-                        <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500 mb-4 block flex items-center gap-2">
+                        <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-mimi-blue mb-4 block flex items-center gap-2">
                             <ImagePlus className="w-4 h-4" /> ẢNH BÌA TRUYỆN (3:4.5)
                         </Label>
                         <div
                             onClick={() => fileInputRef.current?.click()}
-                            className={`relative aspect-[3/4.5] w-full max-w-[220px] mx-auto rounded-[2.5rem] border-2 border-dashed border-white/10 hover:border-blue-500/50 bg-white/5 overflow-hidden transition-all duration-500 cursor-pointer flex flex-col items-center justify-center gap-4 group/img shadow-2xl ${previewImage ? 'border-solid' : ''}`}
+                            className={`relative aspect-[3/4.5] w-full max-w-[220px] mx-auto rounded-[2.5rem] border-2 border-dashed border-mimi-border hover:border-mimi-blue/50 bg-mimi-hover overflow-hidden transition-all duration-500 cursor-pointer flex flex-col items-center justify-center gap-4 group/img shadow-2xl ${previewImage ? 'border-solid' : ''}`}
                         >
                             {previewImage ? (
                                 <>
@@ -136,7 +136,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                                         className="object-cover group-hover/img:scale-110 transition-transform duration-700"
                                         unoptimized
                                     />
-                                    <div className="absolute inset-0 bg-blue-600/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                                    <div className="absolute inset-0 bg-mimi-blue/40 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                                         <div className="bg-white/20 p-4 rounded-full border border-white/40 shadow-2xl scale-50 group-hover/img:scale-100 transition-transform">
                                             <ImagePlus className="w-8 h-8 text-white" />
                                         </div>
@@ -144,12 +144,12 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                                 </>
                             ) : (
                                 <div className="text-center p-6 space-y-4">
-                                    <div className="w-16 h-16 bg-blue-600/10 rounded-full flex items-center justify-center mx-auto border border-blue-600/20 group-hover:bg-blue-600/30 transition-all">
-                                        <ImagePlus className="w-8 h-8 text-blue-500" />
+                                    <div className="w-16 h-16 bg-mimi-blue/10 rounded-full flex items-center justify-center mx-auto border border-mimi-blue/20 group-hover:bg-mimi-blue/30 transition-all">
+                                        <ImagePlus className="w-8 h-8 text-mimi-blue" />
                                     </div>
                                     <div className="space-y-1 px-4">
                                         <p className="text-[10px] font-black text-white tracking-widest uppercase mb-1">Upload Poster</p>
-                                        <p className="text-[8px] text-gray-500 uppercase tracking-tighter opacity-50 italic leading-tight">Click để chọn ảnh bìa sắc nét (600x900px)</p>
+                                        <p className="text-[8px] text-mimi-muted uppercase tracking-tighter opacity-50 italic leading-tight">Click để chọn ảnh bìa sắc nét (600x900px)</p>
                                     </div>
                                 </div>
                             )}
@@ -166,7 +166,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
 
                     {/* Title */}
                     <div className="space-y-4">
-                        <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500 flex items-center gap-2 pr-2">
+                        <Label htmlFor="title" className="text-[10px] font-black uppercase tracking-[0.3em] text-mimi-blue flex items-center gap-2 pr-2">
                             <Type className="w-4 h-4" /> THÔNG TIN TÊN TÁC PHẨM
                         </Label>
                         <Controller
@@ -175,7 +175,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                             render={({ field }) => (
                                 <Input
                                     {...field}
-                                    className="h-16 bg-white/[0.03] border-white/5 rounded-2xl focus:border-blue-500/50 focus:ring-blue-500/20 text-white font-black text-xl placeholder:text-gray-800 outline-none transition-all px-8 uppercase tracking-tighter italic"
+                                    className="h-16 bg-mimi-glass/20 border-mimi-border rounded-2xl focus:border-mimi-blue/50 focus:ring-mimi-blue/20 text-white font-black text-xl placeholder:text-mimi-muted outline-none transition-all px-8 uppercase tracking-tighter italic"
                                     placeholder="Nhập tên truyện..."
                                 />
                             )}
@@ -185,7 +185,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
 
                     {/* Content */}
                     <div className="space-y-4">
-                        <Label htmlFor="content" className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500 flex items-center gap-2">
+                        <Label htmlFor="content" className="text-[10px] font-black uppercase tracking-[0.3em] text-mimi-blue flex items-center gap-2">
                             <AlignLeft className="w-4 h-4" /> TÓM TẮT CỐT TRUYỆN
                         </Label>
                         <Controller
@@ -194,7 +194,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                             render={({ field }) => (
                                 <Textarea
                                     {...field}
-                                    className="min-h-[160px] bg-white/[0.03] border-white/5 rounded-[1.5rem] focus:border-blue-500/50 focus:ring-blue-500/20 text-gray-200 leading-relaxed placeholder:text-gray-800 resize-none p-8 text-sm font-medium"
+                                    className="min-h-[160px] bg-mimi-glass/20 border-mimi-border rounded-[1.5rem] focus:border-mimi-blue/50 focus:ring-mimi-blue/20 text-mimi-muted leading-relaxed placeholder:text-gray-800 resize-none p-8 text-sm font-medium"
                                     placeholder="Viết lời giới thiệu ấn tượng..."
                                 />
                             )}
@@ -205,19 +205,19 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                     {/* Categories Selector */}
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-500 flex items-center gap-2">
+                            <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-mimi-blue flex items-center gap-2">
                                 <Tags className="w-4 h-4" /> CHỌN PHÂN LOẠI THỂ LOẠI
                             </Label>
-                            <Badge variant="outline" className="bg-blue-600/10 border-blue-500/20 text-blue-400 font-black text-[9px] px-3">{categoryIds.length} ĐÃ CHỌN</Badge>
+                            <Badge variant="outline" className="bg-mimi-blue/10 border-mimi-blue/20 text-mimi-blue font-black text-[9px] px-3">{categoryIds.length} ĐÃ CHỌN</Badge>
                         </div>
-                        <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 bg-white/[0.02] p-6 rounded-[2rem] border border-white/5 max-h-[400px] overflow-y-auto scrollbar-hide">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 bg-mimi-glass/10 p-6 rounded-[2rem] border border-mimi-border max-h-[400px] overflow-y-auto scrollbar-hide">
                             {categories.map((cat) => (
                                 <div
                                     key={cat.id}
                                     onClick={() => toggleCategory(cat.id)}
-                                    className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-300 active:scale-95 ${categoryIds.includes(cat.id) ? 'bg-blue-600/20 border-blue-500/50 text-blue-400 shadow-[0_0_20px_rgba(37,99,235,0.1)]' : 'bg-transparent border-transparent text-gray-600 hover:bg-white/5'}`}
+                                    className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-300 active:scale-95 ${categoryIds.includes(cat.id) ? 'bg-mimi-blue/20 border-mimi-blue/50 text-mimi-blue shadow-[0_0_20px_rgba(37,99,235,0.1)]' : 'bg-transparent border-transparent text-mimi-muted hover:bg-mimi-hover'}`}
                                 >
-                                    <div className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all ${categoryIds.includes(cat.id) ? 'bg-blue-600 border-blue-600' : 'border-gray-800'}`}>
+                                    <div className={`w-4 h-4 rounded-md border flex items-center justify-center transition-all ${categoryIds.includes(cat.id) ? 'bg-mimi-blue border-mimi-blue' : 'border-gray-800'}`}>
                                         {categoryIds.includes(cat.id) && <Check className="w-3 h-3 text-white" />}
                                     </div>
                                     <span className="text-[10px] font-black uppercase tracking-tighter truncate">{cat.title}</span>
@@ -232,11 +232,11 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                 </motion.div>
 
                 {/* Sticky Action Bar */}
-                <div className="absolute -left-10 -right-10 bottom-0 p-10 pt-12 bg-gradient-to-t from-[#0C1121] via-[#0C1121]/95 to-transparent border-t border-white/5 z-50">
+                <div className="absolute -left-10 -right-10 bottom-0 p-10 pt-12 bg-gradient-to-t from-mimi-dark via-mimi-dark/95 to-transparent border-t border-mimi-border z-50">
                     <Button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full h-16 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black text-lg gap-3 shadow-[0_15px_50px_rgba(37,99,235,0.4)] transition-all active:scale-95 group/btn overflow-hidden relative"
+                        className="w-full h-16 bg-mimi-blue hover:bg-mimi-blue/80 text-white rounded-2xl font-black text-lg gap-3 shadow-[0_15px_50px_rgba(37,99,235,0.4)] transition-all active:scale-95 group/btn overflow-hidden relative"
                     >
                         <AnimatePresence mode="wait">
                             {isLoading ? (

@@ -1,19 +1,27 @@
 import { Metadata, Viewport } from "next";
-import { Roboto } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
-const roboto = Roboto({
-  subsets: ["latin", "vietnamese"],
-  weight: ["300", "400", "500", "700", "900"],
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-outfit",
+  display: 'swap',
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-plus-jakarta",
   display: 'swap',
 });
 
 export const viewport: Viewport = {
-  themeColor: "#151d35",
+  themeColor: "#0C1121",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5, // Allow zooming for accessibility
+  maximumScale: 5,
   userScalable: true,
 };
 
@@ -34,13 +42,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
   },
   openGraph: {
     type: "website",
@@ -49,23 +50,7 @@ export const metadata: Metadata = {
     title: "mimi - App Đọc Truyện Online Miễn Phí",
     description: "mimi - Trang web đọc truyện tranh online miễn phí cập nhật mới nhất với hàng ngàn bộ truyện Manga, Manhwa, Manhua đủ các thể loại.",
     siteName: "mimi",
-    images: [
-      {
-        url: "/logo-white.png",
-        width: 1200,
-        height: 630,
-        alt: "mimi - App Đọc Truyện Online",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "mimi - App Đọc Truyện Online Miễn Phí",
-    description: "Trang web đọc truyện tranh online miễn phí cập nhật mới nhất Manga, Manhwa, Manhua.",
     images: ["/logo-white.png"],
-  },
-  verification: {
-    google: "google-site-verification-id", // User can update this
   },
 };
 
@@ -79,23 +64,23 @@ export default function RootLayout({
     "@type": "WebSite",
     "name": "mimi",
     "url": "https://appdoctruyen.id.vn",
-    "description": "mimi - Trang web đọc truyện tranh online miễn phí cập nhật mới nhất Manga, Manhwa, Manhua.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://appdoctruyen.id.vn/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
   };
 
   return (
-    <html lang="vi">
+    <html lang="vi" className={`${outfit.variable} ${plusJakarta.variable}`}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={roboto.className}>
+      <body className="font-sans antialiased selection:bg-mimi-blue/30 overflow-x-hidden bg-mimi-dark text-white">
+        <div className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.02] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+        <div className="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[120px] pointer-events-none"></div>
+        <div className="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-purple-600/10 blur-[120px] pointer-events-none"></div>
+        <div className="fixed top-[30%] right-[10%] w-[30%] h-[30%] rounded-full bg-cyan-600/5 blur-[100px] pointer-events-none"></div>
+
         <Providers>{children}</Providers>
       </body>
     </html>

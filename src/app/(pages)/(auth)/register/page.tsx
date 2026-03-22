@@ -55,11 +55,10 @@ const RegisterComponents = () => {
     };
 
     return (
-        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-[#060914] px-4 py-20">
-            {/* Background Decorations */}
+        <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-mimi-deep px-4 py-20">
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/20 blur-[120px] rounded-full" />
+                <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-mimi-blue/20 blur-[120px] rounded-full" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-mimi-purple/20 blur-[120px] rounded-full" />
             </div>
 
             <motion.div
@@ -76,9 +75,9 @@ const RegisterComponents = () => {
                             transition={{ delay: 0.2 }}
                             className="text-4xl font-black text-white mb-2 tracking-tight italic"
                         >
-                            TẠO <span className="text-blue-500">TÀI KHOẢN</span>
+                            TẠO <span className="text-mimi-blue">TÀI KHOẢN</span>
                         </motion.h1>
-                        <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em]">Tham gia cộng đồng tác giả</p>
+                        <p className="text-mimi-muted text-[10px] font-black uppercase tracking-[0.3em]">Tham gia cộng đồng tác giả</p>
                     </div>
 
                     <Form {...form}>
@@ -88,16 +87,16 @@ const RegisterComponents = () => {
                                 name="username"
                                 render={({ field }) => (
                                     <FormItem className="space-y-1.5">
-                                        <FormLabel className="text-gray-400 font-bold uppercase text-[10px] tracking-widest ml-1">Username</FormLabel>
+                                        <FormLabel className="text-mimi-muted font-bold uppercase text-[10px] tracking-widest ml-1">Username</FormLabel>
                                         <FormControl>
                                             <div className="group relative">
-                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-500 transition-colors">
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-mimi-muted group-focus-within:text-mimi-blue transition-colors">
                                                     <User className="w-5 h-5" />
                                                 </div>
                                                 <Input
                                                     {...field}
                                                     placeholder="tên_truy_cap_cua_ban"
-                                                    className="h-14 pl-12 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder:text-gray-600 font-medium"
+                                                    className="h-14 pl-12 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-mimi-blue/20 focus:border-mimi-blue/50 transition-all placeholder:text-gray-600 font-medium"
                                                 />
                                             </div>
                                         </FormControl>
@@ -111,16 +110,16 @@ const RegisterComponents = () => {
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem className="space-y-1.5">
-                                        <FormLabel className="text-gray-400 font-bold uppercase text-[10px] tracking-widest ml-1">Email Address</FormLabel>
+                                        <FormLabel className="text-mimi-muted font-bold uppercase text-[10px] tracking-widest ml-1">Email Address</FormLabel>
                                         <FormControl>
                                             <div className="group relative">
-                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-blue-500 transition-colors">
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-mimi-muted group-focus-within:text-mimi-blue transition-colors">
                                                     <Mail className="w-5 h-5" />
                                                 </div>
                                                 <Input
                                                     {...field}
                                                     placeholder="name@example.com"
-                                                    className="h-14 pl-12 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-blue-500/20 focus:border-blue-500/50 transition-all placeholder:text-gray-600 font-medium"
+                                                    className="h-14 pl-12 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-mimi-blue/20 focus:border-mimi-blue/50 transition-all placeholder:text-gray-600 font-medium"
                                                 />
                                             </div>
                                         </FormControl>
@@ -189,7 +188,7 @@ const RegisterComponents = () => {
                             <Button
                                 type="submit"
                                 disabled={form.formState.isSubmitting}
-                                className="w-full h-16 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-lg font-black shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all group active:scale-95 mt-2"
+                                className="w-full h-16 bg-mimi-blue hover:bg-mimi-blue/80 text-white rounded-2xl text-lg font-black shadow-[0_10px_30px_rgba(37,99,235,0.3)] transition-all group active:scale-95 mt-2"
                             >
                                 {form.formState.isSubmitting ? (
                                     <div className="flex items-center gap-2">
@@ -209,7 +208,7 @@ const RegisterComponents = () => {
                                     <span className="w-full border-t border-white/5" />
                                 </div>
                                 <div className="relative flex justify-center text-[10px] font-black uppercase">
-                                    <span className="bg-[#0b101f] px-4 text-gray-500 tracking-widest">Hoặc đăng ký bằng</span>
+                                    <span className="bg-mimi-deep px-4 text-mimi-muted tracking-widest">Hoặc đăng ký bằng</span>
                                 </div>
                             </div>
 
@@ -237,9 +236,9 @@ const RegisterComponents = () => {
                                 </Button>
                             </div>
 
-                            <div className="text-center text-xs text-gray-500 mt-6 font-medium">
+                            <div className="text-center text-xs text-mimi-muted mt-6 font-medium">
                                 ĐÃ CÓ TÀI KHOẢN?{" "}
-                                <Link href="/login" className="text-blue-500 hover:text-blue-400 font-black hover:underline transition-colors uppercase ml-1">
+                                <Link href="/login" className="text-mimi-blue hover:text-mimi-blue/80 font-black hover:underline transition-colors uppercase ml-1">
                                     Đăng nhập ngay
                                 </Link>
                             </div>

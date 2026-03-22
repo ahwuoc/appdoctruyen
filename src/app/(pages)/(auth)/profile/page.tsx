@@ -90,7 +90,7 @@ export default function ProfilePage() {
     };
 
     return (
-        <div className="min-h-screen bg-[#070B14] text-white p-4 md:p-10">
+        <div className="min-h-screen bg-mimi-dark text-white p-4 md:p-10 selection:bg-mimi-blue/30 font-body">
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ export default function ProfilePage() {
                         {/* Avatar */}
                         <div className="relative group">
                             <div className="w-32 h-32 md:w-40 md:h-40 rounded-[32px] bg-gradient-to-tr from-blue-500 to-purple-500 p-1">
-                                <div className="w-full h-full rounded-[28px] bg-[#0C1121] flex items-center justify-center overflow-hidden">
+                                <div className="w-full h-full rounded-[28px] bg-mimi-deep flex items-center justify-center overflow-hidden">
                                     {user?.avatar_url ? (
                                         <Image 
                                             src={user.avatar_url} 
@@ -117,11 +117,11 @@ export default function ProfilePage() {
                                             unoptimized
                                         />
                                     ) : (
-                                        <User size={64} className="text-gray-500" />
+                                        <User size={64} className="text-mimi-muted" />
                                     )}
                                 </div>
                             </div>
-                            <button className="absolute bottom-2 right-2 p-2 bg-blue-600 rounded-xl hover:bg-blue-500 transition-colors shadow-lg shadow-blue-600/50">
+                            <button className="absolute bottom-2 right-2 p-2 bg-mimi-blue rounded-xl hover:bg-mimi-blue/80 transition-colors shadow-lg shadow-mimi-blue/50">
                                 <Edit3 size={18} />
                             </button>
                         </div>
@@ -139,7 +139,7 @@ export default function ProfilePage() {
                             </p>
 
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                                <button className="px-6 py-3 bg-white text-black rounded-2xl font-bold flex items-center gap-2 hover:bg-gray-200 transition-colors">
+                                <button className="px-6 py-3 bg-mimi-blue text-white rounded-2xl font-bold flex items-center gap-2 hover:bg-mimi-blue/80 transition-colors shadow-[0_10px_30px_rgba(37,99,235,0.3)]">
                                     <Settings size={18} /> Cài đặt
                                 </button>
                                 <button
@@ -156,8 +156,8 @@ export default function ProfilePage() {
                 {/* Grid Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Thống kê nhanh */}
-                    <div className="bg-[#0C1121] border border-white/5 rounded-[32px] p-6 space-y-6">
-                        <h3 className="text-lg font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                    <div className="bg-mimi-deep border border-white/5 rounded-[32px] p-6 space-y-6">
+                        <h3 className="text-lg font-black uppercase tracking-widest text-mimi-muted flex items-center gap-2">
                             <Star size={18} className="text-yellow-400" /> Thông tin chung
                         </h3>
                         <div className="grid grid-cols-1 gap-4">
@@ -183,16 +183,16 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Quyền hạn */}
-                    <div className="bg-[#0C1121] border border-white/5 rounded-[32px] p-6 space-y-6">
-                        <h3 className="text-lg font-black uppercase tracking-widest text-gray-400 flex items-center gap-2">
+                    <div className="bg-mimi-deep border border-white/5 rounded-[32px] p-6 space-y-6">
+                        <h3 className="text-lg font-black uppercase tracking-widest text-mimi-muted flex items-center gap-2">
                             <ShieldAlert size={18} className="text-red-500" /> Quyền hạn hệ thống
                         </h3>
                         <div className="space-y-4">
                             <div className="flex gap-4 p-4 bg-white/5 rounded-2xl">
-                                <div className="w-1.5 h-auto bg-blue-500 rounded-full"></div>
+                                <div className="w-1.5 h-auto bg-mimi-blue rounded-full"></div>
                                 <div>
                                     <p className="font-bold mb-1">Quyền truy cập: {user?.role}</p>
-                                    <p className="text-sm text-gray-500">
+                                    <p className="text-sm text-mimi-muted">
                                         {user?.role === 'ADMIN' && "Bạn có toàn quyền quản trị hệ thống, người dùng và nội dung."}
                                         {user?.role === 'AUTHOR' && "Bạn có quyền đăng truyện, quản lý chương và xem thống kê truyện của mình."}
                                         {user?.role === 'USER' && "Bạn có quyền đọc truyện, bình luận và theo dõi các tác giả yêu thích."}
@@ -201,8 +201,8 @@ export default function ProfilePage() {
                             </div>
                             {user?.role !== 'USER' && (
                                 <button
-                                    onClick={() => router.push("/manager/album/index")}
-                                    className="w-full py-4 bg-blue-600/10 text-blue-500 border border-blue-500/10 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all flex items-center justify-center gap-2"
+                                    onClick={() => router.push("/manager/dashboard")}
+                                    className="w-full py-4 bg-mimi-blue/10 text-mimi-blue border border-mimi-blue/10 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-mimi-blue hover:text-white transition-all flex items-center justify-center gap-2"
                                 >
                                     <BookOpen size={18} /> Đi tới Dashboard
                                 </button>

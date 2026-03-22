@@ -35,8 +35,6 @@ export const loginUserAction = async (data: LoginInput) => {
 export const registerUserAction = async (data: RegisterInput) => {
     try {
         const supabase = await createClient();
-
-        // 1. Sign up user with default role USER
         const { data: authData, error } = await supabase.auth.signUp({
             email: data.email,
             password: data.password,
@@ -50,8 +48,6 @@ export const registerUserAction = async (data: RegisterInput) => {
 
         if (error) throw new Error(error.message);
         if (!authData.user) throw new Error("Không thể tạo tài khoản");
-
-        // 2. Map to profiles table
         const { error: profileError } = await supabase.from("profiles").upsert({
             id: authData.user.id,
             username: data.username,

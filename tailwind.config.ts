@@ -9,9 +9,26 @@ export default {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				display: ["var(--font-outfit)", "sans-serif"],
+				sans: ["var(--font-plus-jakarta)", "sans-serif"],
+				mono: ["JetBrains Mono", "monospace"],
+			},
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				mimi: {
+					blue: '#3b82f6',
+					cyan: '#06b6d4',
+					purple: '#8b5cf6',
+					dark: '#0C1121',
+					deep: '#060914',
+					glass: '#151d35',
+					card: '#121624',
+					muted: '#64748b',
+					border: 'rgba(255,255,255,0.08)',
+					hover: 'rgba(255,255,255,0.05)',
+				},
 				customBg: '#101739',
 				customBg2: '#6C74FC',
 				custombg3: '#151d35',

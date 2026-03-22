@@ -87,7 +87,7 @@ const ComicAlbumPage = () => {
                     title: "Thành công",
                     description: "Đã xóa bộ truyện khỏi hệ thống!",
                 });
-                fetchAlbums(); // Reload list
+                fetchAlbums();
             } else {
                 throw new Error("Xóa thất bại");
             }
@@ -100,26 +100,13 @@ const ComicAlbumPage = () => {
         }
     };
 
-    const handleLogout = async () => {
-        const result = await logoutUserAction();
-        if (result.success) {
-            toast({
-                title: "Đã đăng xuất",
-                description: "Hẹn gặp lại bạn!",
-            });
 
-            setTimeout(() => {
-                router.push("/login");
-                router.refresh();
-            }, 1000);
-        }
-    };
 
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="min-h-screen bg-[#0B0D17] text-slate-200 p-4 md:p-10 selection:bg-cyan-500/30"
+            className="min-h-screen bg-mimi-dark text-white p-4 md:p-10 selection:bg-mimi-cyan/30 overflow-x-hidden relative"
         >
             <div className="max-w-7xl mx-auto space-y-12">
                 {/* Global Glow Effects */}
@@ -132,18 +119,18 @@ const ComicAlbumPage = () => {
                 <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-8">
                     <div className="space-y-4">
                         <div className="flex items-center gap-3">
-                            <span className="h-[2px] w-12 bg-gradient-to-r from-cyan-500 to-transparent rounded-full" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-cyan-500/80 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
+                            <span className="h-[2px] w-12 bg-gradient-to-r from-mimi-cyan to-transparent rounded-full" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-mimi-cyan/80 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
                                 Command Center / Content
                             </span>
                         </div>
-                        <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase italic leading-none bg-gradient-to-br from-white via-white to-white/20 bg-clip-text text-transparent">
-                            KHO <span className="bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent drop-shadow-2xl">TRUYỆN</span>
+                        <h1 className="text-5xl md:text-8xl font-display font-black tracking-tighter uppercase italic leading-none bg-gradient-to-br from-white via-white to-white/20 bg-clip-text text-transparent">
+                            KHO <span className="bg-gradient-to-r from-mimi-cyan to-mimi-blue bg-clip-text text-transparent drop-shadow-2xl">TRUYỆN</span>
                         </h1>
-                        <div className="flex items-center gap-4 text-slate-500 border-l-2 border-cyan-500/30 pl-6 py-2">
+                        <div className="flex items-center gap-4 text-mimi-muted border-l-2 border-mimi-cyan/30 pl-6 py-2">
                             <div className="flex flex-col">
-                                <span className="text-[10px] uppercase font-black tracking-widest text-slate-600">Database Status</span>
-                                <span className="text-white font-black text-xl tabular-nums">{albums.length} <span className="text-slate-500 text-sm font-bold italic">Tác phẩm</span></span>
+                                <span className="text-[10px] uppercase font-black tracking-widest text-mimi-muted">Database Status</span>
+                                <span className="text-white font-black text-xl tabular-nums">{albums.length} <span className="text-mimi-muted text-sm font-bold italic">Tác phẩm</span></span>
                             </div>
                         </div>
                     </div>
@@ -151,26 +138,20 @@ const ComicAlbumPage = () => {
                     <div className="flex items-center gap-4">
                         <Button
                             variant="outline"
-                            className="h-16 px-6 bg-white/[0.02] border-white/5 rounded-2xl hover:bg-white/10 text-slate-400 transition-all gap-2 group"
+                            className="h-16 px-6 bg-white/[0.02] border-white/5 rounded-2xl hover:bg-white/10 text-mimi-muted transition-all gap-2 group"
                         >
-                            <Filter className="w-5 h-5 group-hover:text-cyan-400 transition-colors" />
+                            <Filter className="w-5 h-5 group-hover:text-mimi-cyan transition-colors" />
                             <span className="hidden sm:inline font-black uppercase text-[10px] tracking-widest">Filter System</span>
                         </Button>
 
                         <div className="flex items-center gap-4">
-                            <Button
-                                onClick={handleLogout}
-                                variant="outline"
-                                className="bg-rose-500/5 border-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-2xl h-16 px-6 font-black uppercase text-[10px] tracking-widest transition-all"
-                            >
-                                Logout
-                            </Button>
+
                             <Button
                                 onClick={() => {
                                     setSelectedAlbum(undefined);
                                     setIsOpen(true);
                                 }}
-                                className="relative overflow-hidden bg-white text-black hover:scale-105 transition-all duration-300 rounded-2xl h-16 px-10 font-black flex items-center gap-3 shadow-[0_20px_40px_-15px_rgba(255,255,255,0.3)]"
+                                className="relative overflow-hidden bg-mimi-blue text-white hover:bg-mimi-blue/80 hover:scale-105 transition-all duration-300 rounded-2xl h-16 px-10 font-black flex items-center gap-3 shadow-[0_20px_40px_-15px_rgba(37,99,235,0.4)] active:scale-95"
                             >
                                 <Plus size={24} strokeWidth={3} />
                                 <span className="uppercase italic tracking-tighter text-lg">Phát hành mới</span>
@@ -181,17 +162,18 @@ const ComicAlbumPage = () => {
 
                 {/* Table Section */}
                 <div className="relative z-10">
-                    <Card className="bg-[#121624]/60 backdrop-blur-2xl border-white/[0.05] rounded-[3.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)]">
+                    <Card className="bg-mimi-card/40 backdrop-blur-3xl border-white/[0.05] rounded-[3.5rem] overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] relative">
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay"></div>
                         <CardContent className="p-0">
                             <div className="overflow-x-auto">
                                 <Table>
                                     <TableHeader className="bg-white/[0.02]">
                                         <TableRow className="border-white/[0.05] hover:bg-transparent">
-                                            <TableHead className="w-24 text-center font-black text-slate-600 uppercase text-[9px] tracking-[0.2em] py-8">UID</TableHead>
-                                            <TableHead className="w-32 font-black text-slate-600 uppercase text-[9px] tracking-[0.2em]">Visual</TableHead>
-                                            <TableHead className="font-black text-slate-600 uppercase text-[9px] tracking-[0.2em]">Metadata & Info</TableHead>
-                                            <TableHead className="hidden lg:table-cell font-black text-slate-600 uppercase text-[9px] tracking-[0.2em] text-center">Classification</TableHead>
-                                            <TableHead className="text-right font-black text-slate-600 uppercase text-[9px] tracking-[0.2em] pr-12">Control</TableHead>
+                                            <TableHead className="w-24 text-center font-black text-mimi-muted uppercase text-[9px] tracking-[0.2em] py-8">UID</TableHead>
+                                            <TableHead className="w-32 font-black text-mimi-muted uppercase text-[9px] tracking-[0.2em]">Visual</TableHead>
+                                            <TableHead className="font-black text-mimi-muted uppercase text-[9px] tracking-[0.2em]">Metadata & Info</TableHead>
+                                            <TableHead className="hidden lg:table-cell font-black text-mimi-muted uppercase text-[9px] tracking-[0.2em] text-center">Classification</TableHead>
+                                            <TableHead className="text-right font-black text-mimi-muted uppercase text-[9px] tracking-[0.2em] pr-12">Control</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -208,23 +190,23 @@ const ComicAlbumPage = () => {
                                             albums.map((album) => (
                                                 <TableRow key={album.id} className="border-white/[0.03] hover:bg-white/[0.02] transition-all group">
                                                     <TableCell className="text-center">
-                                                        <span className="font-mono text-slate-600 group-hover:text-cyan-500 transition-colors font-bold">
+                                                        <span className="font-mono text-mimi-muted group-hover:text-mimi-cyan transition-colors font-bold">
                                                             ID_{album.id.toString().padStart(4, '0')}
                                                         </span>
                                                     </TableCell>
                                                     <TableCell className="py-8">
-                                                        <div className="relative w-24 h-32 rounded-[2rem] overflow-hidden border-2 border-white/[0.05] group-hover:border-cyan-500/50 group-hover:scale-105 transition-all duration-500 shadow-2xl">
+                                                        <div className="relative w-24 h-32 rounded-[2rem] overflow-hidden border-2 border-white/[0.05] group-hover:border-mimi-cyan/50 group-hover:scale-105 transition-all duration-500 shadow-2xl">
                                                             <Image src={album.image_url || "https://placehold.co/400x600/121624/white?text=No+Cover"} alt="Cover" fill className="object-cover" unoptimized />
                                                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
                                                         <div className="space-y-2">
-                                                            <h3 className="font-black text-2xl text-white group-hover:text-cyan-400 transition-colors uppercase italic tracking-tighter">
+                                                            <h3 className="font-black text-2xl text-white group-hover:text-mimi-cyan transition-colors uppercase italic tracking-tighter">
                                                                 {album.title}
                                                             </h3>
                                                             <div className="flex items-center gap-4">
-                                                                <p className="text-slate-500 text-sm font-medium line-clamp-2 leading-relaxed max-w-md group-hover:text-slate-400 transition-colors">
+                                                                <p className="text-mimi-muted text-sm font-medium line-clamp-2 leading-relaxed max-w-md group-hover:text-slate-400 transition-colors">
                                                                     {album.content || "No intel available for this asset."}
                                                                 </p>
                                                             </div>
@@ -240,31 +222,31 @@ const ComicAlbumPage = () => {
                                                         </div>
                                                     </TableCell>
                                                     <TableCell className="text-right pr-12">
-                                                        <div className="flex justify-end gap-3 translate-x-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                                                        <div className="flex justify-end gap-3 transition-all duration-300">
                                                             <Button
                                                                 variant="ghost"
                                                                 size="icon"
-                                                                className="w-12 h-12 rounded-2xl bg-white/5 hover:bg-cyan-500 hover:text-black hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all"
+                                                                className="w-12 h-12 rounded-2xl bg-white/15 border border-white/10 hover:bg-mimi-cyan hover:text-black hover:shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all shadow-lg"
                                                                 onClick={() => openForm(album)}
                                                             >
-                                                                <Pencil className="w-5 h-5" />
+                                                                <Pencil className="w-5 h-5 text-mimi-cyan" />
                                                             </Button>
                                                             <Link href={`/manager/album/index/${album.id}`}>
                                                                 <Button
                                                                     variant="ghost"
                                                                     size="icon"
-                                                                    className="w-12 h-12 rounded-2xl bg-white/5 hover:bg-blue-600 hover:text-white hover:shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all"
+                                                                    className="w-12 h-12 rounded-2xl bg-white/15 border border-white/10 hover:bg-mimi-blue hover:text-white hover:shadow-[0_0_20px_rgba(37,99,235,0.5)] transition-all shadow-lg"
                                                                 >
-                                                                    <ListOrdered className="w-5 h-5" />
+                                                                    <ListOrdered className="w-5 h-5 text-mimi-blue" />
                                                                 </Button>
                                                             </Link>
                                                             <Button
                                                                 variant="ghost"
                                                                 size="icon"
-                                                                className="w-12 h-12 rounded-2xl bg-white/5 hover:bg-rose-600 hover:text-white hover:shadow-[0_0_20px_rgba(225,29,72,0.5)] transition-all"
+                                                                className="w-12 h-12 rounded-2xl bg-white/15 border border-white/10 hover:bg-rose-600 hover:text-white hover:shadow-[0_0_20px_rgba(225,29,72,0.5)] transition-all shadow-lg"
                                                                 onClick={() => handleDeleteAlbum(album.id)}
                                                             >
-                                                                <Trash2 className="w-5 h-5" />
+                                                                <Trash2 className="w-5 h-5 text-rose-600" />
                                                             </Button>
                                                         </div>
                                                     </TableCell>
@@ -281,10 +263,10 @@ const ComicAlbumPage = () => {
 
             {/* Premium Sheet */}
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                <SheetContent className="w-full sm:max-w-xl bg-[#0B0D17]/95 backdrop-blur-[50px] border-white/5 p-0 overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] z-[100]">
+                <SheetContent className="w-full sm:max-w-xl bg-mimi-deep/95 backdrop-blur-[50px] border-white/5 p-0 overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.8)] z-[100]">
                     <SheetHeader className="p-10 border-b border-white/5 bg-white/[0.02]">
                         <div className="space-y-2">
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-cyan-500">Asset Management</span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-mimi-cyan">Asset Management</span>
                             <SheetTitle className="text-4xl font-black italic tracking-tighter text-white uppercase leading-none">
                                 {selectedAlbum ? "Update Operations" : "Initialize New Asset"}
                             </SheetTitle>

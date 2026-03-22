@@ -3,21 +3,19 @@
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import
-{
-  Collapsible,
-  CollapsibleContent,
+import {
+Collapsible,
+CollapsibleContent,
 } from "@/components/ui/collapsible";
-import
-{
-  SidebarMenuSubButton,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
+import {
+SidebarMenuSubButton,
+SidebarGroup,
+SidebarGroupLabel,
+SidebarMenu,
+SidebarMenuButton,
+SidebarMenuItem,
+SidebarMenuSub,
+SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { IconType } from "react-icons";
 
@@ -34,22 +32,19 @@ export function NavMain({
     items?: {
       title: string;
       url: string;
+      icon?: LucideIcon | IconType;
     }[];
   }[];
-})
-{
-  const [openStates, setOpenStates] = useState<{ [key: string]: boolean; }>(() =>
-  {
+}) {
+  const [openStates, setOpenStates] = useState<{ [key: string]: boolean; }>(() => {
     const initialState: { [key: string]: boolean; } = {};
-    items.forEach((item) =>
-    {
+    items.forEach((item) => {
       initialState[item.title] = !!item.isActive;
     });
     return initialState;
   });
 
-  const toggleItem = (title: string) =>
-  {
+  const toggleItem = (title: string) => {
     setOpenStates((prev) => ({
       ...prev,
       [title]: !prev[title],
@@ -76,8 +71,7 @@ export function NavMain({
                       <ChevronRight
                         className={`ml-auto transition-transform ${openStates[item.title] ? "rotate-90" : ""
                           }`}
-                        onClick={(e) =>
-                        {
+                        onClick={(e) => {
                           e.preventDefault(); // Ngăn Link điều hướng khi có sub-items
                           toggleItem(item.title);
                         }}
@@ -110,9 +104,10 @@ export function NavMain({
                         <SidebarMenuSubButton asChild>
                           <Link
                             href={subItem.url}
-                            className="text-white hover:bg-gray-700 w-full flex items-center px-4 py-2 rounded"
+                            className="text-white hover:bg-mimi-hover w-full flex items-center px-4 py-2 rounded-xl transition-all gap-3 group/sub"
                           >
-                            <span>{subItem.title}</span>
+                            {subItem.icon && <subItem.icon className="w-4 h-4 text-mimi-muted group-hover/sub:text-mimi-cyan transition-colors" />}
+                            <span className="text-xs font-bold uppercase tracking-widest">{subItem.title}</span>
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

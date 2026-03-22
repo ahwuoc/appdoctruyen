@@ -72,7 +72,7 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; }) {
       {/* Navigation Buttons */}
       <div className="absolute top-1/2 -left-4 -translate-y-1/2 z-40 md:opacity-0 group-hover/carousel:opacity-100 transition-all duration-300">
         <button
-          className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-full hover:bg-blue-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] disabled:opacity-0 transition-all shadow-2xl"
+          className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-full hover:bg-mimi-blue hover:border-mimi-blue hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] disabled:opacity-0 transition-all shadow-2xl"
           onClick={goToPrev}
           disabled={currentPosition === 0}
         >
@@ -82,7 +82,7 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; }) {
 
       <div className="absolute top-1/2 -right-4 -translate-y-1/2 z-40 md:opacity-0 group-hover/carousel:opacity-100 transition-all duration-300">
         <button
-          className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-full hover:bg-blue-600 hover:border-blue-500 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] disabled:opacity-0 transition-all shadow-2xl"
+          className="w-12 h-12 flex items-center justify-center bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-full hover:bg-mimi-blue hover:border-mimi-blue hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] disabled:opacity-0 transition-all shadow-2xl"
           onClick={goToNext}
           disabled={currentPosition >= maxPosition}
         >
@@ -115,7 +115,7 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; }) {
               >
                 <motion.div
                   whileHover={{ y: -8 }}
-                  className="relative aspect-[3/4.5] rounded-2xl overflow-hidden border border-white/10 hover:border-blue-500/50 transition-all shadow-xl group/card"
+                  className="relative aspect-[3/4.5] rounded-2xl overflow-hidden border border-white/10 hover:border-mimi-blue/50 transition-all shadow-xl group/card"
                 >
                   <Image
                     src={album.image_url}
@@ -126,18 +126,18 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; }) {
                   />
 
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0C1121] via-[#0C1121]/20 to-transparent opacity-80 group-hover/card:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-mimi-dark via-mimi-dark/20 to-transparent opacity-80 group-hover/card:opacity-100 transition-opacity" />
 
                   {/* Content */}
                   <div className="absolute inset-0 p-4 flex flex-col justify-end">
                     <div className="translate-y-4 group-hover/card:translate-y-0 transition-transform duration-300">
-                      <Badge className="bg-blue-600/80 backdrop-blur-md mb-2 border-none font-bold">MỚI</Badge>
+                      <Badge className="bg-mimi-blue/80 backdrop-blur-md mb-2 border-none font-bold">MỚI</Badge>
                       <h4 className="font-black text-sm md:text-base leading-tight truncate uppercase tracking-tighter text-white">
                         {album.title}
                       </h4>
                       <div className="flex items-center gap-2 mt-2 opacity-0 group-hover/card:opacity-100 transition-opacity">
-                        <Play className="w-4 h-4 text-blue-500 fill-blue-500" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">Đọc ngay</span>
+                        <Play className="w-4 h-4 text-mimi-blue fill-mimi-blue" />
+                        <span className="text-[10px] font-black uppercase tracking-widest text-mimi-blue">Đọc ngay</span>
                       </div>
                     </div>
                   </div>
@@ -153,7 +153,7 @@ export default function SlideCard({ albums }: { albums: AlbumType[]; }) {
               </div>
             ))
           ) : (
-            <div className="w-full text-center py-20 text-gray-500 italic">Hệ thống đang cập nhật dữ liệu...</div>
+            <div className="w-full text-center py-20 text-mimi-muted italic">Hệ thống đang cập nhật dữ liệu...</div>
           )}
         </div>
       </div>

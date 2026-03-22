@@ -142,7 +142,7 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
                 {/* Info Section */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-1">
                     <div className="space-y-3">
-                        <Label className="text-[10px] font-black tracking-widest text-blue-500 uppercase flex items-center gap-2">
+                        <Label className="text-[10px] font-black tracking-widest text-mimi-blue uppercase flex items-center gap-2">
                             <Hash className="w-4 h-4" /> Số thứ tự (Tự động)
                         </Label>
                         <Controller
@@ -159,7 +159,7 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
                         />
                     </div>
                     <div className="space-y-3">
-                        <Label className="text-[10px] font-black tracking-widest text-blue-500 uppercase flex items-center gap-2">
+                        <Label className="text-[10px] font-black tracking-widest text-mimi-blue uppercase flex items-center gap-2">
                             <Type className="w-4 h-4" /> Tên chương
                         </Label>
                         <Controller
@@ -177,20 +177,20 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
                 </div>
 
                 <div className="space-y-4">
-                    <Label className="text-[10px] font-black tracking-widest text-blue-500 uppercase flex items-center gap-2">
+                    <Label className="text-[10px] font-black tracking-widest text-mimi-blue uppercase flex items-center gap-2">
                         <ImageIcon className="w-4 h-4" /> TẢI LÊN HÌNH ẢNH NỘI DUNG ({previewImages.length} ảnh)
                     </Label>
 
                     <div
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-full bg-blue-600/5 border-2 border-dashed border-white/10 rounded-3xl p-10 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-blue-600/10 hover:border-blue-500/50 transition-all group"
+                        className="w-full bg-mimi-blue/5 border-2 border-dashed border-white/10 rounded-3xl p-10 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-mimi-blue/10 hover:border-mimi-blue/50 transition-all group"
                     >
-                        <div className="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center border border-blue-500/30 group-hover:scale-110 transition-transform">
-                            <ImagePlus className="w-8 h-8 text-blue-500" />
+                        <div className="w-16 h-16 bg-mimi-blue/20 rounded-full flex items-center justify-center border border-mimi-blue/30 group-hover:scale-110 transition-transform">
+                            <ImagePlus className="w-8 h-8 text-mimi-blue" />
                         </div>
                         <div className="text-center">
                             <p className="text-sm font-black text-white uppercase tracking-widest">Chọn nhiều ảnh cùng lúc</p>
-                            <p className="text-[10px] text-gray-500 uppercase mt-1 italic">Kéo thả hoặc nhấp để tải lên toàn bộ chương</p>
+                            <p className="text-[10px] text-mimi-muted uppercase mt-1 italic">Kéo thả hoặc nhấp để tải lên toàn bộ chương</p>
                         </div>
                     </div>
                     <input
@@ -233,11 +233,11 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
             </motion.div>
 
             {/* Sticky Footer */}
-            <div className="fixed bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-[#0C1121] via-[#0C1121]/95 to-transparent border-t border-white/5 z-20">
+            <div className="fixed bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-mimi-dark via-mimi-dark/95 to-transparent border-t border-white/5 z-20">
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-16 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-black text-lg gap-3 shadow-[0_15px_40px_rgba(37,99,235,0.4)] active:scale-95 transition-all overflow-hidden relative"
+                    className="w-full h-16 bg-mimi-blue hover:bg-mimi-blue/80 text-white rounded-2xl font-black text-lg gap-3 shadow-[0_15px_40px_rgba(37,99,235,0.4)] active:scale-95 transition-all overflow-hidden relative"
                 >
                     {isLoading && (
                         <div

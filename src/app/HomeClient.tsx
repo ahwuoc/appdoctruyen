@@ -10,7 +10,7 @@ import AlbumsList from '@/app/components/list-productnew';
 
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/ui/button';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Flame, Sparkles, TrendingUp, Users } from 'lucide-react';
 
 type slug = "new" | "hot";
@@ -38,111 +38,151 @@ export default function HomeClient() {
     router.push(`/comic/${slug}/${1}`);
   };
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
+      }
+    }
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    }
   };
 
   return (
-    <div className="main__content min-h-screen bg-[#0C1121] text-white overflow-x-hidden">
-      {/* Hero Section with Carousel */}
-      <section className="relative w-full overflow-hidden border-b border-white/5">
+    <div className="main__content min-h-screen bg-mimi-dark text-white overflow-x-hidden selection:bg-mimi-blue/30 font-body">
+      <motion.section
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="relative w-full overflow-hidden border-b border-white/5 bg-mimi-dark"
+      >
         <CarouselComponents albums={albums} />
-      </section>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-mimi-dark/20 to-mimi-dark"></div>
+      </motion.section>
 
-      {/* Main Content Section */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      {/* Main Grid Content */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        className="container mx-auto px-6 py-12"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-          {/* Left: Latest Updates */}
-          <motion.div
-            className="lg:col-span-8 space-y-8"
-            {...fadeInUp}
-          >
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative bg-[#151d35]/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden">
-                <div className="flex items-center justify-between p-6 border-b border-white/5">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-500/20 rounded-lg">
-                      <Flame className="w-6 h-6 text-orange-500 animate-pulse" />
+          {/* Recent Updates: High Contrast/Cyber Look */}
+          <motion.div variants={itemVariants} className="lg:col-span-8 space-y-12">
+            <div className="relative group p-[1px] rounded-3xl bg-gradient-to-br from-white/10 via-transparent to-white/5 overflow-hidden">
+              <div className="relative bg-mimi-dark/40 backdrop-blur-2xl rounded-[23px] overflow-hidden shadow-2xl">
+                <div className="flex items-center justify-between p-8 border-b border-white/5 bg-gradient-to-r from-white/[0.02] to-transparent">
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-orange-500/20 blur-lg animate-pulse"></div>
+                      <div className="relative p-3 bg-orange-500/10 rounded-2xl border border-orange-500/20">
+                        <Flame className="w-6 h-6 text-orange-500" />
+                      </div>
                     </div>
-                    <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                      Truyện mới cập nhật
-                    </h2>
+                    <div>
+                      <h2 className="text-2xl font-display font-black uppercase tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-mimi-muted">
+                        Mới cập nhật
+                      </h2>
+                      <p className="text-[10px] text-mimi-muted font-bold uppercase tracking-[0.2em] mt-0.5">LATEST UPDATES</p>
+                    </div>
                   </div>
                   <Button
                     onClick={() => handleClick("hot")}
                     variant="ghost"
-                    className="hover:bg-white/10 transition-colors gap-2"
+                    className="hover:bg-mimi-glass/60 px-6 rounded-xl transition-all gap-2 text-xs font-black uppercase tracking-widest border border-mimi-glass"
                   >
                     Xem tất cả
                     <TrendingUp className="w-4 h-4" />
                   </Button>
                 </div>
 
-                <div className="p-4">
+                <div className="p-6">
                   <AlbumsList albums={albumsNew} />
                 </div>
               </div>
             </div>
 
-            {/* Recruitment Banner */}
+            {/* Editorial Style Recruitment Banner */}
             <motion.div
-              whileHover={{ scale: 1.01 }}
-              className="relative p-[1px] rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 overflow-hidden cursor-pointer"
+              whileHover={{ scale: 1.002, y: -2 }}
+              className="relative p-[1px] rounded-[32px] bg-gradient-to-br from-mimi-cyan via-mimi-blue to-mimi-purple shadow-[0_20px_50px_-15px_rgba(37,99,235,0.3)] group cursor-pointer overflow-hidden transition-all duration-500"
             >
-              <div className="bg-[#0C1121] rounded-[15px] p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 blur-3xl rounded-full -mr-10 -mt-10"></div>
-                <div className="relative z-10 flex items-center gap-4">
-                  <div className="p-3 bg-white/5 rounded-full border border-white/10">
-                    <Users className="w-6 h-6 text-cyan-400" />
+              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
+              <div className="bg-mimi-dark rounded-[31px] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative">
+                <div className="absolute -top-24 -right-24 w-64 h-64 bg-mimi-cyan/20 blur-[100px] rounded-full group-hover:bg-mimi-cyan/30 transition-colors"></div>
+                <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-mimi-purple/20 blur-[100px] rounded-full group-hover:bg-mimi-purple/30 transition-colors"></div>
+
+                <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left">
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="px-3 py-1 bg-mimi-cyan/10 rounded-full text-[10px] font-black uppercase tracking-[0.3em] border border-mimi-cyan/20 text-mimi-cyan">Join our team</span>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold italic tracking-tight underline">TUYỂN DỤNG DỊCH GIẢ</h3>
-                    <p className="text-gray-400 text-sm">Gia nhập đội ngũ biên dịch truyện của chúng tớ!</p>
-                  </div>
+                  <h3 className="text-3xl md:text-4xl font-display font-black italic tracking-tighter leading-none mb-3">
+                    TUYỂN DỤNG <br />
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-mimi-cyan to-white">DỊCH GIẢ</span>
+                  </h3>
+                  <p className="text-mimi-muted text-sm max-w-md font-medium leading-relaxed">Niềm đam mê của bạn, tác phẩm của chúng tôi. Hãy cùng mimi mang những câu chuyện hay nhất đến độc giả!</p>
                 </div>
-                <button className="relative z-10 px-8 py-3 bg-white text-[#0C1121] font-bold rounded-xl hover:bg-gray-200 transition-all shadow-lg hover:shadow-white/5">
+
+                <button className="relative z-10 px-10 py-5 bg-mimi-cyan text-black font-black text-xs uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-mimi-cyan/40 flex items-center gap-3 active:scale-95">
                   Ứng tuyển ngay
+                  <Sparkles className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Right: Charts */}
-          <motion.div
-            className="lg:col-span-4 space-y-8"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="sticky top-24 space-y-8">
-              {/* Ranking Section */}
-              <div className="bg-[#151d35]/50 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-                <div className="p-5 border-b border-white/5 bg-gradient-to-br from-white/5 to-transparent">
-                  <div className="flex items-center gap-3">
-                    <TrendingUp className="w-5 h-5 text-purple-400" />
-                    <h3 className="font-bold text-lg tracking-tight">Bảng Xếp Hạng</h3>
+          {/* Right Section: Sidebar/Ranking */}
+          <motion.div variants={itemVariants} className="lg:col-span-4 space-y-10">
+            <div className="sticky top-24 space-y-10">
+              <div className="relative p-[1px] rounded-[32px] bg-gradient-to-b from-white/10 to-transparent overflow-hidden">
+                <div className="bg-mimi-glass/30 backdrop-blur-3xl rounded-[31px] overflow-hidden shadow-2xl">
+                  <div className="p-7 border-b border-white/5 bg-gradient-to-br from-white/[0.03] to-transparent">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-mimi-purple/10 rounded-2xl border border-mimi-purple/20">
+                        <TrendingUp className="w-5 h-5 text-mimi-purple" />
+                      </div>
+                      <div>
+                        <h3 className="font-display font-black text-xl tracking-tight">Bảng Xếp Hạng</h3>
+                        <p className="text-[10px] text-mimi-muted font-bold uppercase tracking-widest">TOP TRENDING</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="p-2">
-                  <ListTopAlbum albums={albums} />
+                  <div className="p-4">
+                    <ListTopAlbum albums={albums} />
+                  </div>
                 </div>
               </div>
 
-              {/* Popular Genres or Small Banner */}
-              <div className="p-6 bg-gradient-to-br from-purple-900/40 to-blue-900/40 rounded-2xl border border-white/10 relative overflow-hidden group">
-                <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px]"></div>
-                <Sparkles className="absolute top-4 right-4 text-yellow-400/30 group-hover:text-yellow-400 transition-colors duration-500" />
-                <h4 className="font-bold text-purple-200 mb-2 italic">Khám phá thể loại</h4>
-                <p className="text-sm text-gray-400 mb-4">Hàng nghìn bộ truyện hấp dẫn đang chờ bạn khám phá!</p>
-                <div className="flex flex-wrap gap-2">
-                  {['Hành Động', 'Xuyên Không', 'Tu Tiên'].map(tag => (
-                    <span key={tag} className="px-3 py-1 bg-white/5 rounded-full text-xs border border-white/10 hover:border-purple-500 transition-colors">
+              {/* Enhanced Tags Selection */}
+              <div className="p-8 bg-gradient-to-br from-mimi-dark/10 to-mimi-dark rounded-[32px] border border-white/10 relative overflow-hidden group shadow-2xl">
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-mimi-purple/20 blur-[60px] rounded-full"></div>
+                <Sparkles className="absolute top-6 right-6 text-yellow-400/20 group-hover:text-yellow-400/60 transition-all duration-700" />
+                <h4 className="font-display font-black text-lg text-mimi-purple mb-3 italic">Khám phá thể loại</h4>
+                <p className="text-sm text-mimi-muted mb-6 font-medium leading-relaxed">Đắm chìm trong hàng nghìn thế giới giả tưởng hấp dẫn nhất.</p>
+                <div className="flex flex-wrap gap-2.5">
+                  {['Hành Động', 'Xuyên Không', 'Tu Tiên', 'Huyền Huyễn', 'Manhwa', 'Ngôn Tình'].map((tag, i) => (
+                    <motion.span
+                      key={tag}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-4 py-1.5 bg-mimi-glass/40 hover:bg-mimi-glass/60 rounded-full text-[11px] font-bold text-mimi-muted hover:text-white border border-mimi-glass/30 hover:border-mimi-purple/50 transition-all cursor-pointer shadow-sm"
+                    >
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
               </div>
@@ -150,39 +190,41 @@ export default function HomeClient() {
           </motion.div>
         </div>
 
-        {/* Featured Sections (Full Width) */}
-        <div className="mt-16 space-y-16">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <div className="flex items-center gap-3 px-2">
-              <div className="w-1 h-8 bg-blue-600 rounded-full"></div>
-              <h2 className="text-2xl font-black uppercase italic tracking-wider">Manga Phổ Biến</h2>
+        {/* Horizontal Full-Width Sections */}
+        <div className="mt-24 space-y-24">
+          <motion.div variants={itemVariants} className="space-y-8">
+            <div className="flex items-center justify-between px-2">
+              <div className="flex items-center gap-4">
+                <div className="w-1.5 h-10 bg-mimi-blue rounded-full shadow-[0_0_15px_rgba(37,99,235,0.6)]"></div>
+                <div>
+                  <h2 className="text-3xl font-display font-black uppercase italic tracking-tighter">Manga Phổ Biến</h2>
+                  <p className="text-[10px] text-mimi-muted font-bold tracking-[0.3em] uppercase">POPULAR MANGA</p>
+                </div>
+              </div>
+              <Button variant="ghost" className="text-xs font-black uppercase tracking-widest text-mimi-muted hover:text-white">Xem thêm</Button>
             </div>
-            <div className="relative p-6 bg-[#151d35]/30 rounded-3xl border border-white/5 shadow-inner">
+            <div className="relative p-10 bg-mimi-glass/10 rounded-[48px] border border-white/5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.02)]">
               <SlideCard albums={albums} />
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
-            <div className="flex items-center gap-3 px-2">
-              <div className="w-1 h-8 bg-purple-600 rounded-full"></div>
-              <h2 className="text-2xl font-black uppercase italic tracking-wider">Gợi Ý Hôm Nay</h2>
+          <motion.div variants={itemVariants} className="space-y-8 pb-12">
+            <div className="flex items-center justify-between px-2">
+              <div className="flex items-center gap-4">
+                <div className="w-1.5 h-10 bg-mimi-purple rounded-full shadow-[0_0_15px_rgba(147,51,234,0.6)]"></div>
+                <div>
+                  <h2 className="text-3xl font-display font-black uppercase italic tracking-tighter">Gợi Ý Hôm Nay</h2>
+                  <p className="text-[10px] text-mimi-muted font-bold tracking-[0.3em] uppercase">DAILY CURATED</p>
+                </div>
+              </div>
+              <Button variant="ghost" className="text-xs font-black uppercase tracking-widest text-mimi-muted hover:text-white">Xem thêm</Button>
             </div>
-            <div className="relative p-6 bg-[#151d35]/30 rounded-3xl border border-white/5 shadow-inner">
+            <div className="relative p-10 bg-mimi-glass/10 rounded-[48px] border border-white/5 shadow-[inset_0_2px_10px_rgba(255,255,255,0.02)]">
               <SlideCard albums={albums} />
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
