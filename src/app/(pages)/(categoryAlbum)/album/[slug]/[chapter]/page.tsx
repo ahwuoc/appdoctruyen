@@ -125,8 +125,10 @@ export default function Page({ params }: { params: Promise<{ slug: string; chapt
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0C1121] flex flex-col items-center p-4">
-        <Skeleton className="w-full max-w-3xl h-[800px] bg-white/5 rounded-2xl" />
+      <div className="min-h-screen bg-[#060914] flex flex-col items-center p-4 pt-24 space-y-4">
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} className="w-full max-w-3xl aspect-[2/3] bg-white/5 rounded-2xl" />
+        ))}
       </div>
     );
   }
@@ -208,17 +210,7 @@ export default function Page({ params }: { params: Promise<{ slug: string; chapt
       <main className="w-full max-w-4xl mt-20 px-2 flex flex-col items-center gap-0">
         {images.length > 0 ? (
           images.map((image, index) => (
-            <div key={index} className="w-full relative shadow-2xl">
-              <Image
-                src={image.image_url}
-                alt={`Trang ${index + 1}`}
-                width={1200}
-                height={1800}
-                className="w-full h-auto object-contain select-none pointer-events-none"
-                priority={index < 3}
-                unoptimized
-              />
-            </div>
+            <ChapterImageItem key={index} src={image.image_url} index={index} />
           ))
         ) : (
           <div className="py-40 text-center space-y-4">
@@ -278,6 +270,36 @@ export default function Page({ params }: { params: Promise<{ slug: string; chapt
           </motion.button>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+// Sub-component for individual chapter images with loading state
+function ChapterImageItem({ src, index }: { src: string; index: number }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className="w-full relative shadow-2xl bg-[#0C1121] overflow-hidden min-h-[400px]">
+      {!isLoaded && (
+        <div className="absolute inset-0 z-10">
+          <Skeleton className="w-full h-full bg-white/5 animate-pulse flex items-center justify-center">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-12 h-12 rounded-full border-2 border-t-blue-500 border-white/5 animate-spin" />
+              <span className="text-[10px] font-black tracking-widest text-white/20 uppercase">TRANG {index + 1}</span>
+            </div>
+          </Skeleton>
+        </div>
+      )}
+      <Image
+        src={src}
+        alt={`Trang ${index + 1}`}
+        width={1200}
+        height={1800}
+        className={`w-full h-auto object-contain select-none pointer-events-none transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        onLoad={() => setIsLoaded(true)}
+        priority={index < 3}
+        unoptimized
+      />
     </div>
   );
 }

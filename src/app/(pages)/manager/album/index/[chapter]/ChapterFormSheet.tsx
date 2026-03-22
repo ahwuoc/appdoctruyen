@@ -106,7 +106,6 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
 
     const handleSort = (newList: any[]) => {
         setPreviewImages(newList);
-        // Đồng bộ lại imageFiles cho các file chưa upload
         const sortedFiles = newList
             .filter((p: any) => !p.isExisting)
             .map((p: any) => p.file);
