@@ -70,10 +70,10 @@ export default function CardTOPBXH() {
   const data = album.map((item, index) => ({
     title: item.name,
     views: item.chapter.reduce((total, ch) => total + ch.view, 0),
-    latestChapter: item.chapter[item.chapter.length - 1].name,
+    lastestChapter: item.chapter[item.chapter.length - 1]?.name || "",
     follow: item.follow,
     image: item.image,
-    createdAt: item.chapter[0].created_at ?? "",
+    createAt: item.chapter.at(0)?.created_at || "",
     rank: `#${index + 1}`
   }));
 
@@ -103,7 +103,7 @@ export default function CardTOPBXH() {
                   {item.title}
                 </Typography.Title>
                 <Typography.Text style={{ color: "white" }} type="secondary" className="text-xs text-white text-nowrap mb-2">
-                  Mới nhất: {item.latestChapter}
+                  Mới nhất: {item.lastestChapter}
                 </Typography.Text>
                 <Space className="mt-auto space-x-2 text-white">
                   <div className="flex items-center text-xs text-white">

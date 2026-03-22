@@ -25,7 +25,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
     albumId: number;
-    chapter?: any;
+    chapter?: { id: number; title: string; content?: string; order_sort: number };
     onSuccess: () => void;
     nextOrder?: number;
 }
@@ -91,7 +91,7 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
     const onFinish = async (data: ChapterInput) => {
         setIsLoading(true);
         try {
-            let uploadedUrls: string[] = [];
+            const uploadedUrls: string[] = [];
 
             // 1. Upload images directly from client if any
             if (data.imageFiles && data.imageFiles.length > 0) {
@@ -119,11 +119,11 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
                 toast({ title: "Thành công", description: "Đăng chương mới thành công!" });
             }
             onSuccess();
-        } catch (error: any) {
+        } catch (error) {
             console.error("Lỗi:", error);
             toast({
                 title: "Lỗi",
-                description: `Không thể lưu chương: ${error.message || "Vui lòng thử lại!"}`,
+                description: `Không thể lưu chương: ${error instanceof Error ? error.message : "Vui lòng thử lại!"}`,
                 variant: "destructive"
             });
         } finally {

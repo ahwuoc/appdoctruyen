@@ -12,7 +12,6 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [dragDistance, setDragDistance] = useState(0);
-  const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const totalSlides = albums.length;
@@ -70,21 +69,6 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
     }
   };
 
-
-  useEffect(() => {
-    return () => {
-      if (autoPlayRef.current) {
-        clearInterval(autoPlayRef.current);
-      }
-    };
-  }, []);
-
-  const handleMouseEnter = () => {
-    if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
-    }
-  };
-
   // Tính toán transform dựa trên vị trí hiện tại và khoảng cách kéo
   const getTransformValue = () => {
     const baseTranslate = current * 100;
@@ -99,7 +83,6 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
   return (
     <div
       className="w-full max-h-96 relative overflow-x-hidden"
-      onMouseEnter={handleMouseEnter}
     >
       <div
         ref={carouselRef}

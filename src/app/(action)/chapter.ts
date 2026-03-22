@@ -45,8 +45,8 @@ export const PostChapter = async (albumId: number, data: ChapterInput) => {
         }
 
         return chapter;
-    } catch (error: any) {
-        console.error("Lỗi PostChapter:", error.message);
+    } catch (error) {
+        console.error("Lỗi PostChapter:", error instanceof Error ? error.message : "Unexpected error");
         return null;
     }
 };
@@ -71,8 +71,8 @@ export const UpdateChapterDetails = async (id: number, details: { title: string;
         }
 
         return { success: true };
-    } catch (error: any) {
-        console.error("Lỗi UpdateChapterDetails:", error.message);
+    } catch (error) {
+        console.error("Lỗi UpdateChapterDetails:", error instanceof Error ? error.message : "Unexpected error");
         return { success: false };
     }
 };
@@ -93,8 +93,8 @@ export const DeleteChapter = async (id: number) => {
         const { error } = await supabase.from("chapters").delete().eq("id", id);
         if (error) throw new Error(error.message);
         return { success: true };
-    } catch (error: any) {
-        console.error("Lỗi DeleteChapter:", error.message);
+    } catch (error) {
+        console.error("Lỗi DeleteChapter:", error instanceof Error ? error.message : "Unexpected error");
         return { success: false };
     }
 };
@@ -107,8 +107,8 @@ export const UpdateChapterOrder = async (chapters: { id: number, order_sort: num
         ));
         await Promise.all(updates);
         return { success: true };
-    } catch (error: any) {
-        console.error("Lỗi UpdateChapterOrder:", error.message);
+    } catch (error) {
+        console.error("Lỗi UpdateChapterOrder:", error instanceof Error ? error.message : "Unexpected error");
         return { success: false };
     }
 };
@@ -137,8 +137,8 @@ export const AddImagesToChapter = async (chapterId: number, imageUrls: string[])
         }
 
         return { success: true };
-    } catch (error: any) {
-        console.error("Lỗi AddImagesToChapter:", error.message);
+    } catch (error) {
+        console.error("Lỗi AddImagesToChapter:", error instanceof Error ? error.message : "Unexpected error");
         return { success: false };
     }
 };
@@ -154,8 +154,8 @@ export const DeleteImage = async (id: number, imageUrl: string) => {
         if (error) throw new Error(error.message);
 
         return { success: true };
-    } catch (error: any) {
-        console.error("Lỗi DeleteImage:", error.message);
+    } catch (error) {
+        console.error("Lỗi DeleteImage:", error instanceof Error ? error.message : "Unexpected error");
         return { success: false };
     }
 };

@@ -239,7 +239,7 @@ export default function StoryAdvancedFilter() {
                         {selectedCategories.map((item) => (
                             <button
                                 key={item.id}
-                                onClick={() => handleCategoryChange(item as any)}
+                                onClick={() => handleCategoryChange(item as CategoryType)}
                                 className="group bg-blue-500/10 border border-blue-500/20 text-blue-400 px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 hover:bg-blue-500/20 transition-all"
                             >
                                 {item.title}

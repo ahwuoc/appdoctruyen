@@ -4,9 +4,9 @@ import { mapAlbumData, RawAlbumFromSupabase } from "@/app/utils/common/mappers";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string; pageNumber: string } }
+  { params }: { params: Promise<{ slug: string; pageNumber: string }> }
 ) {
-  const { slug, pageNumber } = params;
+  const { slug, pageNumber } = await params;
 
   if (slug !== "new" && slug !== "hot") {
     return NextResponse.json({ error: "Invalid slug" }, { status: 400 });

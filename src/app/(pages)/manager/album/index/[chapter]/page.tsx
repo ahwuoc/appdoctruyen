@@ -81,16 +81,16 @@ export default function ChapterSort() {
     const [selectedChapter, setSelectedChapter] = useState<Chapter | undefined>(undefined);
     const { toast } = useToast();
 
-    const fetchAlbum = async () => {
+    const fetchAlbum = React.useCallback(async () => {
         setLoading(true);
         try {
             const data = await getAlbumId(albumId);
             if (data) {
                 setAlbumData(data);
-                const mappedChapters = data.chapters.map((chapter: any, index: number) => ({
+                const mappedChapters = data.chapters.map((chapter: { order_sort?: number; chapter_images?: { order_sort?: number }[] }, index: number) => ({
                     ...chapter,
                     order_sort: chapter.order_sort ?? index + 1,
-                    chapter_images: (chapter.chapter_images || []).map((img: any, imgIndex: number) => ({
+                    chapter_images: (chapter.chapter_images || []).map((img: { order_sort?: number }, imgIndex: number) => ({
                         ...img,
                         order_sort: img.order_sort ?? imgIndex + 1,
                     })),
@@ -104,15 +104,15 @@ export default function ChapterSort() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [albumId, toast]);
 
     useEffect(() => {
         fetchAlbum();
-    }, [albumId]);
+    }, [fetchAlbum]);
 
     // Lọc và sắp xếp chương
     const filteredChapters = useMemo(() => {
-        let result = chapters.filter(ch =>
+        const result = chapters.filter(ch =>
             ch.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             ch.order_sort.toString().includes(searchTerm)
         );
@@ -322,7 +322,16 @@ export default function ChapterSort() {
     );
 }
 
-const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, onImageSort, onDeleteImage, sortable }: any) => {
+const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sortable }: { 
+    chapter: { id: number; title: string; order_sort: number; chapter_images?: { id: number; image_url: string; order_sort: number }[] }; 
+    isExpanded: boolean; 
+    toggleExpand: () => void; 
+    onEdit: () => void; 
+    onDelete: () => void; 
+    onImageSort: (id: number, images: { id: number; image_url: string; order_sort: number }[]) => void;
+    onDeleteImage: (id: number, url: string) => void;
+    sortable: boolean 
+}) => {
     return (
         <div className={`border rounded-[1.5rem] transition-all duration-300 ${isExpanded ? 'bg-white/10 border-blue-500/50 shadow-2xl' : 'bg-white/5 border-white/5 hover:border-white/10'}`}>
             <div className="p-6 flex items-center gap-4">
@@ -373,7 +382,7 @@ const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, onIm
                         </div>
 
                         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3 max-h-[300px] overflow-y-auto pr-2 scrollbar-hide">
-                            {chapter.chapter_images?.map((img: any) => (
+                            {chapter.chapter_images?.map((img: { id: number; image_url: string; order_sort: number }) => (
                                 <div key={img.id} className="relative aspect-[3/4] rounded-lg overflow-hidden border border-white/10 group">
                                     <ImageComponents image={{ src: img.image_url, name: "p" }} />
                                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

@@ -118,13 +118,13 @@ export default function SearchComponents() {
                                     <div className="w-16 h-16 bg-white/10 border border-white/10 rounded-full flex items-center justify-center mx-auto">
                                         <Search className="w-8 h-8 text-gray-400" />
                                     </div>
-                                    <p className="text-gray-200 font-bold">Không tìm thấy kết quả cho "{search}"</p>
+                                    <p className="text-gray-200 font-bold">Không tìm thấy kết quả cho &quot;{search}&quot;</p>
                                 </div>
                             )
                         ) : (
                             <div className="py-12 text-center text-gray-400 space-y-2">
                                 <Search className="w-12 h-12 mx-auto opacity-20 mb-2" />
-                                <p className="text-sm italic font-bold">Gợi ý: Tìm thử "Conan", "Naruto"...</p>
+                                <p className="text-sm italic font-bold">Gợi ý: Tìm thử &quot;Conan&quot;, &quot;Naruto&quot;...</p>
                             </div>
                         )}
                     </AnimatePresence>

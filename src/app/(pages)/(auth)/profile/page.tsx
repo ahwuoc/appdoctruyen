@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
     User,
@@ -107,7 +108,14 @@ export default function ProfilePage() {
                             <div className="w-32 h-32 md:w-40 md:h-40 rounded-[32px] bg-gradient-to-tr from-blue-500 to-purple-500 p-1">
                                 <div className="w-full h-full rounded-[28px] bg-[#0C1121] flex items-center justify-center overflow-hidden">
                                     {user?.avatar_url ? (
-                                        <img src={user.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
+                                        <Image 
+                                            src={user.avatar_url} 
+                                            alt="Avatar" 
+                                            width={160} 
+                                            height={160} 
+                                            className="w-full h-full object-cover" 
+                                            unoptimized
+                                        />
                                     ) : (
                                         <User size={64} className="text-gray-500" />
                                     )}

@@ -11,9 +11,17 @@ webpush.setVapidDetails(
     validPrivateKey!
 );
 
-let subscription: PushSubscription | null = null;
+interface WebPushSubscription {
+    endpoint: string;
+    keys: {
+        p256dh: string;
+        auth: string;
+    };
+}
 
-export async function subscribeUser(sub: PushSubscription) {
+let subscription: WebPushSubscription | null = null;
+
+export async function subscribeUser(sub: WebPushSubscription) {
     subscription = sub;
     return { success: true };
 }
@@ -32,7 +40,7 @@ export async function sendNotification(message: string) {
         await webpush.sendNotification(
             subscription,
             JSON.stringify({
-                title: 'My PWA App',
+                title: 'App đọc truyện',
                 body: message,
                 icon: '/icon-192x192.png',
             })

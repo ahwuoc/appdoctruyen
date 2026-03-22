@@ -161,7 +161,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                             accept="image/*"
                             onChange={handleFileChange}
                         />
-                        {errors.imageFile && <p className="text-red-500 text-[10px] font-black text-center mt-3 uppercase tracking-widest animate-bounce">{errors.imageFile.message}</p>}
+                        {errors.imageFile && <p className="text-red-500 text-[10px] font-black text-center mt-3 uppercase tracking-widest animate-bounce">{errors.imageFile.message as string}</p>}
                     </div>
 
                     {/* Title */}
@@ -180,7 +180,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                                 />
                             )}
                         />
-                        {errors.title && <p className="text-red-500 text-[10px] font-black uppercase tracking-widest pl-2">{errors.title.message}</p>}
+                        {errors.title && <p className="text-red-500 text-[10px] font-black uppercase tracking-widest pl-2">{errors.title.message as string}</p>}
                     </div>
 
                     {/* Content */}
@@ -199,7 +199,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                                 />
                             )}
                         />
-                        {errors.content && <p className="text-red-500 text-[10px] font-black uppercase tracking-widest pl-2">{errors.content.message}</p>}
+                        {errors.content && <p className="text-red-500 text-[10px] font-black uppercase tracking-widest pl-2">{errors.content.message as string}</p>}
                     </div>
 
                     {/* Categories Selector */}
@@ -224,7 +224,7 @@ const FromAlbum: React.FC<Props> = ({ album, onSuccess }) => {
                                 </div>
                             ))}
                         </div>
-                        {errors.categoryIds && <p className="text-red-500 text-[10px] font-black uppercase text-center mt-3 tracking-widest">{errors.categoryIds.message}</p>}
+                        {errors.categoryIds && <p className="text-red-500 text-[10px] font-black uppercase text-center mt-3 tracking-widest">{errors.categoryIds.message as string}</p>}
                     </div>
 
                     {/* Action Bar Spacer */}

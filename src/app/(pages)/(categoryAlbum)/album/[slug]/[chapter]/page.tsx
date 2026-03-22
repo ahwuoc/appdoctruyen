@@ -85,10 +85,10 @@ export default function Page({ params }: { params: Promise<{ slug: string; chapt
 
         if (albumErr) throw albumErr;
 
-        const sortedChapters = (album.chapters || []).sort((a: any, b: any) => a.order_sort - b.order_sort);
+        const sortedChapters = (album.chapters || []).sort((a: ChapterInfo, b: ChapterInfo) => a.order_sort - b.order_sort);
         setAlbumData({ ...album, chapters: sortedChapters } as AlbumInfo);
 
-        const chapter = sortedChapters.find((c: any) => c.id === chapterId);
+        const chapter = sortedChapters.find((c: ChapterInfo) => c.id === chapterId);
         setCurrentChapter(chapter || null);
 
         // Fetch Chapter Images

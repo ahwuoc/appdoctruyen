@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from "react";
 
 const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+interface BeforeInstallPromptEvent extends Event {
+    prompt(): Promise<void>;
+    userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
 
 export function urlBase64ToUint8Array(base64String: string) {
     if (!base64String) {
@@ -101,7 +105,7 @@ export default function Page() {
             console.log("❌ Chưa có prompt để cài PWA, check SW và manifest nha!");
             return;
         }
-        const promptEvent = installPrompt as any;
+        const promptEvent = installPrompt as BeforeInstallPromptEvent;
 
         promptEvent.prompt();
         const { outcome } = await promptEvent.userChoice;

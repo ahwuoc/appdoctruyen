@@ -36,7 +36,7 @@ const TopMangaRanking: React.FC = () => {
         const fetchAlbums = async () => {
             try {
                 const data = await getAlbumTopChapters();
-                setAlbums(data as any);
+                setAlbums(data as Album[]);
             } catch (error) {
                 console.error("Error fetching rankings:", error);
             } finally {

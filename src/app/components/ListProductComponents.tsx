@@ -8,7 +8,7 @@ import { EyeOutlined, HeartFilled } from '@ant-design/icons';
 
 
 import Pagination from "./Pagination";
-import { time, createSlug } from "@/app/utils/common/utils";
+import { timeAgo as time, createSlug } from "@/app/utils/common/utils";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from '@/app/utils/common/store';
@@ -57,7 +57,7 @@ const ListProductComponents = () => {
                                     </span>
                                     <span className="flex gap-2 items-center">
                                         <HeartFilled />
-                                        {product.follow || 0}
+                                        {0}
                                     </span>
                                 </div>
                                 <div className=" book_tags flex text-sm absolute top-2 left-0 right-0">
@@ -83,7 +83,7 @@ const ListProductComponents = () => {
                                         product.chapters.map((item, index) => (
                                             <div key={index} className="flex lg:text-xs lg:mt-5 gap-2 items-center">
                                                 <span>{item.title}</span> -{" "}
-                                                <span>{time(item.created_at)}</span>
+                                                <span>{time(item.created_at || "")}</span>
                                             </div>
                                         ))
                                     ) : (

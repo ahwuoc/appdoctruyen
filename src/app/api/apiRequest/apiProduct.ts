@@ -22,7 +22,7 @@ const apiAlbums = {
   },
 
   getProductOptions: async (filters: Record<string, unknown>) => {
-    return await http.post<ProductPagenation>("/api/products/options", filters);
+    return await http.post<ProductPagenation>("/api/products/options", { body: filters });
   },
 
   getProductById: async (id: number) => {
@@ -31,19 +31,19 @@ const apiAlbums = {
 
   createProduct: async (product: Omit<AlbumType, "id">) => {
     return await http.post<AlbumType>("/api/products", {
-      body: JSON.stringify(product),
+      body: product as unknown as Record<string, unknown>,
     });
   },
 
   updateProduct: async (id: number, product: Partial<AlbumType>) => {
     return await http.put<AlbumType>(`/api/products/${id}`, {
-      body: JSON.stringify(product),
+      body: product as unknown as Record<string, unknown>,
     });
   },
 
   deleteProduct: async (id: number) => {
     return await http.delete<void>(`/api/products/${id}`, {
-      body: JSON.stringify({ id }),
+      body: { id },
     });
   },
 };

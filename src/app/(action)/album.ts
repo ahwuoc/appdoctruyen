@@ -209,10 +209,10 @@ export const PostAlbum = async (album: AlbumInput) => {
 
       await supabase.from("album_categories").insert(categoryRows);
     }
-    console.log("✅ Thêm truyện thành công!");
+    console.log(" Thêm truyện thành công!");
     return data;
-  } catch (error: any) {
-    console.error("Lỗi trong quá trình đăng album:", error.message);
+  } catch (error) {
+    console.error("Lỗi trong quá trình đăng album:", error instanceof Error ? error.message : "Unexpected error");
     return null;
   }
 };
@@ -269,8 +269,8 @@ export const UpdateAlbum = async (id: number, data: AlbumInput) => {
     }
 
     return { success: true };
-  } catch (error: any) {
-    console.error("Lỗi khi cập nhật album:", error.message);
+  } catch (error) {
+    console.error("Lỗi khi cập nhật album:", error instanceof Error ? error.message : "Unexpected error");
     throw error;
   }
 };
@@ -295,8 +295,8 @@ export const DeleteAlbum = async (id: number) => {
     if (error) throw new Error(error.message);
 
     return { success: true };
-  } catch (error: any) {
-    console.error("Lỗi xóa album:", error.message);
+  } catch (error) {
+    console.error("Lỗi xóa album:", error instanceof Error ? error.message : "Unexpected error");
     return { success: false };
   }
 };

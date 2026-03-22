@@ -44,9 +44,9 @@ export async function GET(req: NextRequest) {
     const formattedData = (data as RawAlbumFromSupabase[]).map(album => mapAlbumData(album));
 
     return NextResponse.json(formattedData);
-  } catch (err: any) {
+  } catch (err) {
     return NextResponse.json(
-      { message: `Lỗi bất ngờ: ${err.message}` },
+      { message: `Lỗi bất ngờ: ${err instanceof Error ? err.message : "Unexpected error"}` },
       { status: 500 }
     );
   }

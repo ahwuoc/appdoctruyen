@@ -26,9 +26,9 @@ export const loginUserAction = async (data: LoginInput) => {
         }
 
         return { success: true, user: { ...authData.user, ...profile } };
-    } catch (error: any) {
-        console.error("Login Error:", error.message);
-        return { success: false, error: error.message };
+    } catch (error) {
+        console.error("Login Error:", error instanceof Error ? error.message : "Unexpected error");
+        return { success: false, error: error instanceof Error ? error.message : "Unexpected error" };
     }
 };
 
@@ -61,9 +61,9 @@ export const registerUserAction = async (data: RegisterInput) => {
         if (profileError) console.warn("Lỗi tạo profile:", profileError.message);
 
         return { success: true, user: authData.user };
-    } catch (error: any) {
-        console.error("Register Error:", error.message);
-        return { success: false, error: error.message };
+    } catch (error) {
+        console.error("Register Error:", error instanceof Error ? error.message : "Unexpected error");
+        return { success: false, error: error instanceof Error ? error.message : "Unexpected error" };
     }
 };
 
@@ -73,8 +73,8 @@ export const logoutUserAction = async () => {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
         return { success: true };
-    } catch (error: any) {
-        console.error("Logout Error:", error.message);
+    } catch (error) {
+        console.error("Logout Error:", error instanceof Error ? error.message : "Unexpected error");
         return { success: false };
     }
 };
