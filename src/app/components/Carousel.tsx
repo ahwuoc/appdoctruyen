@@ -8,6 +8,8 @@ import ImageComponents from './ImageComponents';
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+import { siteConfig } from "@/config/site";
+
 export default function CarouselComponents({ albums }: { albums: AlbumType[]; }) {
   const [current, setCurrent] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -107,7 +109,7 @@ export default function CarouselComponents({ albums }: { albums: AlbumType[]; })
 
               {/* Description */}
               <p className="max-w-xl text-mimi-muted text-sm md:text-base font-medium leading-relaxed line-clamp-3 border-l-2 border-mimi-blue/30 pl-6">
-                {currentAlbum.content || "Khám phá câu chuyện hấp dẫn trong tác phẩm này tại mimi - nơi hội tụ những siêu phẩm truyện tranh chất lượng cao."}
+                {currentAlbum.content || `Khám phá câu chuyện hấp dẫn trong tác phẩm này tại ${siteConfig.name} - nơi hội tụ những siêu phẩm truyện tranh chất lượng cao.`}
               </p>
 
               {/* Action Buttons */}

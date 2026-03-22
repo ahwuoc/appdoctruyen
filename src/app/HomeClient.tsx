@@ -21,6 +21,8 @@ interface HomeClientProps {
   initialAlbumsNew?: AlbumType[];
 }
 
+import { siteConfig } from '@/config/site';
+
 export default function HomeClient({ initialAlbums, initialAlbumsNew }: HomeClientProps) {
   const [albums, setAlbums] = React.useState<AlbumType[]>(initialAlbums || []);
   const [albumsNew, setAlbumNew] = React.useState<AlbumType[]>(initialAlbumsNew || []);
@@ -172,7 +174,7 @@ export default function HomeClient({ initialAlbums, initialAlbumsNew }: HomeClie
                     TUYỂN DỤNG <br />
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-mimi-cyan to-white">DỊCH GIẢ</span>
                   </h3>
-                  <p className="text-mimi-muted text-sm max-w-md font-medium leading-relaxed">Niềm đam mê của bạn, tác phẩm của chúng tôi. Hãy cùng mimi mang những câu chuyện hay nhất đến độc giả!</p>
+                  <p className="text-mimi-muted text-sm max-w-md font-medium leading-relaxed">Niềm đam mê của bạn, tác phẩm của chúng tôi. Hãy cùng {siteConfig.name} mang những câu chuyện hay nhất đến độc giả!</p>
                 </div>
 
                 <button className="relative z-10 px-10 py-5 bg-mimi-cyan text-black font-black text-xs uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-mimi-cyan/40 flex items-center gap-3 active:scale-95">

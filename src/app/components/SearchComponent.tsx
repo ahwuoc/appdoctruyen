@@ -14,9 +14,7 @@ import http from '../utils/types/http';
 import React, { useState, useEffect, Suspense } from 'react';
 import type { AlbumType } from '../utils/types/type';
 import AlbumsList from './list-productnew';
-import Loading from '../loading';
 import { motion, AnimatePresence } from 'framer-motion';
-
 export default function SearchComponents() {
     const [search, setSearch] = useState<string>("");
     const [albums, setAlbums] = useState<AlbumType[]>([]);

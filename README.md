@@ -1,4 +1,4 @@
-# 📚 Mimi Manga Platform (AppDocTruyen)
+# 📚 Manga Platform (AppDocTruyen)
 
 A modern, high-performance web application for reading comics online. Built with a premium "Cyber-Editorial" design aesthetic, leveraging **Next.js 15**, **Supabase**, and **Bun** for an ultra-fast and smooth user experience. 🚀
 

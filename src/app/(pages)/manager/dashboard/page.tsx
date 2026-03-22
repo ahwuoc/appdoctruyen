@@ -37,6 +37,8 @@ interface RecentAlbum {
     image_url: string;
 }
 
+import { siteConfig } from "@/config/site";
+
 const DashboardPage = () => {
     const [stats, setStats] = useState<DashboardStats>({
         totalAlbums: 0,
@@ -113,7 +115,7 @@ const DashboardPage = () => {
                             DASH<span className="bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text text-transparent italic drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">BOARD</span>
                         </h1>
                         <p className="text-mimi-muted font-medium text-sm border-l-2 border-mimi-blue/30 pl-4 py-1 italic">
-                            Giám sát hiệu năng và quản trị nội dung hệ thống mimi.
+                            Giám sát hiệu năng và quản trị nội dung hệ thống {siteConfig.name}.
                         </p>
                     </motion.div>
 

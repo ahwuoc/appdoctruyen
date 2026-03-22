@@ -8,6 +8,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+import { siteConfig } from "@/config/site";
+
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
 
@@ -33,8 +35,8 @@ export function SiteHeader() {
             <div className="relative w-10 h-10 flex items-center justify-center">
               <div className="absolute inset-0 bg-mimi-blue/20 blur-xl rounded-full opacity-40 animate-pulse"></div>
               <Image
-                src="/images/logo.png"
-                alt="mimi logo"
+                src={siteConfig.logo}
+                alt={`${siteConfig.name} logo`}
                 width={40}
                 height={40}
                 className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_0_10px_rgba(37,99,235,0.4)] group-hover:scale-110 transition-transform duration-500"
@@ -42,8 +44,8 @@ export function SiteHeader() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-display font-black italic text-2xl tracking-tighter leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-white/90 to-mimi-muted">
-                mimi
+              <span className="font-display font-black italic text-2xl tracking-tighter leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-white/90 to-mimi-muted uppercase">
+                {siteConfig.name}
               </span>
               <div className="flex items-center gap-2 mt-0.5">
                 <span className="text-[8px] font-black uppercase tracking-[0.4em] text-mimi-cyan opacity-80">READ ONLINE</span>

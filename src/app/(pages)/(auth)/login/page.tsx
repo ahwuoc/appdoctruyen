@@ -55,7 +55,6 @@ export default function LoginForm() {
 
     return (
         <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-mimi-deep px-4 py-20">
-            {/* Background Decorations */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-mimi-blue/20 blur-[120px] rounded-full" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-mimi-purple/20 blur-[120px] rounded-full" />

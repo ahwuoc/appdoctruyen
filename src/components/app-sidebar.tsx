@@ -19,6 +19,7 @@ import { supabase } from "@/lib/supabase/supabaseClient";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
+import { NavHistory } from "@/components/nav-history";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -85,6 +86,8 @@ const sidebarData = {
     },
   ]
 };
+
+import { siteConfig } from "@/config/site";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
@@ -193,8 +196,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <div onClick={() => router.push('/')} className="cursor-pointer flex items-center gap-3">
                 <div className="flex aspect-square size-10 items-center justify-center rounded-lg overflow-hidden bg-white/5 border border-white/10">
                   <Image
-                    src="/images/logo.png"
-                    alt="mimi logo"
+                    src={siteConfig.logo}
+                    alt={`${siteConfig.name} logo`}
                     width={40}
                     height={40}
                     className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(59,130,246,0.5)]"
@@ -202,7 +205,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-black italic tracking-tighter text-lg bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
-                    mimi
+                    {siteConfig.name}
                   </span>
                   <span className="truncate text-xs text-mimi-muted font-medium uppercase tracking-widest text-[8px]">Next-Gen Comic Arch</span>
                 </div>
@@ -214,6 +217,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       <SidebarContent className="scrollbar-hide px-2 pt-4 bg-mimi-dark relative z-10">
         <NavMain items={dynamicSidebarData.navMain} title={"Core Operations"} />
+        <NavHistory />
         {isAdminOrAuthor && (
           <>
             <div className="my-6 border-t border-mimi-border/50 mx-4" />
@@ -228,7 +232,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             user={{
               name: userProfile.username,
               email: userProfile.email,
-              avatar: userProfile.avatar_url || "/avatars/avatar.jpg",
+              avatar: userProfile.avatar_url || "",
             }}
           />
         ) : (

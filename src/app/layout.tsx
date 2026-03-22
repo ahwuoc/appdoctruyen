@@ -3,6 +3,8 @@ import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
+import { siteConfig } from "@/config/site";
+
 const outfit = Outfit({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
@@ -27,15 +29,15 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "mimi - App Đọc Truyện Online Miễn Phí",
-    template: "%s | mimi",
+    default: `${siteConfig.name} - App Đọc Truyện Online Miễn Phí`,
+    template: `%s | ${siteConfig.name}`,
   },
-  description: "mimi - Trang web đọc truyện tranh online miễn phí cập nhật mới nhất với hàng ngàn bộ truyện Manga, Manhwa, Manhua đủ các thể loại. Tốc độ load nhanh, không quảng cáo.",
-  keywords: ["mimi", "đọc truyện tranh", "manga online", "truyện tranh", "manhwa", "manhua", "truyện mới cập nhật", "truyện hay"],
-  authors: [{ name: "mimi Team" }],
-  creator: "mimi Team",
-  publisher: "mimi Team",
-  metadataBase: new URL('https://appdoctruyen.id.vn'),
+  description: `${siteConfig.name} - Trang web đọc truyện tranh online miễn phí cập nhật mới nhất với hàng ngàn bộ truyện Manga, Manhwa, Manhua đủ các thể loại. Tốc độ load nhanh, không quảng cáo.`,
+  keywords: [siteConfig.name, "đọc truyện tranh", "manga online", "truyện tranh", "manhwa", "manhua", "truyện mới cập nhật", "truyện hay"],
+  authors: [{ name: `${siteConfig.name} Team` }],
+  creator: `${siteConfig.name} Team`,
+  publisher: `${siteConfig.name} Team`,
+  metadataBase: new URL(siteConfig.url),
   alternates: {
     canonical: '/',
   },
@@ -46,11 +48,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "vi_VN",
-    url: "https://appdoctruyen.id.vn",
-    title: "mimi - App Đọc Truyện Online Miễn Phí",
-    description: "mimi - Trang web đọc truyện tranh online miễn phí cập nhật mới nhất với hàng ngàn bộ truyện Manga, Manhwa, Manhua đủ các thể loại.",
-    siteName: "mimi",
-    images: ["/logo-white.png"],
+    url: siteConfig.url,
+    title: `${siteConfig.name} - App Đọc Truyện Online Miễn Phí`,
+    description: `${siteConfig.name} - Trang web đọc truyện tranh online miễn phí cập nhật mới nhất với hàng ngàn bộ truyện Manga, Manhwa, Manhua đủ các thể loại.`,
+    siteName: siteConfig.name,
+    images: [siteConfig.logo],
   },
 };
 
@@ -62,8 +64,8 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "mimi",
-    "url": "https://appdoctruyen.id.vn",
+    "name": siteConfig.name,
+    "url": siteConfig.url,
   };
 
   return (

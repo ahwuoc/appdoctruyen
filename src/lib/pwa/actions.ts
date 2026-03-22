@@ -31,6 +31,8 @@ export async function unsubscribeUser() {
     return { success: true };
 }
 
+import { siteConfig } from '@/config/site';
+
 export async function sendNotification(message: string) {
     if (!subscription) {
         throw new Error('No subscription available');
@@ -40,7 +42,7 @@ export async function sendNotification(message: string) {
         await webpush.sendNotification(
             subscription,
             JSON.stringify({
-                title: 'mimi',
+                title: siteConfig.name,
                 body: message,
                 icon: '/icon-192x192.png',
             })
