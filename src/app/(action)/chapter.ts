@@ -148,7 +148,7 @@ export const DeleteImage = async (id: number, imageUrl: string) => {
         const supabase = await createClient();
         const fileName = imageUrl.split("/").pop();
         if (fileName) {
-            await supabase.storage.from("album-images").remove([`public/${fileName}`]);
+            await supabase.storage.from("album-images").remove([`chapters/${fileName}`]);
         }
         const { error } = await supabase.from("chapter_images").delete().eq("id", id);
         if (error) throw new Error(error.message);
