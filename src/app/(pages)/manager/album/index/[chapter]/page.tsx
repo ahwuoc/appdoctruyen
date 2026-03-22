@@ -20,7 +20,7 @@ import {
     Eye
 } from "lucide-react";
 import { getAlbumId } from "../../../../../(action)/album";
-import { DeleteChapter, UpdateChapterOrder, DeleteImage } from "../../../../../(action)/chapter";
+import { DeleteChapter, UpdateChapterOrder, DeleteImage, getStorageSizes } from "../../../../../(action)/chapter";
 import ImageComponents from "../../../../../components/ImageComponents";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -78,12 +78,19 @@ export default function ChapterSort() {
     const [loading, setLoading] = useState<boolean>(true);
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [selectedChapter, setSelectedChapter] = useState<Chapter | undefined>(undefined);
+    const [storageSizes, setStorageSizes] = useState<Record<string, number>>({});
     const { toast } = useToast();
 
     const fetchAlbum = React.useCallback(async () => {
         setLoading(true);
         try {
-            const data = await getAlbumId(albumId);
+            const [data, sizes] = await Promise.all([
+                getAlbumId(albumId),
+                getStorageSizes()
+            ]);
+
+            if (sizes) setStorageSizes(sizes);
+
             if (data) {
                 setAlbumData(data);
                 const mappedChapters = data.chapters.map((chapter: { order_sort?: number; chapter_images?: { order_sort?: number }[] }, index: number) => ({
@@ -263,6 +270,7 @@ export default function ChapterSort() {
                                         onImageSort={handleImageSort}
                                         onDeleteImage={(id, url) => { }} // Handle this later
                                         sortable={false}
+                                        storageSizes={storageSizes}
                                     />
                                 ))}
                             </div>
@@ -285,6 +293,7 @@ export default function ChapterSort() {
                                         onImageSort={handleImageSort}
                                         onDeleteImage={(id, url) => { }}
                                         sortable={true}
+                                        storageSizes={storageSizes}
                                     />
                                 ))}
                             </ReactSortable>
@@ -321,7 +330,15 @@ export default function ChapterSort() {
     );
 }
 
-const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sortable }: {
+const formatBytes = (bytes: number) => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sortable, storageSizes }: {
     chapter: { id: number; title: string; order_sort: number; chapter_images?: { id: number; image_url: string; order_sort: number }[] };
     isExpanded: boolean;
     toggleExpand: () => void;
@@ -329,8 +346,13 @@ const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sort
     onDelete: () => void;
     onImageSort: (id: number, images: { id: number; image_url: string; order_sort: number }[]) => void;
     onDeleteImage: (id: number, url: string) => void;
-    sortable: boolean
+    sortable: boolean;
+    storageSizes: Record<string, number>;
 }) => {
+    const totalSize = (chapter.chapter_images || []).reduce((acc, img) => {
+        const fileName = img.image_url.split("/").pop();
+        return acc + (fileName ? (storageSizes[fileName] || 0) : 0);
+    }, 0);
     return (
         <div className={`border rounded-[1.5rem] transition-all duration-300 ${isExpanded ? 'bg-white/10 border-blue-500/50 shadow-2xl' : 'bg-white/5 border-white/5 hover:border-white/10'}`}>
             <div className="p-6 flex items-center gap-4">
@@ -343,7 +365,11 @@ const ChapterItem = ({ chapter, isExpanded, toggleExpand, onEdit, onDelete, sort
                 <div className="flex-1 min-w-0" onClick={toggleExpand}>
                     <div className="flex items-center gap-3 mb-1">
                         <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest bg-blue-500/10 px-2 py-0.5 rounded italic">Chương {chapter.order_sort}</span>
-                        <span className="text-[9px] text-gray-500 uppercase font-bold">{chapter.chapter_images?.length || 0} Ảnh</span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-[9px] text-gray-500 uppercase font-bold">{chapter.chapter_images?.length || 0} Ảnh</span>
+                            <span className="w-1 h-1 bg-white/10 rounded-full" />
+                            <span className="text-[9px] text-blue-400 font-black uppercase italic">{formatBytes(totalSize)}</span>
+                        </div>
                     </div>
                     <h3 className="font-black text-lg text-white truncate italic uppercase tracking-tight">{chapter.title || "Tập chưa đặt tên"}</h3>
                 </div>

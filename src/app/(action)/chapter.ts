@@ -86,7 +86,7 @@ export const DeleteChapter = async (id: number) => {
         if (images && images.length > 0) {
             const fileNames = images.map(img => img.image_url.split("/").pop()).filter(Boolean) as string[];
             if (fileNames.length > 0) {
-                await supabase.storage.from("album-images").remove(fileNames.map(name => `public/${name}`));
+                await supabase.storage.from("album-images").remove(fileNames.map(name => `chapters/${name}`));
             }
         }
 
@@ -159,3 +159,27 @@ export const DeleteImage = async (id: number, imageUrl: string) => {
         return { success: false };
     }
 };
+
+export const getStorageSizes = async () => {
+    try {
+        const supabase = await createClient();
+        const { data, error } = await supabase.storage.from("album-images").list("chapters", {
+            limit: 1000,
+            offset: 0,
+            sortBy: { column: 'name', order: 'asc' }
+        });
+
+        if (error) throw error;
+
+        const sizeMap: Record<string, number> = {};
+        if (data) {
+            data.forEach(item => {
+                sizeMap[item.name] = item.metadata?.size || 0;
+            });
+        }
+        return sizeMap;
+    } catch (error) {
+        console.error("Lỗi getStorageSizes:", error);
+        return {};
+    }
+}
