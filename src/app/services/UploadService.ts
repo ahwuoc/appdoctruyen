@@ -9,7 +9,6 @@ export const uploadChapterImageClient = async (file: File, bucket = "album-image
     let uploadFile: File | Blob = file;
     let fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}`;
 
-    // Optimize to WebP before upload to save bandwidth and storage
     try {
         if (file.type.startsWith("image/")) {
             uploadFile = await convertToWebP(file, 0.7);

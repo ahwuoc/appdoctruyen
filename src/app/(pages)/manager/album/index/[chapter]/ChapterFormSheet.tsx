@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { ReactSortable } from "react-sortablejs";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,7 +15,7 @@ import {
 } from "lucide-react";
 
 import { ChapterInput, chapterSchema } from "../../../../../../lib/schema/schema-chapter";
-import { PostChapter, UpdateChapterDetails } from "../../../../../(action)/chapter";
+import { PostChapter, UpdateChapterDetails, DeleteImage } from "../../../../../(action)/chapter";
 import { uploadChapterImageClient } from "../../../../../services/UploadService";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,13 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
     albumId: number;
-    chapter?: { id: number; title: string; content?: string; order_sort: number };
+    chapter?: {
+        id: number;
+        title: string;
+        content?: string;
+        order_sort: number;
+        chapter_images?: { id: number; image_url: string; order_sort: number }[]
+    };
     onSuccess: () => void;
     nextOrder?: number;
 }
@@ -33,7 +40,7 @@ interface Props {
 const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState({ current: 0, total: 0 });
-    const [previewImages, setPreviewImages] = useState<{ file: File; url: string }[]>([]);
+    const [previewImages, setPreviewImages] = useState<any[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { toast } = useToast();
 
@@ -52,6 +59,17 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
             setValue("title", chapter.title);
             setValue("content", chapter.content);
             setValue("order_sort", chapter.order_sort);
+
+            // Load existing images into previews
+            if (chapter.chapter_images) {
+                const existingPreviews = chapter.chapter_images.map(img => ({
+                    id: img.id,
+                    url: img.image_url,
+                    isExisting: true
+                }));
+                // Use functional update to avoid stale state if multiple effects run
+                setPreviewImages(existingPreviews);
+            }
         } else {
             reset({
                 title: `Chương ${nextOrder || 1}`,
@@ -64,28 +82,66 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
     }, [chapter, setValue, reset, nextOrder]);
 
     const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
-        if (files.length > 0) {
-            const newPreviews = files.map(file => ({
+        const newSelectedFiles = Array.from(e.target.files || []);
+        if (newSelectedFiles.length > 0) {
+            newSelectedFiles.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+            const currentSelectedFiles = watch("imageFiles") || [];
+            const allSelectedFiles = [...currentSelectedFiles, ...newSelectedFiles];
+            const existingPreviews = previewImages.filter((p: any) => p.isExisting);
+            const newPreviews = allSelectedFiles.map((file, idx) => ({
+                id: `new-${Date.now()}-${idx}`,
                 file,
-                url: URL.createObjectURL(file)
+                url: URL.createObjectURL(file),
+                isExisting: false
             }));
-            setPreviewImages(prev => [...prev, ...newPreviews]);
-            setValue("imageFiles", [...(watch("imageFiles") || []), ...files]);
+            previewImages.forEach((img: any) => {
+                if (!img.isExisting && img.url) URL.revokeObjectURL(img.url);
+            });
+
+
+            setPreviewImages([...existingPreviews, ...newPreviews]);
+            setValue("imageFiles", allSelectedFiles);
         }
     };
 
-    const removeImage = (index: number) => {
-        const currentFiles = [...(watch("imageFiles") || [])];
-        currentFiles.splice(index, 1);
-        setValue("imageFiles", currentFiles);
+    const handleSort = (newList: any[]) => {
+        setPreviewImages(newList);
+        // Đồng bộ lại imageFiles cho các file chưa upload
+        const sortedFiles = newList
+            .filter((p: any) => !p.isExisting)
+            .map((p: any) => p.file);
+        setValue("imageFiles", sortedFiles);
+    };
 
-        const currentPreviews = [...previewImages];
-        if (currentPreviews[index]) {
-            URL.revokeObjectURL(currentPreviews[index].url);
+    const removeImage = async (index: number) => {
+        const preview = previewImages[index] as any;
+
+        if (preview?.isExisting && preview.id) {
+            if (!window.confirm("Bạn có chắc chắn muốn xóa vĩnh viễn ảnh này khỏi hệ thống?")) return;
+            try {
+                await DeleteImage(preview.id, preview.url);
+                toast({ title: "Đã xóa ảnh", description: "Ảnh đã được loại bỏ khỏi hệ thống." });
+            } catch (error) {
+                toast({ title: "Lỗi", description: "Không thể xóa ảnh!", variant: "destructive" });
+                return;
+            }
         }
-        currentPreviews.splice(index, 1);
-        setPreviewImages(currentPreviews);
+
+        const newPreviewList = [...previewImages];
+        const removed = newPreviewList.splice(index, 1)[0] as any;
+
+        // Revoke if it was a local file
+        if (removed?.url && !removed.isExisting) {
+            URL.revokeObjectURL(removed.url);
+        }
+
+        // Update imageFiles state for newly added files
+        const remainingFiles = newPreviewList
+            .filter((p: any) => !p.isExisting)
+            .map((p: any) => p.file);
+
+        setValue("imageFiles", remainingFiles);
+        setPreviewImages(newPreviewList as any);
     };
 
     const onFinish = async (data: ChapterInput) => {
@@ -202,32 +258,37 @@ const FromChapter: React.FC<Props> = ({ albumId, chapter, onSuccess, nextOrder }
                         accept="image/*"
                     />
 
-                    {/* Image Previews */}
-                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-[400px] overflow-y-auto p-2 scrollbar-hide">
+                    {/* Image Previews with Sortable */}
+                    <ReactSortable
+                        list={previewImages}
+                        setList={handleSort}
+                        animation={200}
+                        className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-h-[400px] overflow-y-auto p-2 scrollbar-hide"
+                    >
                         <AnimatePresence>
                             {previewImages.map((img, index) => (
                                 <motion.div
-                                    key={img.url}
+                                    key={img.id}
                                     initial={{ scale: 0.8, opacity: 0 }}
                                     animate={{ scale: 1, opacity: 1 }}
                                     exit={{ scale: 0.8, opacity: 0 }}
-                                    className="relative aspect-[3/4] rounded-xl overflow-hidden border border-white/10 bg-white/5 group/preview"
+                                    className="relative aspect-[3/4] rounded-xl overflow-hidden border border-white/10 bg-white/5 group/preview cursor-move active:scale-95 transition-transform"
                                 >
-                                    <Image src={img.url} alt="Preview" fill className="object-cover" unoptimized />
+                                    <Image src={img.url} alt="Preview" fill className="object-cover pointer-events-none" unoptimized />
                                     <div className="absolute top-1 left-1 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded-md text-[8px] font-black text-white/50 border border-white/5">
                                         #{index + 1}
                                     </div>
                                     <button
                                         type="button"
                                         onClick={(e) => { e.stopPropagation(); removeImage(index); }}
-                                        className="absolute top-1 right-1 w-6 h-6 bg-red-600/80 hover:bg-red-600 text-white rounded-lg flex items-center justify-center opacity-0 group-hover/preview:opacity-100 transition-opacity"
+                                        className="absolute top-1 right-1 w-6 h-6 bg-red-600/80 hover:bg-red-600 text-white rounded-lg flex items-center justify-center opacity-0 group-hover/preview:opacity-100 transition-opacity z-10"
                                     >
                                         <X size={12} />
                                     </button>
                                 </motion.div>
                             ))}
                         </AnimatePresence>
-                    </div>
+                    </ReactSortable>
                     {errors.imageFiles && <p className="text-red-500 text-[10px] font-black uppercase text-center">{errors.imageFiles.message}</p>}
                 </div>
             </motion.div>
